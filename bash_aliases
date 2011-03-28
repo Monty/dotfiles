@@ -46,6 +46,65 @@ if [ $TERM != "dumb" ]; then
     alias llca='ls -lAG'
 fi
 
+# Setup Rubies for MagLev comparison tests
+if [[ ! -z "$RU" ]]; then
+    alias ruby186="`ls -1d $RU/ruby-1.8.6* | tail -1`/bin/ruby"
+    alias ruby187="`ls -1d $RU/ruby-1.8.7* | tail -1`/bin/ruby"
+    alias ruby191="`ls -1d $RU/ruby-1.9.1* | tail -1`/bin/ruby"
+    alias ruby192="`ls -1d $RU/ruby-1.9.2* | tail -1`/bin/ruby"
+fi
+
+# MagLev
+alias bs='less -p^== $ML/BuildSteps.txt'
+alias mlr='maglev-ruby'
+alias mli='maglev-irb'
+alias mlg='maglev-gem'
+alias noparser='unset MagRpDEBUG_level'
+alias oldparser='export MagRpDEBUG_level=-1'
+alias newparser='export MagRpDEBUG_level=0'
+alias newparser1='export MagRpDEBUG_level=1'
+alias newparser2='export MagRpDEBUG_level=2'
+#
+# Commands to help execute specs
+alias ms_ml='_ms_ml'
+function _ms_ml () {
+    $MAGLEV_HOME/spec/mspec/bin/mspec -t maglev-ruby $@ | grep -v ^/
+}
+alias ms_mlg='_ms_mlg'
+function _ms_mlg () {
+    $MAGLEV_HOME/spec/mspec/bin/mspec -t maglev-ruby -G fails -G breaks -G hangs -G crashes \
+        $@ | grep -v ^/
+}
+alias ms_rb='_ms_rb'
+function _ms_rb () {
+    $MAGLEV_HOME/spec/mspec/bin/mspec -t ruby $@ | grep -v ^/
+}
+alias ms_rbg='_ms_rbg'
+function _ms_rbg () {
+    $MAGLEV_HOME/spec/mspec/bin/mspec -t ruby \
+    -G fails -G breaks -G hangs -G crashes $@ | grep -v ^/
+}
+
+# ssh shortcuts to various systems
+# p m g
+alias ssh-co='ssh -Y congo.gemstone.com'
+alias ssh-gl='ssh -Y glass@glass.gemstone.com'
+alias ssh-gr='ssh -Y grace.gemstone.com'
+alias ssh-or='ssh -Y orpheus.gemstone.com'
+#
+# Must use == not =~ to account for Bash 2.x
+if [[ "`uname -n`" == *local* ]]; then
+    alias ssh-mmj='ssh junew@macmini.local'
+    alias ssh-mmm='ssh monty@macmini.local'
+    alias ssh-moj='ssh junew@monarch.local'
+    alias ssh-mom='ssh monty@monarch.local'
+    alias ssh-mw='ssh montyandjune.homeip.net -p 3541'
+    alias ssh-my='ssh mycroft.local'
+    alias ssh-sh='ssh -Y shadow.local -p 3541'
+    alias ssh-sq='ssh olpc@Squeaky'
+    alias ssh-st='ssh strider.local'
+fi
+
 # Functions 
 function findf () {
     find . -name $* ;

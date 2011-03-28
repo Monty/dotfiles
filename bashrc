@@ -48,6 +48,32 @@ if [[ -n "$PS1" ]] ; then
   # It is often useful to be able to "reset" your path to a clean state.
   export SAVED_PATH=${PATH}
 
+  # MagLev directory setup
+  export ML=$HOME/MagLev
+  PLATFORM="`uname -sm | tr ' ' '-'`"
+  export MAGLEV_HOME=$ML/MagLev-$BUILDNUM.$PLATFORM
+  export MH=$MAGLEV_HOME
+  export MG=$ML/maglev-git
+  export PATH=$MH/bin:$PATH
+  #
+  export EX=$MH/examples
+  export SRC=$MH/src
+  export RBS=$MH/benchmark
+  export SEASIDE_HOME=$MH/gemstone/seaside
+  # Setting GEMSTONE can override extent location during upgrade
+  # export GEMSTONE=$MH/gemstone
+  export GH=$ML/github
+  export MSPEC_HOME=$ML/github/mspec
+  export RUBYSPEC_HOME=$ML/github/rubyspec
+
+  # Setup other HOMES
+  export RU=$RVM_HOME/rubies
+  export JAVA_HOME=/Library/Java/Home
+  export JRUBY_HOME=`ls -d $RU/jruby* | tail -1`
+  export PATH=$PATH:$JRUBY_HOME/bin
+  export RBX_HOME=`ls -d $RU/rbx* | tail -1`
+  export PATH=$PATH:$RBX_HOME/bin
+
   # Prompts
   # Colors
   BLUE="\[\e[34;1m\]"
