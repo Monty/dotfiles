@@ -1,0 +1,17 @@
+[user]
+	name = Monty Williams
+	email = monty.williams@gemstone.com
+[alias]
+	st = status
+	co = checkout
+	br = branch
+	last = log -1 HEAD
+	pretty = log  --no-merges --format=format:'%h  %ad  %an%n%s%n'
+[http]
+	sslVerify = false
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+[merge]
+	summary = true

@@ -1,0 +1,8 @@
+== Monty's dotfiles
+
+You're welcome to look at these dotfiles, but I don't think you'll find much of use.
+They are very simple, and are setup specifically for my directory structure at home and at work.
+
+I keep them in git to make it easy to setup new machines or VM's and keep all of them in sync.
+
+-- Monty
