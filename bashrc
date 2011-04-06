@@ -49,20 +49,22 @@ if [[ -n "$PS1" ]] ; then
   export SAVED_PATH=${PATH}
 
   # MagLev directory setup
-  export ML=$HOME/MagLev
   PLATFORM="`uname -sm | tr ' ' '-'`"
+  export ML=$HOME/MagLev
   export MAGLEV_HOME=$ML/MagLev-$BUILDNUM.$PLATFORM
   export MH=$MAGLEV_HOME
-  export MG=$ML/maglev-git
   export PATH=$MH/bin:$PATH
   #
-  export EX=$MH/examples
   export SRC=$MH/src
   export RBS=$MH/benchmark
   export SEASIDE_HOME=$MH/gemstone/seaside
+  export EX=$MH/examples
+  export WT=$EX/misc/WebTools
   # Setting GEMSTONE can override extent location during upgrade
   # export GEMSTONE=$MH/gemstone
+  export MG=$ML/MagLev-RBS
   export GH=$ML/github
+  export MP=$ML/maglev-github
   export MSPEC_HOME=$ML/github/mspec
   export RUBYSPEC_HOME=$ML/github/rubyspec
 
