@@ -64,7 +64,7 @@ if [[ -n "$PS1" ]] ; then
   # export GEMSTONE=$MH/gemstone
   export MG=$ML/MagLev-RBS
   export GH=$ML/github
-  export MP=$ML/maglev-github
+  export MP=$GH/maglev-github
   export MSPEC_HOME=$ML/github/mspec
   export RUBYSPEC_HOME=$ML/github/rubyspec
 
