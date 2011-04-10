@@ -54,6 +54,7 @@ if [[ -n "$PS1" ]] ; then
 
   # MagLev directory setup
   PLATFORM="`uname -sm | tr ' ' '-'`"
+  [ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
   export ML=$HOME/MagLev
   export MAGLEV_HOME=$ML/MagLev-$BUILDNUM.$PLATFORM
   export MH=$MAGLEV_HOME
@@ -73,8 +74,18 @@ if [[ -n "$PS1" ]] ; then
   export RUBYSPEC_HOME=$ML/github/rubyspec
 
   # Setup other HOMES
+  case "$PLATFORM" in
+      Darwin-i386)
+      export JAVA_HOME=/Library/Java/Home
+      ;;
+      Linux-x86_64)
+      export JAVA_HOME=/usr/lib/jvm/default-java
+      ;;
+      *)
+      echo "[Warning] JAVA_HOME only set on Linux or Mac OS X"
+      echo "The result from \"uname -sm\" is \"`uname -sm`\""
+      ;;
   export RU=$RVM_HOME/rubies
-  export JAVA_HOME=/Library/Java/Home
   export JRUBY_HOME=`ls -d $RU/jruby* | tail -1`
   export PATH=$PATH:$JRUBY_HOME/bin
   export RBX_HOME=`ls -d $RU/rbx* | tail -1`
