@@ -32,8 +32,12 @@ if [[ -n "$PS1" ]] ; then
   export LESS=seMi
 
   # Make a sensible PATH and save it
+  # set PATH so it includes private bin if it exists
+  if [ -d "$HOME/bin" ] ; then
+      PATH="$HOME/bin:$PATH"
+  fi
   # Set PATH so it appends other useful directories if they exist
-  for each in $HOME/bin \
+  for each in \
     /usr/local/bin \
     /usr/local/git/bin \
     /usr/X11/bin
