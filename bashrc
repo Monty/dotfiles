@@ -82,8 +82,7 @@ if [[ -n "$PS1" ]] ; then
       export JAVA_HOME=/usr/lib/jvm/default-java
       ;;
       *)
-      echo "[Warning] JAVA_HOME only set on Linux or Mac OS X"
-      echo "The result from \"uname -sm\" is \"`uname -sm`\""
+      echo "Don't know where JAVA_HOME should be"
       ;;
   esac
   export RU=$RVM_HOME/rubies
