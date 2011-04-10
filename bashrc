@@ -85,6 +85,7 @@ if [[ -n "$PS1" ]] ; then
       echo "[Warning] JAVA_HOME only set on Linux or Mac OS X"
       echo "The result from \"uname -sm\" is \"`uname -sm`\""
       ;;
+  esac
   export RU=$RVM_HOME/rubies
   export JRUBY_HOME=`ls -d $RU/jruby* | tail -1`
   export PATH=$PATH:$JRUBY_HOME/bin
