@@ -5,7 +5,8 @@ echo "==> Setting up $DOTDIR"
 cd $HOME
 
 for file in `ls $DOTDIR`; do
-    if [[ "${file}" == "install.sh" ]] || [[ "${file}" == "README.rdoc" ]]; then
+    if [[ "${file}" =~ \.sh$ ]] || [[ "${file}" =~ \.txt$ ]] \
+    || [[ "${file}" =~ \.rdoc$ ]]; then
         echo "==> Skipping ${file}"
     else
         echo "==> Processing ${file}"
@@ -13,4 +14,3 @@ for file in `ls $DOTDIR`; do
         ln -s $DOTDIR/${file} .${file}
     fi
 done
-
