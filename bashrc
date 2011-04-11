@@ -12,6 +12,7 @@ fi
 
 # Define the OS we're running on
 PLATFORM="`uname -sm | tr ' ' '-'`"
+# Treat older and newer Intel based Macs the same
 [ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
 
 # If not running interactively, skip most stuff
