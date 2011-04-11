@@ -10,6 +10,10 @@ if [ -e "$HOME/.maglev_version" ]; then
   export BUILDNUM="`grep ^[0-9] $HOME/.maglev_version | tail -1 | awk '{ print $1; }'`"
 fi
 
+# Define the OS we're running on
+PLATFORM="`uname -sm | tr ' ' '-'`"
+[ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
+
 # If not running interactively, skip most stuff
 if [[ -n "$PS1" ]] ; then
   # echo "### .bashrc after interactive check"
@@ -53,8 +57,6 @@ if [[ -n "$PS1" ]] ; then
   export SAVED_PATH=${PATH}
 
   # MagLev directory setup
-  PLATFORM="`uname -sm | tr ' ' '-'`"
-  [ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
   export ML=$HOME/MagLev
   export MAGLEV_HOME=$ML/MagLev-$BUILDNUM.$PLATFORM
   export MH=$MAGLEV_HOME
