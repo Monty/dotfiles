@@ -10,6 +10,11 @@ if [ -e "$HOME/.maglev_version" ]; then
   export BUILDNUM="`grep ^[0-9] $HOME/.maglev_version | tail -1 | awk '{ print $1; }'`"
 fi
 
+# Define the OS we're running on
+PLATFORM="`uname -sm | tr ' ' '-'`"
+# Treat older and newer Intel based Macs the same
+[ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
+
 # If not running interactively, skip most stuff
 if [[ -n "$PS1" ]] ; then
   # echo "### .bashrc after interactive check"
