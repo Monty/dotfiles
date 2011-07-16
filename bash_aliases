@@ -87,10 +87,16 @@ function _ms_rbg () {
 
 # ssh shortcuts to various systems
 # p m g
-alias ssh-co='ssh -Y congo.gemstone.com'
+alias ssh-bze='ssh -Y buildgss@zeke.gemstone.com'       # 10.118.32.5
+alias ssh-bhe='ssh -Y buildgss@hercules.gemstone.com'   # 10.118.32.204
+alias ssh-cf1='ssh gemstone@w2-maglev-cf1.gemstone.com' # 10.138.45.113
+alias ssh-co='ssh -Y congo.gemstone.com'                # 10.118.32.29
 alias ssh-gl='ssh -Y glass@glass.gemstone.com'
-alias ssh-gr='ssh -Y grace.gemstone.com'
-alias ssh-or='ssh -Y orpheus.gemstone.com'
+alias ssh-gr='ssh -Y grace.gemstone.com'                # 10.118.32.105
+alias ssh-or='ssh -Y orpheus.gemstone.com'              # 10.118.32.36
+alias ssh-rb='ssh ruby-wdc'                             # 10.255.18.41
+alias ssh-ss='ssh seaside.dmz.dc'                   # w2s2-gst-seaside.eng.vmware.com 10.255.18.42
+alias ssh-ss3='ssh w2s2-gst-ss.eng.vmware.com'          # 10.255.18.50
 #
 # Must use == not =~ to account for Bash 2.x
 if [[ "`uname -n`" == *local* ]]; then
