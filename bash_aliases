@@ -92,6 +92,7 @@ alias ssh-cf1='ssh gemstone@w2-maglev-cf1.gemstone.com' # 10.138.45.113
 alias ssh-cf2='ssh gemstone@w2-maglev-cf2.gemstone.com' # 10.138.45.114
 alias ssh-cf3='ssh gemstone@w2-maglev-cf3.gemstone.com' # 10.138.45.115
 alias ssh-cf4='ssh gemstone@w2-maglev-cf4.gemstone.com' # 10.138.45.116
+alias ssh-esug='ssh w2s2-gst-esug.eng.vmware.com'       # 10.255.18.51
 alias ssh-co='ssh -Y congo.gemstone.com'                # 10.118.32.29
 alias ssh-gl='ssh -Y glass@glass.gemstone.com'
 alias ssh-gr='ssh -Y grace.gemstone.com'                # 10.118.32.105
