@@ -89,9 +89,6 @@ function _ms_rbg () {
 # p m g
 alias ssh-bze='ssh -Y buildgss@zeke.gemstone.com'       # 10.118.32.5
 alias ssh-cf1='ssh gemstone@w2-maglev-cf1.gemstone.com' # 10.138.45.113
-alias ssh-cf2='ssh gemstone@w2-maglev-cf2.gemstone.com' # 10.138.45.114
-alias ssh-cf3='ssh gemstone@w2-maglev-cf3.gemstone.com' # 10.138.45.115
-alias ssh-cf4='ssh gemstone@w2-maglev-cf4.gemstone.com' # 10.138.45.116
 alias ssh-st1='ssh w2-stdev-ub10-01.gemstone.com'       # 10.138.45.119
 alias ssh-st2='ssh w2-stdev-rh6-01.gemstone.com'        # 10.138.45.120
 alias ssh-st3='ssh w2-stdev-sl11-01.gemstone.com'       # 10.138.45.121
