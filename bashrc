@@ -31,6 +31,9 @@ if [[ -n "$PS1" ]] ; then
   # Make less more friendly for non-text input files, see lesspipe(1)
   [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 
+  # So we can edit .gpg files directly in Vim
+  export GPG_TTY=`tty`
+
   # Some useful environment variables
   export EDITOR=/usr/bin/vim
   export PAGER=less        # strongly advised for backwards scrolling
