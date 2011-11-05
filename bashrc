@@ -62,9 +62,10 @@ if [[ -n "$PS1" ]] ; then
 
   # MagLev directory setup
   export ML=$HOME/MagLev
-  export MAGLEV_HOME=$ML/MagLev-$BUILDNUM.$PLATFORM
+  export MAGLEV_HOME=$ML/MagLev-$BUILDNUM
   export MH=$MAGLEV_HOME
-  export PATH=$MH/bin:$PATH
+  # export PATH=$MH/bin:$PATH
+  export PATH=$PATH:$MH/bin
   #
   export SRC=$MH/src
   export RBS=$MH/benchmark
