@@ -29,22 +29,16 @@ alias ps1-x='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${RVM_PROMPT}${GIT_PROMPT}$
 
 # Directory listings
 # normal
-alias lsa='ls -A'
-alias ll='ls -l'
-alias lla='ls -lA'
+alias ls='ls --color=auto'
+alias lsa='ls -A --color=auto'
+alias ll='ls -l --color=auto'
+alias lla='ls -lA --color=auto'
 alias llh='_llh'
-alias llr='ls -lR'
+alias llr='ls -lR --color=auto'
 alias lls='_lls'
 # with special chars to indicate file type
-alias l='ls -CF'
-alias la='ls -AF'
-# with special colors to indicate file type
-if [ $TERM != "dumb" ]; then
-    alias lc='ls -G'
-    alias lca='ls -AG'
-    alias llc='ls -lG'
-    alias llca='ls -lAG'
-fi
+alias l='ls -CF --color=auto'
+alias la='ls -AF --color=auto'
 
 # Setup Rubies for MagLev comparison tests
 if [[ ! -z "$RU" ]]; then
@@ -133,11 +127,11 @@ function _catn () {
 }
 
 function _llh () {
-    ls -lt $@ | head -20
+    ls -lt --color=always $@ | head -20
 }
 
 function _lls () {
-    ls -l $@ | grep -v ^d | sort -nr --key=5
+    ls -l --color=always $@ | grep -v ^d | sort -nr --key=5
 }
 
 # end of .bash_aliases

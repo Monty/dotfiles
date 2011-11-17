@@ -8,10 +8,11 @@ filetype plugin indent on " Enable filetype-specific indenting and plugins
 
 if has('gui_running')
     set background=light
+    colorscheme asu1dark
 else
     set background=dark
+    colorscheme delek
 endif
-colorscheme solarized
 
 " Load matchit (% to bounce from do to end, etc.)
 runtime! macros/matchit.vim
