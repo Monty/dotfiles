@@ -6,6 +6,13 @@ set ignorecase            " Case-insensitive search
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
 
+if has('gui_running')
+    set background=light
+else
+    set background=dark
+endif
+colorscheme solarized
+
 " Load matchit (% to bounce from do to end, etc.)
 runtime! macros/matchit.vim
 
@@ -19,9 +26,6 @@ augroup myfiletypes
   " Keep tabs in Makefiles
   au BufNewFile,BufReadPost Makefile set noexpandtab
 augroup END
-
-" Set dark background with reasonably bright colors
-colorscheme delek
 
 set tabstop=4
 set shiftwidth=4
