@@ -68,7 +68,7 @@ if [[ -n "$PS1" ]] ; then
   export PATH=$PATH:$MH/bin
   #
   export SRC=$MH/src
-  export RBS=$MH/benchmark
+  # export RBS=$MH/benchmark
   export SEASIDE_HOME=$MH/gemstone/seaside
   export EX=$MH/examples
   export WT=$EX/misc/WebTools

@@ -48,10 +48,9 @@ fi
 
 # Setup Rubies for MagLev comparison tests
 if [[ ! -z "$RU" ]]; then
-    alias ruby186="`ls -1d $RU/ruby-1.8.6* | tail -1`/bin/ruby"
     alias ruby187="`ls -1d $RU/ruby-1.8.7* | tail -1`/bin/ruby"
-    alias ruby191="`ls -1d $RU/ruby-1.9.1* | tail -1`/bin/ruby"
     alias ruby192="`ls -1d $RU/ruby-1.9.2* | tail -1`/bin/ruby"
+    alias ruby193="`ls -1d $RU/ruby-1.9.3* | tail -1`/bin/ruby"
 fi
 
 # MagLev
@@ -89,23 +88,23 @@ function _ms_rbg () {
 # ssh shortcuts to various systems
 # p m g
 alias ssh-bze='ssh -Y buildgss@zeke.gemstone.com'       # 10.118.32.5
-alias ssh-cf1='ssh gemstone@w2-maglev-cf1.gemstone.com' # 10.138.45.113
+alias ssh-co='ssh -Y congo.gemstone.com'                # 10.118.32.29
+alias ssh-or='ssh -Y orpheus.gemstone.com'              # 10.118.32.36
+alias ssh-gr='ssh -Y grace.gemstone.com'                # 10.118.32.105
+alias ssh-he='ssh -Y hercules.gemstone.com'             # 10.118.32.204
+#
 alias ssh-st1='ssh w2-stdev-ub10-01.gemstone.com'       # 10.138.45.119
 alias ssh-st2='ssh w2-stdev-rh6-01.gemstone.com'        # 10.138.45.120
 alias ssh-st3='ssh w2-stdev-sl11-01.gemstone.com'       # 10.138.45.121
+#
+alias ssh-rb='ssh w2s2-gst-magtrac.eng.vmware.com'      # 10.255.18.41
+alias ssh-ss='ssh w2s2-gst-seaside.eng.vmware.com'      # 10.255.18.42
+alias ssh-ss3='ssh w2s2-gst-ss.eng.vmware.com'          # 10.255.18.50
+alias ssh-esug='ssh w2s2-gst-esug.eng.vmware.com'       # 10.255.18.51
 alias ssh-wdc1='ssh w2s2-gst-cf1.eng.vmware.com'        # 10.255.18.52
 alias ssh-wdc2='ssh w2s2-gst-cf2.eng.vmware.com'        # 10.255.18.53
 alias ssh-wdc3='ssh w2s2-gst-cf3.eng.vmware.com'        # 10.255.18.54
 alias ssh-wdc4='ssh w2s2-gst-cf4.eng.vmware.com'        # 10.255.18.55
-alias ssh-co='ssh -Y congo.gemstone.com'                # 10.118.32.29
-alias ssh-esug='ssh w2s2-gst-esug.eng.vmware.com'       # 10.255.18.51
-alias ssh-gl='ssh -Y glass@glass.gemstone.com'
-alias ssh-gr='ssh -Y grace.gemstone.com'                # 10.118.32.105
-alias ssh-he='ssh -Y hercules.gemstone.com'             # 10.118.32.204
-alias ssh-or='ssh -Y orpheus.gemstone.com'              # 10.118.32.36
-alias ssh-rb='ssh w2s2-gst-magtrac.eng.vmware.com'      # 10.255.18.41
-alias ssh-ss='ssh w2s2-gst-seaside.eng.vmware.com'      # 10.255.18.42
-alias ssh-ss3='ssh w2s2-gst-ss.eng.vmware.com'          # 10.255.18.50
 #
 # Must use == not =~ to account for Bash 2.x
 if [[ "`uname -n`" == *local* ]]; then
