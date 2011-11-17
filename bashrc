@@ -38,6 +38,7 @@ if [[ -n "$PS1" ]] ; then
   export EDITOR=/usr/bin/vim
   export PAGER=less        # strongly advised for backwards scrolling
   export LESS=seMi
+  export CLICOLOR=1 
 
   # Make a sensible PATH and save it
   # set PATH so it includes private bin if it exists
