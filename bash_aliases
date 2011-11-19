@@ -27,14 +27,20 @@ alias ps1-g='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${GIT_PROMPT}$BLUE\$$BLACK 
 # RVM and git prompt
 alias ps1-x='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${RVM_PROMPT}${GIT_PROMPT}$BLUE\$$BLACK "'
 
+# We can only do --color=auto on Linux
+if [ `uname -s` == "Linux" ]; then
+    COLOR_AUTO="--color=auto"
+    COLOR_ALWAYS="--color=always"
+fi
+
 # Directory listings
 # normal
-alias ls='ls'
-alias lsa='ls -A'
-alias ll='ls -l'
-alias lla='ls -lA'
+alias ls='ls $COLOR_AUTO'
+alias lsa='ls -A $COLOR_AUTO'
+alias ll='ls -l $COLOR_AUTO'
+alias lla='ls -lA $COLOR_AUTO'
 alias llh='_llh'
-alias llr='ls -lR'
+alias llr='ls -lR $COLOR_AUTO'
 alias lls='_lls'
 # with special chars to indicate file type
 alias l='ls -CF'
@@ -127,11 +133,11 @@ function _catn () {
 }
 
 function _llh () {
-    ls -lt $@ | head -20
+    ls -lt $COLOR_ALWAYS $@ | head -20
 }
 
 function _lls () {
-    ls -l $@ | grep -v ^d | sort -nr --key=5
+    ls -l $COLOR_ALWAYS $@ | grep -v ^d | sort -nr --key=5
 }
 
 # end of .bash_aliases
