@@ -65,7 +65,8 @@ alias newparser1='export MagRpDEBUG_level=1'
 alias newparser2='export MagRpDEBUG_level=2'
 #
 # Commands to help execute specs
-alias rakespecs='rake spec:ci | egrep -v "^/|^WARNING|^$|^\.$|^\(eval"'
+alias spec_summary='rake spec:ci | egrep -v "^/|^WARNING|^$|^\.$|^\(eval|^native"'
+alias spec_errors='rake spec:ci | egrep "E$|F$|FAILED|ERROR"'
 alias ms_ml='_ms_ml'
 function _ms_ml () {
     $MAGLEV_HOME/spec/mspec/bin/mspec -t maglev-ruby $@ | grep -v ^/
