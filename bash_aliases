@@ -97,6 +97,7 @@ function _ms_rbg () {
 alias ssh-bze='ssh -Y buildgss@zeke.gemstone.com'       # 10.118.32.5
 alias ssh-co='ssh -Y congo.gemstone.com'                # 10.118.32.29
 alias ssh-or='ssh -Y orpheus.gemstone.com'              # 10.118.32.36
+alias ssh-ju='ssh -Y jupiter.gemstone.com'              # 10.118.32.69
 alias ssh-ty='ssh -Y tyche.gemstone.com'                # 10.118.32.82
 alias ssh-gr='ssh -Y grace.gemstone.com'                # 10.118.32.105
 alias ssh-he='ssh -Y hercules.gemstone.com'             # 10.118.32.204
