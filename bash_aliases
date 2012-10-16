@@ -65,10 +65,8 @@ alias newparser1='export MagRpDEBUG_level=1'
 alias newparser2='export MagRpDEBUG_level=2'
 #
 # Commands to check builds
-alias ol_ju="ssh jupiter.gemstone.com head /jupiter2/users/monty/MagLev/Private_Build/test_results*/*/oneliner*"
-alias ol_or="ssh orpheus.gemstone.com head /orpheus4/users/monty/MagLev/Private_Build/test_results*/*/oneliner*"
-alias bl_ju="ssh jupiter.gemstone.com tail -25 /jupiter2/users/monty/MagLev/Private_Build/log*/build.log"
-alias bl_or="ssh orpheus.gemstone.com tail -25 /orpheus4/users/monty/MagLev/Private_Build/log*/build.log"
+alias checkMaglevBuilds="ssh tyche.gemstone.com bin/checkMaglevBuilds"
+alias checkMaglevTests="ssh tyche.gemstone.com bin/checkMaglevTests"
 #
 # Commands to help execute specs
 alias spec_summary='rake spec:ci | egrep -v "^/|^WARNING|^$|^\.$|^\(eval|^native"'
