@@ -94,13 +94,13 @@ function _ms_rbg () {
 
 # ssh shortcuts to various systems
 # p m g
-alias ssh-bze='ssh -Y buildgss@zeke.gemstone.com'       # 10.118.32.5
-alias ssh-co='ssh -Y congo.gemstone.com'                # 10.118.32.29
-alias ssh-or='ssh -Y orpheus.gemstone.com'              # 10.118.32.36
-alias ssh-ju='ssh -Y jupiter.gemstone.com'              # 10.118.32.69
-alias ssh-ty='ssh -Y tyche.gemstone.com'                # 10.118.32.82
-alias ssh-gr='ssh -Y grace.gemstone.com'                # 10.118.32.105
-alias ssh-he='ssh -Y hercules.gemstone.com'             # 10.118.32.204
+alias ssh-bze='ssh buildgss@zeke.gemstone.com'       # 10.118.32.5
+alias ssh-co='ssh congo.gemstone.com'                # 10.118.32.29
+alias ssh-or='ssh orpheus.gemstone.com'              # 10.118.32.36
+alias ssh-ju='ssh jupiter.gemstone.com'              # 10.118.32.69
+alias ssh-ty='ssh tyche.gemstone.com'                # 10.118.32.82
+alias ssh-gr='ssh grace.gemstone.com'                # 10.118.32.105
+alias ssh-he='ssh hercules.gemstone.com'             # 10.118.32.204
 #
 alias ssh-st1='ssh w2-stdev-ub10-01.gemstone.com'       # 10.138.45.119
 alias ssh-st2='ssh w2-stdev-rh6-01.gemstone.com'        # 10.138.45.120
