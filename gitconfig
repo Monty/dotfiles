@@ -15,3 +15,9 @@
 	interactive = auto
 [merge]
 	summary = true
+[core]
+    excludesfile = /home/monty/.gitignore_global
+[branch]
+    autosetupmerge = true
+[push]
+    default = simple
