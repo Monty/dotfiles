@@ -1,6 +1,6 @@
 [user]
 	name = Monty Williams
-	email = monty.williams@gemstone.com
+	email = monty.williams@gmail.com
 [alias]
 	st = status
 	co = checkout
@@ -16,7 +16,13 @@
 [merge]
 	summary = true
 [core]
-    excludesfile = /home/monty/.gitignore_global
+	excludesfile = /Users/monty/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
 [branch]
     autosetupmerge = true
 [push]
