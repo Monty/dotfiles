@@ -27,6 +27,11 @@ alias ps1-g='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${GIT_PROMPT}$BLUE\$$BLACK 
 # RVM and git prompt
 alias ps1-x='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${RVM_PROMPT}${GIT_PROMPT}$BLUE\$$BLACK "'
 
+# TERM number of color settings
+alias xt-16='export TERM=xterm'
+alias xt-88='export TERM=xterm-88color'
+alias xt-256='export TERM=xterm-256color'
+
 # We can only do --color=auto on Linux
 if [ `uname -s` == "Linux" ]; then
     COLOR_AUTO="--color=auto"
