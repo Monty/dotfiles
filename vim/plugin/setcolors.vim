@@ -16,7 +16,7 @@ if v:version < 700 || exists('loaded_setcolors') || &cp
 endif
 
 let loaded_setcolors = 1
-let s:mycolors = ['slate', 'torte', 'darkblue', 'delek', 'murphy', 'elflord', 'pablo', 'koehler']  " colorscheme names that we use to set color
+let s:mycolors = ['bclear', 'darkblue', 'delek', 'desert256', 'elflord', 'herald', 'inkpot', 'koehler', 'lettuce', 'murphy', 'navajo', 'pablo', 'peachpuff', 'slate', 'torte', 'wombat256', 'xoria256', 'zenburn']  " colorscheme names that we use to set color
 
 " Set list of color scheme names that we will use, except
 " argument 'now' actually changes the current color scheme.
