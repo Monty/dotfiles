@@ -3,6 +3,7 @@ call pathogen#helptags()
 
 set nocompatible          " We're running Vim, not Vi!
 set ignorecase            " Case-insensitive search
+set smartcase             " Case sensitive when uc present
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
 
