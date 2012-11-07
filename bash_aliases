@@ -54,7 +54,6 @@ alias la='ls -AF'
 # Setup Rubies for MagLev comparison tests
 if [[ ! -z "$RU" ]]; then
     alias ruby187="`ls -1d $RU/ruby-1.8.7* | tail -1`/bin/ruby"
-    alias ruby192="`ls -1d $RU/ruby-1.9.2* | tail -1`/bin/ruby"
     alias ruby193="`ls -1d $RU/ruby-1.9.3* | tail -1`/bin/ruby"
 fi
 
