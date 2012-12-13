@@ -76,11 +76,11 @@ if [[ -n "$PS1" ]] ; then
   export WT=$EX/misc/WebTools
   # Setting GEMSTONE can override extent location during upgrade
   # export GEMSTONE=$MH/gemstone
-  export MG=$ML/MagLev-RBS
   export MP=$ML/Private_Build
+  export MB=$ML/Private_Build/HPI-GSS
+  export MG=$ML/Private_Build/git
   export HPI=$ML/HPI-GSS-BuildEnv
   export GH=$ML/github
-  export MP=$GH/maglev-github
   export MSPEC_HOME=$ML/github/mspec
   export RUBYSPEC_HOME=$ML/github/rubyspec
 
