@@ -87,7 +87,7 @@ if [[ -n "$PS1" ]] ; then
   # Setup other HOMES
   case "$PLATFORM" in
       Darwin-i386)
-      export JAVA_HOME=/usr/libexec/java_home
+      export JAVA_HOME=`/usr/libexec/java_home`
       ;;
       Linux-x86_64)
       export JAVA_HOME=/usr/lib/jvm/default-java
