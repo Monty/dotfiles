@@ -99,6 +99,7 @@ if [[ "`uname -n`" == *local* ]]; then
     alias ssh-mom='ssh monty@monarch.local'
     alias ssh-mw='ssh montyandjune.homeip.net -p 3541'
     alias ssh-my='ssh mycroft.local'
+    alias ssh-hu='ssh hudson.local'
     alias ssh-sh='ssh -Y shadow.local -p 3541'
     alias ssh-sq='ssh olpc@Squeaky'
     alias ssh-st='ssh strider.local'
