@@ -17,6 +17,7 @@
 	summary = true
 [core]
 	excludesfile = /Users/monty/.gitignore_global
+	pager = less -r
 [branch]
     autosetupmerge = true
 [push]
