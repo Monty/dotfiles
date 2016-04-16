@@ -94,7 +94,7 @@ function _ms_rbg () {
 # p m g
 #
 # Must use == not =~ to account for Bash 2.x
-if [[ "`uname -n`" == *local* ]]; then
+if [[ "`uname -n`" == *[Ll]ocal ]]; then
     alias ssh-ho='ssh holmes.local'
     alias ssh-hu='ssh hudson.local'
     alias ssh-moj='ssh junew@monarch.local'
