@@ -52,16 +52,14 @@ alias la='ls -AF'
 #
 # Must use == not =~ to account for Bash 2.x
 if [[ "`uname -n`" == *[Ll]ocal ]]; then
-    alias ssh-hom='ssh holmes.local'
     alias ssh-hoj='ssh junew@holmes.local'
+    alias ssh-hom='ssh holmes.local'
     alias ssh-hu='ssh hudson.local'
-    alias ssh-irm='ssh irene.local'
     alias ssh-irj='ssh junew@irene.local'
-    alias ssh-mom='ssh monty@monarch.local'
+    alias ssh-irm='ssh irene.local'
     alias ssh-moj='ssh junew@monarch.local'
-    alias ssh-mw='ssh montyandjune.homeip.net -p 3541'
+    alias ssh-mom='ssh monty@monarch.local'
     alias ssh-my='ssh mycroft.local'
-    alias ssh-sh='ssh -Y shadow.local -p 3541'
     alias ssh-sq='ssh olpc@Squeaky'
     alias ssh-st='ssh strider.local'
 fi
