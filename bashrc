@@ -1,6 +1,10 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # echo "### .bashrc at `date`"
 
+# Shortcuts
+export WS=$HOME/Projects/WhatsStreamingToday
+export TS=$WS/notgit/test
+
 # Don't put RVM in limited space home directory - it gets big over time
 export RVM_HOME=$HOME/MagLev/rvm
 # Whether or not to use RVM
