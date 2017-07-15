@@ -28,6 +28,11 @@ if [[ -n "$PS1" ]] ; then
   export HISTCONTROL=ignoreboth
   export HISTSIZE=3000
 
+  # Include directory name in iTerm tab titles by default
+  if [ $ITERM_SESSION_ID ]; then
+      export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND";
+  fi
+
   # Check the window size after each command and, if necessary,
   # update the values of LINES and COLUMNS.
   shopt -s checkwinsize

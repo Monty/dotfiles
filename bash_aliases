@@ -27,6 +27,10 @@ alias ps1-g='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${GIT_PROMPT}$BLUE\$$BLACK 
 # RVM and git prompt
 alias ps1-x='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${RVM_PROMPT}${GIT_PROMPT}$BLUE\$$BLACK "'
 
+# iTerm tab titles
+alias psi-0='export PROMPT_COMMAND='\''echo -ne "\033]0;\007"'\'''
+alias psi-d='export PROMPT_COMMAND='\''echo -ne "\033]0;${PWD##*/}\007"'\'''
+
 # TERM number of color settings
 alias xt-16='export TERM=xterm'
 alias xt-88='export TERM=xterm-88color'
