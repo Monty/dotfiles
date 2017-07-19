@@ -48,7 +48,7 @@ if [[ -n "$PS1" ]] ; then
   export PAGER=less        # strongly advised for backwards scrolling
   export LESS=seMi
   export CLICOLOR=1
-  export TERM=xterm-88color
+  export TERM=xterm-256color
 
   # Make a sensible PATH and save it
   # set PATH so it includes private bin if it exists

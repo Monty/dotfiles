@@ -109,6 +109,7 @@ if [[ "`uname -n`" == *[Ll]ocal ]]; then
     alias ssh-my='ssh mycroft.local $@'
     alias ssh-sq='ssh olpc@Squeaky $@'
     alias ssh-st='ssh strider.local $@'
+    alias ssh-ub='ssh ubuntu.local $@'
 fi
 
 # Functions 
