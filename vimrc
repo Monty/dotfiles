@@ -21,8 +21,8 @@ runtime! macros/matchit.vim
 augroup myfiletypes
   " Clear old autocmds in group
   autocmd!
-  " autoindent Ruby with two spaces, always expand tabs
-  autocmd FileType ruby,eruby,yaml set ai sw=2 sts=2 et
+  " autoindent Ruby and Javascript with two spaces, always expand tabs
+  autocmd FileType ruby,eruby,yaml,javascript set ai sw=2 sts=2 et
   " autoindent Topaz with four spaces, always expand tabs
   au BufNewFile,BufReadPost *.topaz set ai sw=4 sts=8 et
   " Keep tabs in Makefiles
