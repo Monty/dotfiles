@@ -23,6 +23,8 @@ augroup myfiletypes
   autocmd!
   " autoindent Ruby and Javascript with two spaces, always expand tabs
   autocmd FileType ruby,eruby,yaml,javascript set ai sw=2 sts=2 et
+  " prettyprint javascript files with prettier-eslint
+  autocmd FileType javascript set formatprg=prettier-eslint\ --stdin
   " autoindent Topaz with four spaces, always expand tabs
   au BufNewFile,BufReadPost *.topaz set ai sw=4 sts=8 et
   " Keep tabs in Makefiles
