@@ -31,6 +31,8 @@ augroup myfiletypes
   au BufNewFile,BufReadPost Makefile set noexpandtab
 augroup END
 
+let g:shfmt_switches = ['-i 4']
+
 set tabstop=4
 set shiftwidth=4
 set expandtab
