@@ -71,6 +71,10 @@ if [[ -n "$PS1" ]] ; then
   # It is often useful to be able to "reset" your path to a clean state.
   export SAVED_PATH=${PATH}
 
+  # golang setup
+  export GOROOT=$HOME/Projects/go
+  export PATH=$PATH:$GOROOT/bin
+
   # MagLev directory setup
   export ML=$HOME/MagLev
   export MAGLEV_HOME=$ML/MagLev-$BUILDNUM
