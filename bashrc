@@ -72,8 +72,8 @@ if [[ -n "$PS1" ]] ; then
   export SAVED_PATH=${PATH}
 
   # golang setup
-  export GOROOT=$HOME/Projects/go
-  export PATH=$PATH:$GOROOT/bin
+  export GOPATH=$HOME/Projects/go
+  export PATH=$PATH:$GOPATH/bin
 
   # MagLev directory setup
   export ML=$HOME/MagLev
