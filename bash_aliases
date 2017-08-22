@@ -14,12 +14,12 @@ alias psx='ps -ef | head -1; ps -ef | grep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 
 # Prompts
-alias ps1-T='export PS1="${TITLEBAR}$BLUE\t \u@\h:\! \$$BLACK "'  # Time & history number
-alias ps1-t='export PS1="${TITLEBAR}$BLUE\t \u@\h: \$$BLACK "'    # Time without history number
-alias ps1-l='export PS1="${TITLEBAR}$BLUE\u@\h:\w \$$BLACK "'     # Long path
-alias ps1-s='export PS1="${TITLEBAR}$BLUE\u@\h:\W \$$BLACK "'     # Short path
-alias ps1-n='export PS1="${TITLEBAR}$BLUE\u@\h: \$$BLACK "'       # No path
-alias ps1-0='export PS1="${TITLEBAR}$BLUE\u: \$$BLACK "'          # No host
+alias ps1-T='export PS1="${TITLEBAR}$BLUE\t \u@\h:\! \$$BLACK "' # Time & history number
+alias ps1-t='export PS1="${TITLEBAR}$BLUE\t \u@\h: \$$BLACK "'   # Time without history number
+alias ps1-l='export PS1="${TITLEBAR}$BLUE\u@\h:\w \$$BLACK "'    # Long path
+alias ps1-s='export PS1="${TITLEBAR}$BLUE\u@\h:\W \$$BLACK "'    # Short path
+alias ps1-n='export PS1="${TITLEBAR}$BLUE\u@\h: \$$BLACK "'      # No path
+alias ps1-0='export PS1="${TITLEBAR}$BLUE\u: \$$BLACK "'         # No host
 # RVM prompt
 alias ps1-r='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${RVM_PROMPT}$BLUE\$$BLACK "'
 # git prompt
@@ -37,7 +37,7 @@ alias xt-88='export TERM=xterm-88color'
 alias xt-256='export TERM=xterm-256color'
 
 # We can only do --color=auto on Linux
-if [ `uname -s` == "Linux" ]; then
+if [ $(uname -s) == "Linux" ]; then
     COLOR_AUTO="--color=auto"
     COLOR_ALWAYS="--color=always"
 fi
@@ -57,8 +57,8 @@ alias la='ls -AF'
 
 # Setup Rubies for MagLev comparison tests
 if [[ ! -z "$RU" ]]; then
-    alias ruby187="`ls -1d $RU/ruby-1.8.7* | tail -1`/bin/ruby"
-    alias ruby193="`ls -1d $RU/ruby-1.9.3* | tail -1`/bin/ruby"
+    alias ruby187="$(ls -1d $RU/ruby-1.8.7* | tail -1)/bin/ruby"
+    alias ruby193="$(ls -1d $RU/ruby-1.9.3* | tail -1)/bin/ruby"
 fi
 
 # MagLev
@@ -76,29 +76,29 @@ alias newparser2='export MagRpDEBUG_level=2'
 alias spec_summary='rake spec:ci | egrep -v "^/|^WARNING|^$|^\.$|^\(eval|^native"'
 alias spec_errors='rake spec:ci | egrep "E$|F$|FAILED|ERROR"'
 alias ms_ml='_ms_ml'
-function _ms_ml () {
+function _ms_ml() {
     $MAGLEV_HOME/spec/mspec/bin/mspec -t maglev-ruby $@ | grep -v ^/
 }
 alias ms_mlg='_ms_mlg'
-function _ms_mlg () {
+function _ms_mlg() {
     $MAGLEV_HOME/spec/mspec/bin/mspec -t maglev-ruby -G fails -G breaks -G hangs -G crashes \
         $@ | grep -v ^/
 }
 alias ms_rb='_ms_rb'
-function _ms_rb () {
+function _ms_rb() {
     $MAGLEV_HOME/spec/mspec/bin/mspec -t ruby $@ | grep -v ^/
 }
 alias ms_rbg='_ms_rbg'
-function _ms_rbg () {
+function _ms_rbg() {
     $MAGLEV_HOME/spec/mspec/bin/mspec -t ruby \
-    -G fails -G breaks -G hangs -G crashes $@ | grep -v ^/
+        -G fails -G breaks -G hangs -G crashes $@ | grep -v ^/
 }
 
 # ssh shortcuts to various systems
 # p m g
 #
 # Must use == not =~ to account for Bash 2.x
-if [[ "`uname -n`" == *[Ll]ocal ]]; then
+if [[ "$(uname -n)" == *[Ll]ocal ]]; then
     alias ssh-hoj='ssh junew@holmes.local $@'
     alias ssh-hom='ssh holmes.local $@'
     alias ssh-hu='ssh hudson.local $@'
@@ -112,24 +112,24 @@ if [[ "`uname -n`" == *[Ll]ocal ]]; then
     alias ssh-ub='ssh ubuntu.local $@'
 fi
 
-# Functions 
-function findf () {
-    find . -name $* ;
+# Functions
+function findf() {
+    find . -name $*
 }
 
-function finds () {
-    find . -name $*\* ;
+function finds() {
+    find . -name $*\*
 }
 
-function _catn () {
+function _catn() {
     grep -v ^$ $* | grep -v ^#
 }
 
-function _llh () {
+function _llh() {
     ls -lt $COLOR_ALWAYS $@ | head -20
 }
 
-function _lls () {
+function _lls() {
     ls -l $COLOR_ALWAYS $@ | grep -v ^d | sort -nr --key=5
 }
 
