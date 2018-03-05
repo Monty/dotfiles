@@ -1,6 +1,8 @@
+# System generated files
 *~
-.DS_Store
 *.swp
+.DS_Store
 .netrwhist
+__pycache__
+# Used to hide testing or experiments
 notgit
-/notgit/
