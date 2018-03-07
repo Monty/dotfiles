@@ -3,6 +3,7 @@
 *.swp
 .DS_Store
 .netrwhist
+.~lock.*
 __pycache__
 # Used to hide testing or experiments
 notgit
