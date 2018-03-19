@@ -4,7 +4,11 @@
 .DS_Store
 .netrwhist
 .~lock.*
+# Python
 __pycache__
+# npm
+update-notifier-npm.json
+# vim
 vim/bundle/*
 # Used to hide testing or experiments
 notgit
