@@ -4,6 +4,7 @@ module.exports = {
     node: true,
   },
   extends: 'eslint:recommended',
+  plugins: ['eslint-plugin-json'],
   rules: {
     'guard-for-in': 2,
     'no-caller': 2,
