@@ -49,6 +49,7 @@ alias lsa='ls -A $COLOR_AUTO'
 alias ll='ls -l $COLOR_AUTO'
 alias lla='ls -lA $COLOR_AUTO'
 alias llh='_llh'
+alias llt='_llt'
 alias llr='ls -lR $COLOR_AUTO'
 alias lls='_lls'
 # with special chars to indicate file type
@@ -127,6 +128,11 @@ function _catn() {
 
 function _llh() {
     ls -lt $COLOR_ALWAYS $@ | head -20
+}
+
+function _llt() {
+    today=$(date "+%b %d")
+    ls -lt $COLOR_ALWAYS $@ | grep " $today "
 }
 
 function _lls() {
