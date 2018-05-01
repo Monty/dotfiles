@@ -131,7 +131,7 @@ function _llh() {
 }
 
 function _llt() {
-    today=$(date "+%b %d")
+    today=$(date "+%b %e")
     ls -lt $COLOR_ALWAYS $@ | grep " $today "
 }
 
