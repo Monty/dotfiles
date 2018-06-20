@@ -17,7 +17,7 @@ if [[ -n "$PS1" ]]; then
 
     # Include directory name in iTerm tab titles by default
     if [ $ITERM_SESSION_ID ]; then
-        export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; ':"$PROMPT_COMMAND"
+        export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; '
     fi
 
     # Check the window size after each command and, if necessary,
