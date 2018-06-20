@@ -1,3 +1,14 @@
+# System generated files
 *~
+*.swp
 .DS_Store
-/notgit/
+.netrwhist
+.~lock.*
+# Python
+__pycache__
+# npm
+update-notifier-npm.json
+# vim
+vim/bundle/*
+# Used to hide testing or experiments
+notgit
