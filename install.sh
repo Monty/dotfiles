@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 DOTDIR=$(pwd)
 echo "==> Setting up $DOTDIR"
