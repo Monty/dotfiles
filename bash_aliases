@@ -8,9 +8,14 @@ alias cpr='cp -rp'
 alias df='df -k'
 alias du='du -k'
 alias hgr='history | egrep'
+alias hgrt='_hgrt'
 alias ht='history | cut -c 8- | tail'
 alias more='less'
 alias psx='ps -ef | head -1; ps -ef | grep'
+alias shf='shfmt -i 4 -s'
+alias shfd='shfmt -d -i 4 -s'
+alias shff='shfmt -f'
+alias shfl='shfmt -i 4 -s -l'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 
 # Prompts
@@ -114,28 +119,28 @@ if [[ "$(uname -n)" == *[Ll]ocal ]]; then
 fi
 
 # Functions
-function findf() {
+findf() {
     find . -name $*
 }
 
-function finds() {
+finds() {
     find . -name $*\*
 }
 
-function _catn() {
-    grep -v ^$ $* | grep -v ^#
+_hgrt() {
+    history | egrep $@ | tail -20
 }
 
-function _llh() {
+_llh() {
     ls -lt $COLOR_ALWAYS $@ | head -20
 }
 
-function _llt() {
+_llt() {
     today=$(date "+%b %e")
     ls -lt $COLOR_ALWAYS $@ | grep " $today "
 }
 
-function _lls() {
+_lls() {
     ls -l $COLOR_ALWAYS $@ | grep -v ^d | sort -nr --key=5
 }
 
