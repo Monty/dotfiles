@@ -20,7 +20,7 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 [ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
 
 # If not running interactively, skip most stuff
-if [[ -n "$PS1" ]]; then
+if [[ -n $PS1 ]]; then
     # echo "### .bashrc after interactive check"
     # start of "skip if not interactive"
 
@@ -156,7 +156,7 @@ if [[ -n "$PS1" ]]; then
 fi
 
 # Load RVM
-if [[ ! -z "$USE_RVM" ]]; then
+if [[ -n $USE_RVM ]]; then
     [[ -s "$RVM_HOME/scripts/rvm" ]] && source "$RVM_HOME/scripts/rvm"
 fi
 
