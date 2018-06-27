@@ -27,6 +27,7 @@ if [[ -n $PS1 ]]; then
     # Don't put duplicate lines or lines starting with spaces in the history
     export HISTCONTROL=ignoreboth
     export HISTSIZE=3000
+    export HISTFILESIZE=6000
 
     # Include directory name in iTerm tab titles by default
     if [ $ITERM_SESSION_ID ]; then
@@ -37,8 +38,11 @@ if [[ -n $PS1 ]]; then
     # update the values of LINES and COLUMNS.
     shopt -s checkwinsize
 
+    # append to the history file, don't overwrite it
+    shopt -s histappend
+
     # Make less more friendly for non-text input files, see lesspipe(1)
-    [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+    [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
     # So we can edit .gpg files directly in Vim
     export GPG_TTY=$(tty)
