@@ -8,6 +8,7 @@ alias cpr='cp -rp'
 alias df='df -k'
 alias du='du -k'
 alias hgr='history | egrep'
+alias hgrt='_hgrt'
 alias ht='history | cut -c 8- | tail'
 alias more='less'
 alias psx='ps -ef | head -1; ps -ef | grep'
@@ -45,6 +46,7 @@ alias lsa='ls -A $COLOR_AUTO'
 alias ll='ls -l $COLOR_AUTO'
 alias lla='ls -lA $COLOR_AUTO'
 alias llh='_llh'
+alias llt='_llt'
 alias llr='ls -lR $COLOR_AUTO'
 alias lls='_lls'
 # with special chars to indicate file type
@@ -70,23 +72,28 @@ if [[ "$(uname -n)" == *[Ll]ocal ]]; then
 fi
 
 # Functions
-function findf() {
+findf() {
     find . -name $*
 }
 
-function finds() {
+finds() {
     find . -name $*\*
 }
 
-function _catn() {
-    grep -v ^$ $* | grep -v ^#
+_hgrt() {
+    history | egrep $@ | tail -20
 }
 
-function _llh() {
+_llh() {
     ls -lt $COLOR_ALWAYS $@ | head -20
 }
 
-function _lls() {
+_llt() {
+    today=$(date "+%b %e")
+    ls -lt $COLOR_ALWAYS $@ | grep " $today "
+}
+
+_lls() {
     ls -l $COLOR_ALWAYS $@ | grep -v ^d | sort -nr --key=5
 }
 

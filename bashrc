@@ -7,7 +7,7 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 [ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
 
 # If not running interactively, skip most stuff
-if [[ -n "$PS1" ]]; then
+if [[ -n $PS1 ]]; then
     # echo "### .bashrc after interactive check"
     # start of "skip if not interactive"
 
@@ -54,7 +54,8 @@ if [[ -n "$PS1" ]]; then
             fi
         fi
     done
-    # It is often useful to be able to "reset" your path to a clean state.
+
+    # It is sometimes useful to be able to "reset" your path to a clean state.
     export SAVED_PATH=${PATH}
 
     # Setup other HOMES
