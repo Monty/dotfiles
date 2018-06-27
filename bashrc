@@ -9,6 +9,12 @@ export TS=$WS/notgit/test
 export RVM_HOME=$HOME/MagLev/rvm
 # Whether or not to use RVM
 export USE_RVM="true"
+
+# Load RVM
+if [[ -n $USE_RVM ]]; then
+    [[ -s "$RVM_HOME/scripts/rvm" ]] && source "$RVM_HOME/scripts/rvm"
+fi
+
 # MagLev version number. Called BUILDNUM for historical compatibility
 if [ -e "$HOME/.maglev_version" ]; then
     export BUILDNUM="$(grep ^[0-9] $HOME/.maglev_version | tail -1 | awk '{ print $1; }')"
@@ -20,7 +26,10 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 [ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
 
 # If not running interactively, skip most stuff
-if [[ -n $PS1 ]]; then
+case $- in
+    *i*) ;;
+      *) return;;
+esac
     # echo "### .bashrc after interactive check"
     # start of "skip if not interactive"
 
@@ -156,13 +165,5 @@ if [[ -n $PS1 ]]; then
     if [ -f ~/.bash_aliases ]; then
         . ~/.bash_aliases
     fi
-
-    # end of "skip if not interactive"
-fi
-
-# Load RVM
-if [[ -n $USE_RVM ]]; then
-    [[ -s "$RVM_HOME/scripts/rvm" ]] && source "$RVM_HOME/scripts/rvm"
-fi
 
 # end of .bashrc
