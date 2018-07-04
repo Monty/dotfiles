@@ -37,6 +37,10 @@ alias xt-256='export TERM=xterm-256color'
 if [ $(uname -s) == "Linux" ]; then
     COLOR_AUTO="--color=auto"
     COLOR_ALWAYS="--color=always"
+    # These aliases only make sense if on Linux
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # Directory listings
