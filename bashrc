@@ -130,11 +130,17 @@ export PATH=$PATH:$RBX_HOME/bin
 
 # Prompts
 # Colors
-BLUE="\[\e[34;1m\]"
+BLACK="\[\e[0;30m\]"
 RED="\[\e[0;31m\]"
 GREEN="\[\e[0;32m\]"
-BLACK="\[\e[0m\]"
-TITLEBAR='\[\e]2;\u@\H \w\a\]'
+YELLOW="\[\e[0;33m\]"
+BLUE="\[\e[0;34m\]"
+PURPLE="\[\e[0;35m\]"
+CYAN="\[\e[0;36m\]"
+GRAY="\[\e[0;37m\]"
+TBAR='\[\e]2;\u@\H \w\a\]'
+BE_COLOR="${BLUE}"
+NO_COLOR="\[\e[0m\]"
 # Functions to compute prompt strings
 function parse_rvm_impl() {
     [ -x "$RVM_HOME/bin/rvm-prompt" ] && [ ! -z "$($RVM_HOME/bin/rvm-prompt)" ] &&
@@ -147,19 +153,19 @@ function parse_git_branch() {
 # RVM
 if [ -x "$RVM_HOME/bin/rvm-prompt" ]; then
     # Ruby implementation RVM is using in GREEN
-    RVM_PROMPT="$GREEN\$(parse_rvm_impl)"
+    RPROMPT="$GREEN\$(parse_rvm_impl)"
 else
-    unset RVM_PROMPT
+    unset RPROMPT
 fi
 # Git
 if [ -e "$(which git 2>/dev/null)" ]; then
     # git branch in RED
-    GIT_PROMPT="$RED\$(parse_git_branch)"
+    GPROMPT="$RED\$(parse_git_branch)"
 else
-    unset GIT_PROMPT
+    unset GPROMPT
 fi
 # Default prompt
-export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${RVM_PROMPT}${GIT_PROMPT}$BLUE\$$BLACK "
+export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${RPROMPT}${GPROMPT}${BE_COLOR}\$${NO_COLOR} "
 
 # Define aliases
 if [ -f ~/.bash_aliases ]; then
