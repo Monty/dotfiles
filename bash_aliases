@@ -15,14 +15,14 @@ alias psx='ps -ef | head -1; ps -ef | grep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 
 # Prompts
-alias ps1-T='export PS1="${TITLEBAR}$BLUE\t \u@\h:\! \$$BLACK "' # Time & history number
-alias ps1-t='export PS1="${TITLEBAR}$BLUE\t \u@\h: \$$BLACK "'   # Time without history number
-alias ps1-l='export PS1="${TITLEBAR}$BLUE\u@\h:\w \$$BLACK "'    # Long path
-alias ps1-s='export PS1="${TITLEBAR}$BLUE\u@\h:\W \$$BLACK "'    # Short path
-alias ps1-n='export PS1="${TITLEBAR}$BLUE\u@\h: \$$BLACK "'      # No path
-alias ps1-0='export PS1="${TITLEBAR}$BLUE\u: \$$BLACK "'         # No host
+alias ps1-T='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\! \$${NO_COLOR} "' # Time & history number
+alias ps1-t='export PS1="${TBAR}${BE_COLOR}\t \u@\h: \$${NO_COLOR} "'   # Time without history number
+alias ps1-l='export PS1="${TBAR}${BE_COLOR}\u@\h:\w \$${NO_COLOR} "'    # Long path
+alias ps1-s='export PS1="${TBAR}${BE_COLOR}\u@\h:\W \$${NO_COLOR} "'    # Short path
+alias ps1-n='export PS1="${TBAR}${BE_COLOR}\u@\h: \$${NO_COLOR} "'      # No path
+alias ps1-0='export PS1="${TBAR}${BE_COLOR}\u: \$${NO_COLOR} "'         # No host
 # git prompt
-alias ps1-g='export PS1="${TITLEBAR}$BLUE\t \u@\h:\W ${GIT_PROMPT}$BLUE\$$BLACK "'
+alias ps1-g='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${GPROMPT}${BE_COLOR}\$${NO_COLOR} "'
 
 # iTerm tab titles
 alias psi-0='export PROMPT_COMMAND='\''echo -ne "\033]0;\007"'\'''
