@@ -165,6 +165,10 @@ else
     unset GPROMPT
 fi
 # Default prompt
+# If SSH session, change prompt color to yellow
+if [[ $(who am i) =~ \([0-9\.]+\)$ ]]; then
+    BE_COLOR="${YELLOW}"
+fi
 export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${RPROMPT}${GPROMPT}${BE_COLOR}\$${NO_COLOR} "
 
 # Define aliases
