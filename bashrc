@@ -26,10 +26,8 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 [ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
 
 # If not running interactively, skip most stuff
-case $- in
-*i*) ;;
-*) return ;;
-esac
+[[ $- != *i* ]] && return
+
 # echo "### .bashrc after interactive check"
 # start of "skip if not interactive"
 
