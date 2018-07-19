@@ -172,7 +172,8 @@ colors() {
             printf " ${seq0}TEXT\e[m"
             printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
         done
-        echo; echo
+        echo
+        echo
     done
 }
 
