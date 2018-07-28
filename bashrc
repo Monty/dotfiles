@@ -69,6 +69,7 @@ fi
 # Set PATH so it appends other useful directories if they exist
 for each in \
     /usr/local/bin \
+    $HOME/go/bin \
     /usr/local/git/bin \
     /usr/X11/bin; do
     if [ -d $each ]; then
@@ -81,7 +82,6 @@ done
 
 # golang setup
 export GOPATH=$HOME/Projects/go
-export PATH=$PATH:$GOPATH/bin
 
 # It is sometimes useful to be able to "reset" your path to a clean state.
 export SAVED_PATH=${PATH}
