@@ -13,6 +13,12 @@ alias ht='history | cut -c 8- | tail'
 alias more='less'
 alias psx='ps -ef | head -1; ps -ef | grep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
+if type -p shfmt >/dev/null; then
+    alias shf='shfmt -i 4 -s'
+    alias shfd='shfmt -d -i 4 -s'
+    alias shff='shfmt -f'
+    alias shfl='shfmt -i 4 -s -l'
+fi
 
 # Prompts
 alias ps1-T='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\! \$${NO_COLOR} "' # Time & history number
