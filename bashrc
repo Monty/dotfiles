@@ -50,6 +50,7 @@ fi
 # Set PATH so it appends other useful directories if they exist
 for each in \
     /usr/local/bin \
+    $HOME/go/bin \
     /usr/local/git/bin \
     /usr/X11/bin; do
     if [ -d $each ]; then
