@@ -51,6 +51,7 @@ fi
 for each in \
     /usr/local/bin \
     $HOME/go/bin \
+    $HOME/.local/bin \
     /usr/local/git/bin \
     /usr/X11/bin; do
     if [ -d $each ]; then
