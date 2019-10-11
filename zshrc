@@ -70,6 +70,9 @@ Linux-x86_64)
     ;;
 esac
 
+# Default prompt
+PROMPT="%* %n@%m:%1~ %# "
+
 # Define aliases
 if [ -f ~/.zsh_aliases ]; then
     . ~/.zsh_aliases
