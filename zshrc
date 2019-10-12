@@ -71,7 +71,7 @@ Linux-x86_64)
 esac
 
 # Default prompt
-PROMPT='%F{%(#.red.blue)}%* %n@%m:%1~ $%f '
+PROMPT='%F{%(!.red.blue)}%* %n@%m:%1~ $%f '
 
 # Define aliases
 if [ -f ~/.zsh_aliases ]; then
