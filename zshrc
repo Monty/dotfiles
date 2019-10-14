@@ -20,7 +20,7 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=3000
 SAVEHIST=$HISTSIZE
-setopt hist_ignore_all_dups
+setopt hist_ignore_dups
 setopt hist_ignore_space
 
 # So we can edit .gpg files directly in Vim
