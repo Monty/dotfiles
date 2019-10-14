@@ -87,7 +87,7 @@ stt_title () { setTermTitle 2 $@; }
 precmd () {
     stt_title $USER@${HOST%.Local} ${PWD/#$HOME/'~'}
     local TILDE_HOME=${PWD/#$HOME/'~'}
-    stt_tab ${TILDE_HOME##*/}
+    stt_tab $USER@${HOST%.Local} ${TILDE_HOME##*/}
 }
 
 # Default prompt
