@@ -17,9 +17,9 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 # start of "skip if not interactive"
 
 # Don't put duplicate lines or lines starting with spaces in the history
-export HISTSIZE=3000
-export HISTFILE="$HOME/.history"
-export SAVEHIST=$HISTSIZE
+HISTFILE="$HOME/.history"
+HISTSIZE=3000
+SAVEHIST=$HISTSIZE
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 
