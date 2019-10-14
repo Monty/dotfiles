@@ -91,7 +91,14 @@ precmd () {
 }
 
 # Default prompt
-PROMPT='%B%F{%(#.red.blue)}%* %n@%m:%1~ $%f %b'
+setopt prompt_subst
+if [[ -n "$SSH_CLIENT"  ||  -n "$SSH2_CLIENT" ]]; then
+    prompt_color='%F{%(#.red.yellow)}'
+else
+    prompt_color='%F{%(#.red.blue)}'
+fi
+#
+PROMPT='%B${prompt_color}%* %n@%m:%1~ $%f %b'
 
 # Define aliases
 if [ -f ~/.zsh_aliases ]; then
