@@ -17,9 +17,11 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 # start of "skip if not interactive"
 
 # Don't put duplicate lines or lines starting with spaces in the history
-export HISTCONTROL=ignoreboth
 export HISTSIZE=3000
-export HISTFILESIZE=6000
+export HISTFILE="$HOME/.history"
+export SAVEHIST=$HISTSIZE
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
 
 # So we can edit .gpg files directly in Vim
 export GPG_TTY=$(tty)
@@ -69,6 +71,24 @@ Linux-x86_64)
     echo "Don't know where JAVA_HOME should be"
     ;;
 esac
+
+# Functions to set iTerm2 window and tab titles
+# $1 = type: 0 - both, 1 - tab, 2 - title
+setTermTitle () {
+    # echo works in bash & zsh
+    local mode=$1 ; shift
+    echo -ne "\033]$mode;$@\007"
+}
+stt_both  () { setTermTitle 0 $@; }
+stt_tab   () { setTermTitle 1 $@; }
+stt_title () { setTermTitle 2 $@; }
+
+# Set iTerm window and tab titles
+precmd () {
+    stt_title $USER@${HOST%.Local} ${PWD/#$HOME/'~'}
+    local TILDE_HOME=${PWD/#$HOME/'~'}
+    stt_tab ${TILDE_HOME##*/}
+}
 
 # Default prompt
 PROMPT='%B%F{%(#.red.blue)}%* %n@%m:%1~ $%f %b'
