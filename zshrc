@@ -17,7 +17,7 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 # start of "skip if not interactive"
 
 # Don't put duplicate lines or lines starting with spaces in the history
-HISTFILE="$HOME/.history"
+HISTFILE="$HOME/.zsh_history"
 HISTSIZE=3000
 SAVEHIST=$HISTSIZE
 setopt hist_ignore_all_dups
