@@ -92,13 +92,22 @@ precmd () {
 
 # Default prompt
 setopt prompt_subst
+#
+# Pick prompt colors
+# Normally blue, but yellow if SSH, red if root or privileged
 if [[ -n "$SSH_CLIENT"  ||  -n "$SSH2_CLIENT" ]]; then
     prompt_color='%F{%(#.red.yellow)}'
 else
     prompt_color='%F{%(#.red.blue)}'
 fi
 #
-PROMPT='%B${prompt_color}%* %n@%m:%1~ $%f %b'
+# If in git repository, print git branch in red with trailing space
+function parse_git_branch() {
+    branch_name=$(git rev-parse --abbrev-ref HEAD 2> /dev/null) || return
+    echo "%F{red}($branch_name)%f "
+}
+#
+PROMPT='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
 
 # Define aliases
 if [ -f ~/.zsh_aliases ]; then
