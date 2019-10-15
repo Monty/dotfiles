@@ -74,17 +74,18 @@ esac
 
 # Functions to set iTerm2 window and tab titles
 # $1 = type: 0 - both, 1 - tab, 2 - title
-setTermTitle () {
+setTermTitle() {
     # echo works in bash & zsh
-    local mode=$1 ; shift
+    local mode=$1
+    shift
     echo -ne "\033]$mode;$@\007"
 }
-stt_both  () { setTermTitle 0 $@; }
-stt_tab   () { setTermTitle 1 $@; }
-stt_title () { setTermTitle 2 $@; }
+stt_both() { setTermTitle 0 $@; }
+stt_tab() { setTermTitle 1 $@; }
+stt_title() { setTermTitle 2 $@; }
 
 # Set iTerm window and tab titles
-precmd () {
+precmd() {
     stt_title $USER@${HOST%.Local} ${PWD/#$HOME/'~'}
     local TILDE_HOME=${PWD/#$HOME/'~'}
     stt_tab $USER@${HOST%.Local} ${TILDE_HOME##*/}
@@ -95,7 +96,7 @@ setopt prompt_subst
 #
 # Pick prompt colors
 # Normally blue, but yellow if SSH, red if root or privileged
-if [[ -n "$SSH_CLIENT"  ||  -n "$SSH2_CLIENT" ]]; then
+if [[ -n $SSH_CLIENT || -n $SSH2_CLIENT ]]; then
     prompt_color='%F{%(#.red.yellow)}'
 else
     prompt_color='%F{%(#.red.blue)}'
@@ -103,7 +104,7 @@ fi
 #
 # If in git repository, print git branch in red with trailing space
 function parse_git_branch() {
-    branch_name=$(git rev-parse --abbrev-ref HEAD 2> /dev/null) || return
+    branch_name=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return
     echo "%F{red}($branch_name)%f "
 }
 #
