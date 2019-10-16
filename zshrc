@@ -103,12 +103,37 @@ else
 fi
 #
 # If in git repository, print git branch in red with trailing space
-function parse_git_branch() {
+parse_git_branch() {
     branch_name=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return
     echo "%F{red}($branch_name)%f "
 }
 #
 PROMPT='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
+
+#
+# Other sometimes useful prompts
+#
+ps1-g() { # Reset to standard git prompt
+    PS1='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
+}
+ps1-l() { # Long path
+    PS1='%B${prompt_color}%n@%m:%~ $%f %b'
+}
+ps1-s() { # Short path
+    PS1='%B${prompt_color}%n@%m:%1~ $%f %b'
+}
+ps1-n() { # No path
+    PS1='%B${prompt_color}%n@%m: $%f %b'
+}
+ps1-0() { # No host
+    PS1='%B${prompt_color}%n: $%f %b'
+}
+ps1-T() { # Time & history number
+    PS1='%B${prompt_color}%* %n@%m:%h $%f %b'
+}
+ps1-t() { # Time without history number
+    PS1='%B${prompt_color}%* %n@%m: $%f %b'
+}
 
 # Define aliases
 if [ -f ~/.zsh_aliases ]; then

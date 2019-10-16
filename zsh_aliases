@@ -20,16 +20,6 @@ if type -p shfmt >/dev/null; then
     alias shfl='shfmt -i 4 -s -l'
 fi
 
-# Prompts
-alias ps1-T='%B${prompt_color}%* %n@%m:%h $%f %b' # Time & history number
-alias ps1-t='%B${prompt_color}%* %n@%m: $%f %b'   # Time without history number
-alias ps1-l='%B${prompt_color}%n@%m:%~ $%f %b'    # Long path
-alias ps1-s='%B${prompt_color}%n@%m:%1~ $%f %b'   # Short path
-alias ps1-n='%B${prompt_color}%n@%m: $%f %b'      # No path
-alias ps1-0='%B${prompt_color}%n: $%f %b'         # No host
-# git prompt
-alias ps1-g='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
-
 # TERM number of color settings
 alias xt-16='export TERM=xterm'
 alias xt-88='export TERM=xterm-88color'
