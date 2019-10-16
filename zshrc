@@ -1,14 +1,12 @@
 # ~/.zshrc: executed by zsh(1) for non-login shells.
 # echo "### .zshrc at `date`"
 
-# Shortcuts
+# Directory shortcuts
 export WS=$HOME/Projects/WhatsStreamingToday
 export TS=$WS/notgit/test
 
 # Define the OS we're running on
 PLATFORM="$(uname -sm | tr ' ' '-')"
-# Treat older and newer Intel based Macs the same
-[ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
 
 # If not running interactively, skip most stuff
 [[ $- != *i* ]] && return
@@ -61,7 +59,7 @@ export SAVED_PATH=${PATH}
 
 # Setup other HOMES
 case "$PLATFORM" in
-Darwin-i386)
+Darwin-x86_64)
     export JAVA_HOME=$(/usr/libexec/java_home)
     ;;
 Linux-x86_64)
@@ -91,11 +89,10 @@ precmd() {
     stt_tab $USER@${HOST%.Local} ${TILDE_HOME##*/}
 }
 
-# Default prompt
+# Setup prompt
 setopt prompt_subst
 #
-# Pick prompt colors
-# Normally blue, but yellow if SSH, red if root or privileged
+# Pick prompt colors - normally blue, but yellow if SSH, red if root or privileged
 if [[ -n $SSH_CLIENT || -n $SSH2_CLIENT ]]; then
     prompt_color='%F{%(#.red.yellow)}'
 else
@@ -108,11 +105,10 @@ parse_git_branch() {
     echo "%F{red}($branch_name)%f "
 }
 #
+# Default prompt
 PROMPT='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
-
 #
 # Other sometimes useful prompts
-#
 ps1-g() { # Reset to standard git prompt
     PS1='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
 }
