@@ -2,22 +2,22 @@
 # echo "### .zsh_aliases at `date`"
 
 # Shortcut commands
-alias catn='egrep -hv ^$\|^[[:space:]]*#\|^\;'
+alias catn='egrep -hv -e ^$ -e ^# -e "^[[:space:]]*#" -e ^\;'
 alias cls='clear'
 alias cpr='cp -rp'
-alias df='df -k'
-alias du='du -k'
+alias df='df -Pm'
+alias du='du -sh'
 alias hgr='history | egrep'
 alias hgrt='_hgrt'
 alias ht='history | cut -c 8- | tail'
 alias more='less'
-alias psx='ps -ef | head -1; ps -ef | grep'
+alias psx='ps -ef | head -1; ps -ef | egrep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 if type -p shfmt >/dev/null; then
-    alias shf='shfmt -i 4 -s'
-    alias shfd='shfmt -d -i 4 -s'
-    alias shff='shfmt -f'
-    alias shfl='shfmt -i 4 -s -l'
+    alias shf='shfmt -i 4 -s'     # Default shell format
+    alias shfl='shfmt -i 4 -s -l' # List files whose formatting would change
+    alias shfd='shfmt -d -i 4 -s' # Shell format with diff if file would change
+    alias shff='shfmt -f'         # Recursively find all shell files and print the paths
 fi
 
 # TERM number of color settings
@@ -31,18 +31,17 @@ alias ls='ls $COLOR_AUTO'
 alias lsa='ls -A $COLOR_AUTO'
 alias ll='ls -l $COLOR_AUTO'
 alias lla='ls -lA $COLOR_AUTO'
-alias llh='_llh'
-alias llt='_llt'
+alias llh='_llh' # Most recent 20
+alias llt='_llt' # Today only
 alias llr='ls -lR $COLOR_AUTO'
-alias lls='_lls'
+alias lls='_lls' # Largest
 # with special chars to indicate file type
 alias l='ls -CF'
 alias la='ls -AF'
 
 # ssh shortcuts to various systems
-# p m g
+# p m g -- see id_rsa
 #
-# Must use == not =~ to account for Bash 2.x
 if [[ "$(uname -n)" == *[Ll]ocal ]]; then
     alias ssh-hoj='ssh junew@holmes.local $@'
     alias ssh-hom='ssh holmes.local $@'
@@ -54,15 +53,15 @@ if [[ "$(uname -n)" == *[Ll]ocal ]]; then
 fi
 
 # Functions
-findf() {
+findf() { # Find file by name
     find . -name $*
 }
 
-finds() {
+finds() { # Find file by initial string in name
     find . -name $*\*
 }
 
-findw() {
+findw() { # Find words (case insensitive) in files - to check for capitalization typos
     grep -h -o -E '\w+' $2 | sort -u | grep -i $1
 }
 
@@ -71,16 +70,16 @@ _hgrt() {
 }
 
 _llh() {
-    ls -lt $COLOR_ALWAYS $@ | head -20
+    ls -lt $@ | head -20
 }
 
 _llt() {
     today=$(date "+%b %e")
-    ls -lt $COLOR_ALWAYS $@ | grep " $today "
+    ls -lt $@ | grep " $today "
 }
 
 _lls() {
-    ls -l $COLOR_ALWAYS $@ | grep -v ^d | sort -nr --key=5
+    ls -l $@ | grep -v ^d | sort -nr --key=5
 }
 
 # From various distros
