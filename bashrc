@@ -69,6 +69,7 @@ fi
 # Set PATH so it appends other useful directories if they exist
 for each in \
     /usr/local/bin \
+    /usr/local/go/bin \
     $HOME/go/bin \
     $HOME/.local/bin \
     /usr/local/git/bin \
