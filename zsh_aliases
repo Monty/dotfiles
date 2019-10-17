@@ -2,7 +2,7 @@
 # echo "### .zsh_aliases at `date`"
 
 # Shortcut commands
-alias catn='egrep -hv -e ^$ -e ^# -e "^[[:space:]]*#" -e ^\;'
+alias catn='egrep -hv -e ^$ -e "^[[:space:]]*#" -e ^\;'
 alias cls='clear'
 alias cpr='cp -rp'
 alias df='df -Pm'
