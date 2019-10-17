@@ -8,7 +8,8 @@ alias cpr='cp -rp'
 alias df='df -Pm'
 alias du='du -sh'
 alias hgr='history | egrep'
-alias hgrt='_hgrt'
+alias hgrt='_hgrt' # Search history, return last 20 matches
+alias hgrz='_hgrz' # Search ~/.zsh_history, sort -u matches
 alias ht='history | cut -c 8- | tail'
 alias more='less'
 alias psx='ps -ef | head -1; ps -ef | egrep'
@@ -67,6 +68,10 @@ findw() { # Find words (case insensitive) in files - to check for capitalization
 
 _hgrt() {
     history | egrep $@ | tail -20
+}
+
+_hgrz() {
+    egrep $@ ~/.zsh_history | sort -u
 }
 
 _llh() {
