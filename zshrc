@@ -14,12 +14,17 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 # echo "### .zshrc after interactive check"
 # start of "skip if not interactive"
 
-# Don't put duplicate lines or lines starting with spaces in the history
+# Setup history
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=3000
 SAVEHIST=$HISTSIZE
+# Don't put duplicate lines or lines starting with spaces in the history
 setopt hist_ignore_dups
 setopt hist_ignore_space
+setopt appendhistory
+
+# Ignore lines prefixed with '#'.
+setopt interactivecomments
 
 # So we can edit .gpg files directly in Vim
 export GPG_TTY=$(tty)
