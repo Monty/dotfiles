@@ -7,10 +7,10 @@ alias cls='clear'
 alias cpr='cp -rp'
 alias df='df -Pm'
 alias du='du -sh'
-alias hgr='history | egrep'
-alias hgrt='_hgrt' # Search history, return last 20 matches
-alias hgrz='_hgrz' # Search ~/.zsh_history, sort -u matches
-alias ht='history | cut -c 8- | tail'
+alias ht='fc -l'
+alias hgr='fc -lI 1 -1 | egrep'
+alias hgrt='_hgrt' # Search recent history, return last 20 matches
+alias hgrz='_hgrz' # Search all history, sort -u matches
 alias more='less'
 alias psx='ps -ef | head -1; ps -ef | egrep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
@@ -67,11 +67,11 @@ findw() { # Find words (case insensitive) in files - to check for capitalization
 }
 
 _hgrt() {
-    history | egrep $@ | tail -20
+    fc -lI 1 -1 | egrep $@ | tail -20
 }
 
 _hgrz() {
-    egrep $@ ~/.zsh_history | sort -u
+    fc -lLn 1 -1 | egrep $@ | sort -u
 }
 
 _llh() {
