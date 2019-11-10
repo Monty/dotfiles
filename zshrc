@@ -1,14 +1,12 @@
 # ~/.zshrc: executed by zsh(1) for non-login shells.
 # echo "### .zshrc at `date`"
 
-# Shortcuts
+# Directory shortcuts
 export WS=$HOME/Projects/WhatsStreamingToday
 export TS=$WS/notgit/test
 
 # Define the OS we're running on
 PLATFORM="$(uname -sm | tr ' ' '-')"
-# Treat older and newer Intel based Macs the same
-[ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
 
 # If not running interactively, skip most stuff
 [[ $- != *i* ]] && return
@@ -16,10 +14,17 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 # echo "### .zshrc after interactive check"
 # start of "skip if not interactive"
 
+# Setup history
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=3000
+SAVEHIST=$HISTSIZE
 # Don't put duplicate lines or lines starting with spaces in the history
-export HISTCONTROL=ignoreboth
-export HISTSIZE=3000
-export HISTFILESIZE=6000
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt appendhistory
+
+# Ignore lines prefixed with '#'.
+setopt interactivecomments
 
 # So we can edit .gpg files directly in Vim
 export GPG_TTY=$(tty)
@@ -39,6 +44,7 @@ fi
 # Set PATH so it appends other useful directories if they exist
 for each in \
     /usr/local/bin \
+    /usr/local/go/bin \
     $HOME/go/bin \
     $HOME/.local/bin \
     /usr/local/git/bin \
@@ -59,7 +65,7 @@ export SAVED_PATH=${PATH}
 
 # Setup other HOMES
 case "$PLATFORM" in
-Darwin-i386)
+Darwin-x86_64)
     export JAVA_HOME=$(/usr/libexec/java_home)
     ;;
 Linux-x86_64)
@@ -69,6 +75,67 @@ Linux-x86_64)
     echo "Don't know where JAVA_HOME should be"
     ;;
 esac
+
+# Functions to set iTerm2 window and tab titles
+# $1 = type: 0 - both, 1 - tab, 2 - title
+setTermTitle() {
+    # echo works in bash & zsh
+    local mode=$1
+    shift
+    echo -ne "\033]$mode;$@\007"
+}
+stt_both() { setTermTitle 0 $@; }
+stt_tab() { setTermTitle 1 $@; }
+stt_title() { setTermTitle 2 $@; }
+
+# Set iTerm window and tab titles
+precmd() {
+    stt_title $USER@${HOST%.Local} ${PWD/#$HOME/'~'}
+    local TILDE_HOME=${PWD/#$HOME/'~'}
+    stt_tab $USER@${HOST%.Local} ${TILDE_HOME##*/}
+}
+
+# Setup prompt
+setopt prompt_subst
+#
+# Pick prompt colors - normally blue, but yellow if SSH, red if root or privileged
+if [[ -n $SSH_CLIENT || -n $SSH2_CLIENT ]]; then
+    prompt_color='%F{%(#.red.yellow)}'
+else
+    prompt_color='%F{%(#.red.blue)}'
+fi
+#
+# If in git repository, print git branch in red with trailing space
+parse_git_branch() {
+    branch_name=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return
+    echo "%F{red}($branch_name)%f "
+}
+#
+# Default prompt
+PROMPT='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
+#
+# Other sometimes useful prompts
+ps1-g() { # Reset to standard git prompt
+    PS1='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
+}
+ps1-l() { # Long path
+    PS1='%B${prompt_color}%n@%m:%~ $%f %b'
+}
+ps1-s() { # Short path
+    PS1='%B${prompt_color}%n@%m:%1~ $%f %b'
+}
+ps1-n() { # No path
+    PS1='%B${prompt_color}%n@%m: $%f %b'
+}
+ps1-0() { # No host
+    PS1='%B${prompt_color}%n: $%f %b'
+}
+ps1-T() { # Time & history number
+    PS1='%B${prompt_color}%* %n@%m:%h $%f %b'
+}
+ps1-t() { # Time without history number
+    PS1='%B${prompt_color}%* %n@%m: $%f %b'
+}
 
 # Define aliases
 if [ -f ~/.zsh_aliases ]; then

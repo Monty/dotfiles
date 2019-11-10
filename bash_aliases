@@ -70,7 +70,6 @@ alias la='ls -AF'
 if [[ "$(uname -n)" == *[Ll]ocal ]]; then
     alias ssh-hoj='ssh junew@holmes.local $@'
     alias ssh-hom='ssh holmes.local $@'
-    alias ssh-hu='ssh hudson.local $@'
     alias ssh-irj='ssh junew@irene.local $@'
     alias ssh-irm='ssh irene.local $@'
     alias ssh-moj='ssh junew@monarch.local $@'
@@ -88,6 +87,10 @@ findf() {
 
 finds() {
     find . -name $*\*
+}
+
+findw() {
+    grep -h -o -E '\w+' $2 | sort -u | grep -i $1
 }
 
 _hgrt() {
