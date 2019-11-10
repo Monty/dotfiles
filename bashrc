@@ -1,6 +1,10 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # echo "### .bashrc at `date`"
 
+# Shortcuts
+export WS=$HOME/Projects/WhatsStreamingToday
+export TS=$WS/notgit/test
+
 # Define the OS we're running on
 PLATFORM="$(uname -sm | tr ' ' '-')"
 # Treat older and newer Intel based Macs the same
@@ -50,6 +54,7 @@ fi
 # Set PATH so it appends other useful directories if they exist
 for each in \
     /usr/local/bin \
+    /usr/local/go/bin \
     $HOME/go/bin \
     $HOME/.local/bin \
     /usr/local/git/bin \
@@ -61,6 +66,9 @@ for each in \
         fi
     fi
 done
+
+# golang setup
+export GOPATH=$HOME/Projects/go
 
 # It is sometimes useful to be able to "reset" your path to a clean state.
 export SAVED_PATH=${PATH}
