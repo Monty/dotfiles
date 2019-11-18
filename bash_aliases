@@ -4,9 +4,9 @@
 # Shortcut commands
 alias catn='egrep -hv ^$\|^[[:space:]]*#\|^\;'
 alias cls='clear'
-alias cpr='cp -rp'
-alias df='df -k'
-alias du='du -k'
+alias cpr='cp -Rp'
+alias df='df -Hl'
+alias du='du -sh'
 alias hgr='history | egrep'
 alias hgrt='_hgrt'
 alias ht='history | cut -c 8- | tail'
@@ -118,9 +118,6 @@ if [[ "$(uname -n)" == *[Ll]ocal ]]; then
     alias ssh-moj='ssh junew@monarch.local $@'
     alias ssh-mom='ssh monty@monarch.local $@'
     alias ssh-my='ssh mycroft.local $@'
-    alias ssh-sq='ssh olpc@Squeaky $@'
-    alias ssh-st='ssh strider.local $@'
-    alias ssh-ub='ssh ubuntu.local $@'
 fi
 
 # Functions

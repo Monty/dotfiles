@@ -4,13 +4,13 @@
 # Shortcut commands
 alias catn='egrep -hv -e ^$ -e "^[[:space:]]*#" -e ^\;'
 alias cls='clear'
-alias cpr='cp -rp'
-alias df='df -Pm'
+alias cpr='cp -Rp'
+alias df='df -Hl'
 alias du='du -sh'
-alias ht='fc -l'
 alias hgr='fc -lI 1 -1 | egrep'
 alias hgrt='_hgrt' # Search recent history, return last 20 matches
 alias hgrz='_hgrz' # Search all history, sort -u matches
+alias ht='fc -l'   # Tail history
 alias more='less'
 alias psx='ps -ef | head -1; ps -ef | egrep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
