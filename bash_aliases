@@ -2,6 +2,7 @@
 # echo "### .bash_aliases at `date`"
 
 # Shortcut commands
+alias catc='egrep -h ^[[:space:]]*#\|^\;'
 alias catn='egrep -hv ^$\|^[[:space:]]*#\|^\;'
 alias cls='clear'
 alias cpr='cp -Rp'
