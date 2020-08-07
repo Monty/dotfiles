@@ -71,6 +71,7 @@ for each in \
     /usr/local/bin \
     /usr/local/go/bin \
     $HOME/go/bin \
+    $HOME/.cargo/bin \
     $HOME/.local/bin \
     /usr/local/git/bin \
     /usr/X11/bin; do
