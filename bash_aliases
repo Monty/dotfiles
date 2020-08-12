@@ -54,15 +54,28 @@ fi
 # normal
 alias ls='ls $COLOR_AUTO'
 alias lsa='ls -A $COLOR_AUTO'
-alias ll='ls -l $COLOR_AUTO'
-alias lla='ls -lA $COLOR_AUTO'
-alias llh='_llh'
-alias llt='_llt'
-alias llr='ls -lR $COLOR_AUTO'
-alias lls='_lls'
 # with special chars to indicate file type
 alias l='ls -CF'
 alias la='ls -AF'
+# If exa is installed
+if type -p exa >/dev/null; then
+    alias ll='exa --git -s Name --colour=always -lg'
+    alias lla='exa --git -s Name --colour=always -lga'
+    alias llh='_lwh'                                     # Most recent 20
+    alias llt='_lwt'                                     # Today only
+    alias llr='exa --git --s Name -colour=always -lgR'   # Recurse
+    alias lls='exa --git -s size -r --colour=always -lg' # size
+    # Dirs first, then by extension - both without & with gitignored files
+    alias lw='exa --git --git-ignore --group-directories-first -s ext --colour=always -lg'
+    alias lwg='exa --git --group-directories-first -s ext --colour=always -lg'
+else
+    alias ll='ls -l $COLOR_AUTO'
+    alias lla='ls -lA $COLOR_AUTO'
+    alias llh='_llh' # Most recent 20
+    alias llt='_llt' # Today only
+    alias llr='ls -lR $COLOR_AUTO'
+    alias lls='_lls' # size
+fi
 
 # ssh shortcuts to various systems
 # p m g
