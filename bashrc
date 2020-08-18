@@ -1,9 +1,10 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # echo "### .bashrc at `date`"
 
-# Shortcuts
-export WS=$HOME/Projects/WhatsStreamingToday
-export TS=$WS/notgit/test
+# Directory shortcuts
+if [ -f ~/.directory_shortcuts ]; then
+    . ~/.directory_shortcuts
+fi
 
 # Define the OS we're running on
 PLATFORM="$(uname -sm | tr ' ' '-')"
