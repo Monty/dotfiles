@@ -2,8 +2,9 @@
 # echo "### .zshrc at `date`"
 
 # Directory shortcuts
-export WS=$HOME/Projects/WhatsStreamingToday
-export TS=$WS/notgit/test
+if [ -f ~/.directory_shortcuts ]; then
+    . ~/.directory_shortcuts
+fi
 
 # Define the OS we're running on
 PLATFORM="$(uname -sm | tr ' ' '-')"
