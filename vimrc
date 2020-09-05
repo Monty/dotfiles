@@ -25,6 +25,8 @@ augroup myfiletypes
   autocmd FileType ruby,eruby,yaml,javascript set ai sw=2 sts=2 et
   " prettyprint javascript files with prettier-eslint
   autocmd FileType javascript set formatprg=prettier-eslint\ --stdin
+  " autoindent go with four spaces, always expand tabs
+  au BufNewFile,BufReadPost *.go set noet ci pi sts=0 sw=4 ts=4
   " autoindent Topaz with four spaces, always expand tabs
   au BufNewFile,BufReadPost *.topaz set ai sw=4 sts=8 et
   " Keep tabs in Makefiles
@@ -33,6 +35,7 @@ augroup END
 
 let g:shfmt_switches = ['-i 4']
 
+set list listchars=tab:>-,trail:.,extends:>,precedes:<
 set tabstop=4
 set shiftwidth=4
 set expandtab
