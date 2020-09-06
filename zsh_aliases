@@ -8,11 +8,13 @@ alias cls='clear'
 alias cpr='cp -Rp'
 alias df='df -Hl'
 alias du='du -sh'
+alias hexd="od -a -t x1"
 alias hgr='fc -lI 1 -1 | egrep'
 alias hgrt='_hgrt' # Search recent history, return last 20 matches
 alias hgrz='_hgrz' # Search all history, sort -u matches
 alias ht='fc -l'   # Tail history
 alias more='less'
+alias od="od -ab"
 alias psx='ps -ef | head -1; ps -ef | egrep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 if type -p shfmt >/dev/null; then
