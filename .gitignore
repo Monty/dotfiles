@@ -12,4 +12,5 @@ tmtags
 
 ## VIM
 *.swp
+vim/bundle/*
 
