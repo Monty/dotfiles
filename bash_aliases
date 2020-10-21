@@ -164,6 +164,15 @@ _lls() {
     ls -l $COLOR_ALWAYS $@ | grep -v ^d | sort -nr --key=5
 }
 
+_lwh() {
+    exa --git -s date -r --colour=always -lg $@ | head -20
+}
+
+_lwt() {
+    today=$(date "+%e %b")
+    exa --git -s date -r --colour=always -lg $@ | grep "$today "
+}
+
 # From various distros
 colors() {
     local fgc bgc vals seq0
