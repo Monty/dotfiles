@@ -67,7 +67,7 @@ if type -p exa >/dev/null; then
     alias lla='exa --git -s Name --colour=always -lga'
     alias llh='_lwh'                                     # Most recent 20
     alias llt='_lwt'                                     # Today only
-    alias llr='exa --git --s Name -colour=always -lgR'   # Recurse
+    alias llr='exa --git -s Name --colour=always -lgR'   # Recurse
     alias lls='exa --git -s size -r --colour=always -lg' # size
     # Dirs first, then by extension - both without & with gitignored files
     alias lw='exa --git --git-ignore --group-directories-first -s ext --colour=always -lg'
