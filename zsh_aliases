@@ -60,6 +60,8 @@ fi
 # p m g -- see id_rsa
 #
 if [[ "$(uname -n)" == *[Ll]ocal ]]; then
+    alias ssh-bm='ssh bitnami@bitmean-VM.local'
+    alias ssh-bn='ssh bitnami@bitnode-VM.local'
     alias ssh-hoj='ssh junew@holmes.local $@'
     alias ssh-hom='ssh holmes.local $@'
     alias ssh-irj='ssh junew@irene.local $@'
