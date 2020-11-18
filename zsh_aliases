@@ -16,7 +16,6 @@ alias ht='fc -l'   # Tail history
 alias more='less'
 alias od="od -ab"
 alias psx='ps -ef | head -1; ps -ef | egrep'
-alias radx='_radx' # Add rualdi alias and export it
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 if type -p shfmt >/dev/null; then
     alias shf='shfmt -i 4 -s'     # Default shell format
@@ -24,6 +23,9 @@ if type -p shfmt >/dev/null; then
     alias shfd='shfmt -d -i 4 -s' # Shell format with diff if file would change
     alias shff='shfmt -f'         # Recursively find all shell files and print the paths
 fi
+
+# If rualdi exists, create a command to both add a rualdi alias and export it
+[ -x ~/.cargo/bin/rualdi ] && alias radx='_radx'
 
 # TERM number of color settings
 alias xt-16='export TERM=xterm'
