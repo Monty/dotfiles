@@ -75,19 +75,6 @@ export GOPATH=$HOME/Projects/go
 # It is sometimes useful to be able to "reset" your path to a clean state.
 export SAVED_PATH=${PATH}
 
-# Setup other HOMES
-case "$PLATFORM" in
-Darwin-x86_64)
-    export JAVA_HOME=$(/usr/libexec/java_home)
-    ;;
-Linux-x86_64)
-    export JAVA_HOME=/usr/lib/jvm/default-java
-    ;;
-*)
-    echo "Don't know where JAVA_HOME should be"
-    ;;
-esac
-
 # Functions to set iTerm2 window and tab titles
 # $1 = type: 0 - both, 1 - tab, 2 - title
 setTermTitle() {
