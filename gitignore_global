@@ -1,12 +1,23 @@
+## MAC OS
+.DS_Store
+
 # System generated files
 *~
-*.swp
-.DS_Store
-.netrwhist
 .~lock.*
+*.swp
+.netrwhist
+
+# Local backups
+*.bak
+
 # Python
 __pycache__
+
 # npm
 update-notifier-npm.json
+
+# Keep vim bundles out of repo
+~/.vim/bundle/*
+
 # Used to hide testing or experiments
 notgit
