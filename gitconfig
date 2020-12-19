@@ -2,11 +2,13 @@
 	name = Monty Williams
 	email = monty.williams@gmail.com
 [alias]
-	st = status
-	co = checkout
 	br = branch
+	co = checkout
+	df = diff --compact-summary
 	last = log -1 HEAD
+	pick = cherry-pick
 	pretty = log  --no-merges --format=format:'%h  %ad  %an%n%s%n'
+	st = status
 [http]
 	sslVerify = false
 [color]
