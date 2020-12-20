@@ -17,6 +17,17 @@ for repo in https://github.com/vim-scripts/ScrollColors.git \
         printf "$directory already exists.\n"
     else
         printf "Cloning $repo into $directory\n"
-        git clone -q "$repo" -o "$directory"
+        git clone -q "$repo"
     fi
 done
+
+# Possible bundle candidates
+# ScrollColors      Add :COLORSCROLL
+# vim-commentary    Comment/Uncomment
+# vim-fugitive      Add :git
+# vim-matchit       Extended matching for the % operator
+# vim-polyglot      A collection of language packs
+# vim-sensible      Reasonabe settings
+# vim-shfmt         Format shell scripts with :Shfmt -i 4 -s
+# vim-smarttabs     Indent with tabs, align with spaces
+# vim-unimpaired    Pairs of handy bracket mappings
