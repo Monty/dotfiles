@@ -58,4 +58,5 @@ set textwidth=80
 setlocal spelllang=en_us
 setlocal spellfile=~/.vim/spell/en.utf-8.add
 setlocal spellfile+=~/.vim/spell/jargon/IMDb.utf-8.add
+setlocal spellfile+=~/.vim/spell/jargon/dotfiles.utf-8.add
 
