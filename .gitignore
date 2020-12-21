@@ -11,6 +11,7 @@ tmtags
 .\#*
 
 ## VIM
+*.spl
 *.swp
 vim/bundle/*
 
