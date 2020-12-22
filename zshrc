@@ -69,6 +69,11 @@ done
 # golang setup
 export GOPATH=$HOME/Projects/go
 
+# broot setup
+if type -p broot >/dev/null; then
+    source $HOME/.config/broot/launcher/bash/br
+fi
+
 # rualdi "rad" setup
 [ -x ~/.cargo/bin/rualdi ] && eval "$(rualdi init zsh)"
 
