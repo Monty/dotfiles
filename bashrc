@@ -79,6 +79,11 @@ done
 # golang setup
 export GOPATH=$HOME/Projects/go
 
+# broot setup
+if type -p broot >/dev/null; then
+    source $HOME/.config/broot/launcher/bash/br
+fi
+
 # It is sometimes useful to be able to "reset" your path to a clean state.
 export SAVED_PATH=${PATH}
 
@@ -101,7 +106,7 @@ function parse_git_branch() {
     git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 # Git
-if [ -e "$(which git 2>/dev/null)" ]; then
+if type -p git >/dev/null; then
     # git branch in RED
     GPROMPT="$RED\$(parse_git_branch)"
 else
