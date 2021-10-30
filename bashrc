@@ -8,8 +8,6 @@ fi
 
 # Define the OS we're running on
 PLATFORM="$(uname -sm | tr ' ' '-')"
-# Treat older and newer Intel based Macs the same
-[ $PLATFORM = "Darwin-x86_64" ] && PLATFORM="Darwin-i386"
 
 # If not running interactively, skip most stuff
 [[ $- != *i* ]] && return
@@ -89,6 +87,12 @@ export SAVED_PATH=${PATH}
 
 # Setup other HOMES
 case "$PLATFORM" in
+Darwin-arm64)
+    export JAVA_HOME=$(/usr/libexec/java_home)
+    ;;
+Darwin-x86_64)
+    export JAVA_HOME=$(/usr/libexec/java_home)
+    ;;
 Darwin-i386)
     export JAVA_HOME=$(/usr/libexec/java_home)
     ;;

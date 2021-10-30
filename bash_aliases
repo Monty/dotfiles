@@ -21,6 +21,11 @@ if type -p shfmt >/dev/null; then
     alias shfl='shfmt -i 4 -s -l'
 fi
 
+# shellcheck shortcuts
+alias sck='shellcheck $@'
+alias scko='shellcheck -o all -e SC2250 $@'
+alias sckf='shellcheck -x -P functions $@'
+
 # Prompts
 alias ps1-T='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\! \$${NO_COLOR} "' # Time & history number
 alias ps1-t='export PS1="${TBAR}${BE_COLOR}\t \u@\h: \$${NO_COLOR} "'   # Time without history number

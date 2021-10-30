@@ -24,6 +24,11 @@ if type -p shfmt >/dev/null; then
     alias shff='shfmt -f'         # Recursively find all shell files and print the paths
 fi
 
+# shellcheck shortcuts
+alias sck='shellcheck $@'
+alias scko='shellcheck -o all -e SC2250 $@'
+alias sckf='shellcheck -x -P functions $@'
+
 # If rualdi exists, create a command to both add a rualdi alias and export it
 [ -x ~/.cargo/bin/rualdi ] && alias radx='_radx'
 

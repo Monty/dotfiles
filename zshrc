@@ -82,6 +82,9 @@ export SAVED_PATH=${PATH}
 
 # Setup other HOMES
 case "$PLATFORM" in
+Darwin-arm64)
+    export JAVA_HOME=$(/usr/libexec/java_home)
+    ;;
 Darwin-x86_64)
     export JAVA_HOME=$(/usr/libexec/java_home)
     ;;

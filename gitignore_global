@@ -21,3 +21,6 @@ update-notifier-npm.json
 
 # Used to hide testing or experiments
 notgit
+
+# shellcheck 
+lint-*.sh
