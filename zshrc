@@ -28,7 +28,12 @@ setopt appendhistory
 setopt interactivecomments
 
 # So we can edit .gpg files directly in Vim
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# For IMDb_xref
+export FULLCAST=50
+export NO_MENUS="yes"
 
 # Some useful environment variables
 export EDITOR=/usr/bin/vim
@@ -58,9 +63,9 @@ for each in \
     $HOME/.local/bin \
     /usr/local/git/bin \
     /usr/X11/bin; do
-    if [ -d $each ]; then
+    if [ -d "$each" ]; then
         # echo "### Found $each"
-        if ! echo $PATH | egrep -s "(^|:)$each($|:)" >/dev/null; then
+        if ! echo "$PATH" | grep -E -s "(^|:)$each($|:)" >/dev/null; then
             PATH=${PATH}:$each
         fi
     fi
@@ -71,7 +76,7 @@ export GOPATH=$HOME/Projects/go
 
 # broot setup
 if type -p broot >/dev/null; then
-    source $HOME/.config/broot/launcher/bash/br
+    source "$HOME"/.config/broot/launcher/bash/br
 fi
 
 # rualdi "rad" setup
@@ -82,14 +87,13 @@ export SAVED_PATH=${PATH}
 
 # Setup other HOMES
 case "$PLATFORM" in
-Darwin-arm64)
-    export JAVA_HOME=$(/usr/libexec/java_home)
-    ;;
-Darwin-x86_64)
-    export JAVA_HOME=$(/usr/libexec/java_home)
+Darwin-arm64 | Darwin-x86_64 | Darwin-i386)
+    JAVA_HOME=$(/usr/libexec/java_home)
+    export JAVA_HOME
     ;;
 Linux-x86_64)
-    export JAVA_HOME=/usr/lib/jvm/default-java
+    JAVA_HOME=/usr/lib/jvm/default-java
+    export JAVA_HOME
     ;;
 *)
     echo "Don't know where JAVA_HOME should be"
@@ -110,9 +114,9 @@ stt_title() { setTermTitle 2 $@; }
 
 # Set iTerm window and tab titles
 precmd() {
-    stt_title $USER@${HOST%.Local} ${PWD/#$HOME/'~'}
+    stt_title "$USER"@"${HOST%.Local}" "${PWD/#$HOME/'~'}"
     local TILDE_HOME=${PWD/#$HOME/'~'}
-    stt_tab $USER@${HOST%.Local} ${TILDE_HOME##*/}
+    stt_tab "$USER"@"${HOST%.Local}" "${TILDE_HOME##*/}"
 }
 
 # Setup prompt

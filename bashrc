@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+#
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # echo "### .bashrc at `date`"
 
@@ -21,7 +23,7 @@ export HISTSIZE=3000
 export HISTFILESIZE=6000
 
 # Include directory name in iTerm tab titles by default
-if [ $ITERM_SESSION_ID ]; then
+if [ "$ITERM_SESSION_ID" ]; then
     export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; '
 fi
 
@@ -36,7 +38,8 @@ shopt -s histappend
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # So we can edit .gpg files directly in Vim
-export GPG_TTY=$(tty)
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # Some useful environment variables
 export EDITOR=/usr/bin/vim
@@ -66,9 +69,9 @@ for each in \
     $HOME/.local/bin \
     /usr/local/git/bin \
     /usr/X11/bin; do
-    if [ -d $each ]; then
+    if [ -d "$each" ]; then
         # echo "### Found $each"
-        if ! echo $PATH | egrep -s "(^|:)$each($|:)" >/dev/null; then
+        if ! echo "$PATH" | grep -E -s "(^|:)$each($|:)" >/dev/null; then
             PATH=${PATH}:$each
         fi
     fi
@@ -79,7 +82,7 @@ export GOPATH=$HOME/Projects/go
 
 # broot setup
 if type -p broot >/dev/null; then
-    source $HOME/.config/broot/launcher/bash/br
+    source "$HOME"/.config/broot/launcher/bash/br
 fi
 
 # It is sometimes useful to be able to "reset" your path to a clean state.
@@ -87,17 +90,13 @@ export SAVED_PATH=${PATH}
 
 # Setup other HOMES
 case "$PLATFORM" in
-Darwin-arm64)
-    export JAVA_HOME=$(/usr/libexec/java_home)
-    ;;
-Darwin-x86_64)
-    export JAVA_HOME=$(/usr/libexec/java_home)
-    ;;
-Darwin-i386)
-    export JAVA_HOME=$(/usr/libexec/java_home)
+Darwin-arm64 | Darwin-x86_64 | Darwin-i386)
+    JAVA_HOME=$(/usr/libexec/java_home)
+    export JAVA_HOME
     ;;
 Linux-x86_64)
-    export JAVA_HOME=/usr/lib/jvm/default-java
+    JAVA_HOME=/usr/lib/jvm/default-java
+    export JAVA_HOME
     ;;
 *)
     echo "Don't know where JAVA_HOME should be"

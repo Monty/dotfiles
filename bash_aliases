@@ -1,14 +1,16 @@
+#!/usr/bin/env bash
+#
 # ~/.bash_aliases: sourced by ~/.bashrc
 # echo "### .bash_aliases at `date`"
 
 # Shortcut commands
-alias catc='egrep -h ^[[:space:]]*#\|^\;'
-alias catn='egrep -hv ^$\|^[[:space:]]*#\|^\;'
+alias catc='grep -E -h ^[[:space:]]*#\|^\;'
+alias catn='grep -E -hv ^$\|^[[:space:]]*#\|^\;'
 alias cls='clear'
 alias cpr='cp -Rp'
 alias df='df -Hl'
 alias du='du -sh'
-alias hgr='history | egrep'
+alias hgr='history | grep -E'
 alias hgrt='_hgrt'
 alias ht='history | cut -c 8- | tail'
 alias more='less'
@@ -21,7 +23,7 @@ if type -p shfmt >/dev/null; then
     alias shfl='shfmt -i 4 -s -l'
 fi
 
-# shellcheck shortcuts
+# shortcuts for shellcheck
 alias sck='shellcheck $@'
 alias scko='shellcheck -o all -e SC2250 $@'
 alias sckf='shellcheck -x -P functions $@'
@@ -46,13 +48,13 @@ alias xt-88='export TERM=xterm-88color'
 alias xt-256='export TERM=xterm-256color'
 
 # We can only do --color=auto on Linux
-if [ $(uname -s) == "Linux" ]; then
+if [ "$(uname -s)" == "Linux" ]; then
     COLOR_AUTO="--color=auto"
     COLOR_ALWAYS="--color=always"
     # These aliases only make sense if on Linux
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+    alias egrep='grep -E --color=auto'
 fi
 
 # Directory listings
@@ -98,41 +100,41 @@ fi
 
 # Functions
 findf() {
-    find . -name $*
+    find . -name "$*"
 }
 
 finds() {
-    find . -name $*\*
+    find . -name "$*"\*
 }
 
 findw() {
-    grep -h -o -E '\w+' $2 | sort -u | grep -i $1
+    grep -h -o -E '\w+' "$2" | sort -u | grep -i "$1"
 }
 
 _hgrt() {
-    history | egrep $@ | tail -20
+    history | grep -E "$@" | tail -20
 }
 
 _llh() {
-    ls -lt $COLOR_ALWAYS $@ | head -20
+    ls -lt $COLOR_ALWAYS "$@" | head -20
 }
 
 _llt() {
     today=$(date "+%b %e")
-    ls -lt $COLOR_ALWAYS $@ | grep " $today "
+    ls -lt $COLOR_ALWAYS "$@" | grep " $today "
 }
 
 _lls() {
-    ls -l $COLOR_ALWAYS $@ | grep -v ^d | sort -nr --key=5
+    ls -l $COLOR_ALWAYS "$@" | grep -v ^d | sort -nr --key=5
 }
 
 _lwh() {
-    exa --git -s date -r --colour=always -lg $@ | head -20
+    exa --git -s date -r --colour=always -lg "$@" | head -20
 }
 
 _lwt() {
     today=$(date "+%e %b")
-    exa --git -s date -r --colour=always -lg $@ | grep "$today "
+    exa --git -s date -r --colour=always -lg "$@" | grep "$today "
 }
 
 # From various distros

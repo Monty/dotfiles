@@ -24,7 +24,7 @@ if type -p shfmt >/dev/null; then
     alias shff='shfmt -f'         # Recursively find all shell files and print the paths
 fi
 
-# shellcheck shortcuts
+# shortcuts for shellcheck
 alias sck='shellcheck $@'
 alias scko='shellcheck -o all -e SC2250 $@'
 alias sckf='shellcheck -x -P functions $@'
@@ -82,50 +82,50 @@ fi
 
 # Functions
 findf() { # Find file by name
-    find . -name $*
+    find . -name "$*"
 }
 
 finds() { # Find file by initial string in name
-    find . -name $*\*
+    find . -name "$*"\*
 }
 
 findw() { # Find words (case insensitive) in files - to check for capitalization typos
-    grep -h -o -E '\w+' $2 | sort -u | grep -i $1
+    grep -h -o -E '\w+' "$2" | sort -u | grep -i "$1"
 }
 
 _hgrt() {
-    fc -lI 1 -1 | egrep $@ | tail -20
+    fc -lI 1 -1 | grep -E "$@" | tail -20
 }
 
 _hgrz() {
-    fc -lLn 1 -1 | egrep $@ | sort -u
+    fc -lLn 1 -1 | grep -E "$@" | sort -u
 }
 
 _llh() {
-    ls -lt $@ | head -20
+    ls -lt "$@" | head -20
 }
 
 _lwh() {
-    exa --git -s date -r --colour=always -lg $@ | head -20
+    exa --git -s date -r --colour=always -lg "$@" | head -20
 }
 
 _llt() {
     today=$(date "+%b %e")
-    ls -lt $@ | grep " $today "
+    ls -lt "$@" | grep " $today "
 }
 
 _lwt() {
     today=$(date "+%e %b")
-    exa --git -s date -r --colour=always -lg $@ | grep "$today "
+    exa --git -s date -r --colour=always -lg "$@" | grep "$today "
 }
 
 _lls() {
-    ls -l $@ | grep -v ^d | sort -nr --key=5
+    ls -l "$@" | grep -v ^d | sort -nr --key=5
 }
 
 _radx() {
-    rualdi add $@
-    export $1=$(rualdi resolve $1)
+    rualdi add "$@"
+    export "$1"=$(rualdi resolve "$1")
 }
 
 # From various distros
