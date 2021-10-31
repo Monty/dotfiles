@@ -29,9 +29,6 @@ alias sck='shellcheck $@'
 alias scko='shellcheck -o all -e SC2250 $@'
 alias sckf='shellcheck -x -P functions $@'
 
-# If rualdi exists, create a command to both add a rualdi alias and export it
-[ -x ~/.cargo/bin/rualdi ] && alias radx='_radx'
-
 # TERM number of color settings
 alias xt-16='export TERM=xterm'
 alias xt-88='export TERM=xterm-88color'

@@ -79,9 +79,6 @@ if type -p broot >/dev/null; then
     source "$HOME"/.config/broot/launcher/bash/br
 fi
 
-# rualdi "rad" setup
-[ -x ~/.cargo/bin/rualdi ] && eval "$(rualdi init zsh)"
-
 # It is sometimes useful to be able to "reset" your path to a clean state.
 export SAVED_PATH=${PATH}
 
