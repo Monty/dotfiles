@@ -61,6 +61,7 @@ for each in \
     $HOME/go/bin \
     $HOME/.cargo/bin \
     $HOME/.local/bin \
+    $HOME/Library/Python/3.8/bin \
     /usr/local/git/bin \
     /usr/X11/bin; do
     if [ -d "$each" ]; then
