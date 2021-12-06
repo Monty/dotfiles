@@ -16,4 +16,4 @@ vim/bundle/*
 vim/spell/*
 
 ## iTerm2
-com.googlecode.iterm2.plist
+config.dir/iTerm2/*
