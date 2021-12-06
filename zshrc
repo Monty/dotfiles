@@ -33,7 +33,7 @@ export GPG_TTY
 
 # For IMDb_xref
 export FULLCAST=50
-export NO_MENUS="yes"
+# export NO_MENUS="yes"
 
 # Some useful environment variables
 export EDITOR=/usr/bin/vim
