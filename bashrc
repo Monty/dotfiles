@@ -92,8 +92,10 @@ export SAVED_PATH=${PATH}
 # Setup other HOMES
 case "$PLATFORM" in
 Darwin-arm64 | Darwin-x86_64 | Darwin-i386)
-    JAVA_HOME=$(/usr/libexec/java_home)
-    export JAVA_HOME
+    if /usr/libexec/java_home >/dev/null 2>/dev/null; then
+        JAVA_HOME=$(/usr/libexec/java_home)
+        export JAVA_HOME
+    fi
     ;;
 Linux-x86_64)
     JAVA_HOME=/usr/lib/jvm/default-java
