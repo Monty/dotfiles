@@ -62,6 +62,7 @@ for each in \
     $HOME/.cargo/bin \
     $HOME/.local/bin \
     $HOME/Library/Python/3.8/bin \
+    $HOME/.gem/ruby/2.6.0/bin \
     /usr/local/git/bin \
     /usr/X11/bin; do
     if [ -d "$each" ]; then
