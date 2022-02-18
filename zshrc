@@ -81,9 +81,6 @@ if type -p broot >/dev/null; then
     source "$HOME"/.config/broot/launcher/bash/br
 fi
 
-# frum ruby version manager setup
-eval "$(frum init)"
-
 # It is sometimes useful to be able to "reset" your path to a clean state.
 export SAVED_PATH=${PATH}
 
