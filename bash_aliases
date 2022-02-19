@@ -90,9 +90,11 @@ fi
 # Must use == not =~ to account for Bash 2.x
 if [[ "$(uname -n)" == *[Ll]ocal ]]; then
     alias ssh-ir='ssh monty@irene.local $@'
+    alias ssh-kvm='ssh monty@Kubuntu-VM.local $@'
     alias ssh-ma='ssh junew@marleau.local $@'
     alias ssh-moj='ssh junew@monarch.local $@'
     alias ssh-mom='ssh monty@monarch.local $@'
+    alias ssh-mvm='ssh monty@MojaveVM.local $@'
     alias ssh-my='ssh monty@mycroft.local $@'
 fi
 
