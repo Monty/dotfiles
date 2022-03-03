@@ -20,6 +20,7 @@ update-notifier-npm.json
 ~/.vim/bundle/*
 
 # Used to hide testing or experiments
+hidden
 notgit
 
 # shellcheck 
