@@ -131,7 +131,6 @@ if [[ "$(uname -n)" == *[Ll]ocal ]]; then
     alias ssh-irm='ssh irene.local $@'
     alias ssh-moj='ssh junew@monarch.local $@'
     alias ssh-mom='ssh monty@monarch.local $@'
-    alias ssh-my='ssh mycroft.local $@'
 fi
 
 # Functions
