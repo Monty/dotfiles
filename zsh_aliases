@@ -63,7 +63,8 @@ fi
 # p m g -- see id_rsa
 #
 if [[ "$(uname -n)" == *[Ll]ocal ]]; then
-    alias ssh-irm='ssh irene.local $@'
+    ssh-ho='ssh monty@holmes.local $@'
+    ssh-ir='ssh monty@irene.local $@'
 fi
 
 # Functions
