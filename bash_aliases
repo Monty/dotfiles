@@ -83,7 +83,6 @@ fi
 # Must use == not =~ to account for Bash 2.x
 if [[ "$(uname -n)" == *[Ll]ocal ]]; then
     alias ssh-irm='ssh irene.local $@'
-    alias ssh-my='ssh mycroft.local $@'
 fi
 
 # Functions

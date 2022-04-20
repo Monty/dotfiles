@@ -64,7 +64,6 @@ fi
 #
 if [[ "$(uname -n)" == *[Ll]ocal ]]; then
     alias ssh-irm='ssh irene.local $@'
-    alias ssh-my='ssh mycroft.local $@'
 fi
 
 # Functions
