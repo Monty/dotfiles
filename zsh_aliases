@@ -117,11 +117,6 @@ _lls() {
     ls -l "$@" | grep -v ^d | sort -nr --key=5
 }
 
-_radx() {
-    rualdi add "$@"
-    export "$1"=$(rualdi resolve "$1")
-}
-
 # From various distros
 colors() {
     local fgc bgc vals seq0
