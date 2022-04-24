@@ -22,12 +22,12 @@ if type -p shfmt >/dev/null; then
 fi
 
 # Prompts
-alias ps1-T='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\! \$${NO_COLOR} "' # Time & history number
-alias ps1-t='export PS1="${TBAR}${BE_COLOR}\t \u@\h: \$${NO_COLOR} "'   # Time without history number
-alias ps1-l='export PS1="${TBAR}${BE_COLOR}\u@\h:\w \$${NO_COLOR} "'    # Long path
-alias ps1-s='export PS1="${TBAR}${BE_COLOR}\u@\h:\W \$${NO_COLOR} "'    # Short path
-alias ps1-n='export PS1="${TBAR}${BE_COLOR}\u@\h: \$${NO_COLOR} "'      # No path
-alias ps1-0='export PS1="${TBAR}${BE_COLOR}\u: \$${NO_COLOR} "'         # No host
+alias ps1-T='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\! \$${NO_COLOR} "'    # Time & history number
+alias ps1-t='export PS1="${TBAR}${BE_COLOR}\t \u@\h: \$${NO_COLOR} "'      # Time without history number
+alias ps1-l='export PS1="${TBAR}${BE_COLOR}\u@\h.local:\w \$${NO_COLOR} "' # Long path
+alias ps1-s='export PS1="${TBAR}${BE_COLOR}\u@\h:\W \$${NO_COLOR} "'       # Short path
+alias ps1-n='export PS1="${TBAR}${BE_COLOR}\u@\h: \$${NO_COLOR} "'         # No path
+alias ps1-0='export PS1="${TBAR}${BE_COLOR}\u: \$${NO_COLOR} "'            # No host
 # git prompt
 alias ps1-g='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${GPROMPT}${BE_COLOR}\$${NO_COLOR} "'
 
