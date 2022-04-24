@@ -150,7 +150,7 @@ ps1-g() { # Reset to standard git prompt
     PS1='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
 }
 ps1-l() { # Long path
-    PS1='%B${prompt_color}%n@%m:%~ $%f %b'
+    PS1='%B${prompt_color}%n@%m.local:%~ $%f %b'
 }
 ps1-s() { # Short path
     PS1='%B${prompt_color}%n@%m:%1~ $%f %b'
