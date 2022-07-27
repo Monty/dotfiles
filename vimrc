@@ -12,7 +12,7 @@ if has('gui_running')
     colorscheme asu1dark
 else
     set background=dark
-    colorscheme delek
+    colorscheme default
 endif
 
 " Load matchit (% to bounce from do to end, etc.)
