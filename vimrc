@@ -9,10 +9,10 @@ filetype plugin indent on " Enable filetype-specific indenting and plugins
 
 if has('gui_running')
     set background=light
-    colorscheme asu1dark
+    colorscheme murphy
 else
     set background=dark
-    colorscheme default
+    colorscheme torte
 endif
 
 " Load matchit (% to bounce from do to end, etc.)
