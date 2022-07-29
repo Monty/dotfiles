@@ -7,11 +7,10 @@ set smartcase             " Case sensitive when uc present
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
 
-if has('gui_running')
-    set background=light
+" Use different colorscheme for SSH vs local
+if !empty($SSH_TTY)
     colorscheme murphy
 else
-    set background=dark
     colorscheme torte
 endif
 
