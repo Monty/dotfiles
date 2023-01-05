@@ -6,6 +6,7 @@ set ignorecase            " Case-insensitive search
 set smartcase             " Case sensitive when uc present
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
+set re=2                  " Fix hang when editing typescript files
 
 " Delete comment character when joining commented lines
 if v:version > 703 || v:version == 703 && has("patch541")
