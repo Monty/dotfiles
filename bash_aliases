@@ -23,6 +23,10 @@ if type -p shfmt >/dev/null; then
     alias shfl='shfmt -i 4 -s -l'
 fi
 
+# shortcuts for prettier-eslint
+alias pel='prettier-eslint --list-different'
+alias pew='prettier-eslint --write'
+
 # shortcuts for shellcheck
 alias sck='shellcheck $@'
 alias scko='shellcheck -o all -e SC2250 $@'
