@@ -28,6 +28,11 @@ fi
 alias pel='prettier-eslint --list-different'
 alias pew='prettier-eslint --write'
 
+# shortcuts for rg
+alias rgn='rg -N'
+alias rgp='rg --sort path'
+alias rgpn='rg -N --sort path'
+
 # shortcuts for shellcheck
 alias sck='shellcheck $@'
 alias scko='shellcheck -o all -e SC2250 $@'
