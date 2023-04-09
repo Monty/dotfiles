@@ -14,6 +14,7 @@ alias hgr='history | grep -E'
 alias hgrt='_hgrt'
 alias ht='history | cut -c 8- | tail'
 alias more='less'
+alias nv='nvim'
 alias psx='ps -ef | head -1; ps -ef | grep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 if type -p shfmt >/dev/null; then

@@ -14,6 +14,7 @@ alias hgrt='_hgrt' # Search recent history, return last 20 matches
 alias hgrz='_hgrz' # Search all history, sort -u matches
 alias ht='fc -l'   # Tail history
 alias more='less'
+alias nv='nvim'
 alias od="od -ab"
 alias psx='ps -ef | head -1; ps -ef | egrep'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
