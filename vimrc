@@ -6,7 +6,7 @@ set ignorecase            " Case-insensitive search
 set smartcase             " Case sensitive when uc present
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
-set re=2                  " Fix hang when editing typescript files
+set re=2                  " Fix hang when editing TypeScript files
 
 " Delete comment character when joining commented lines
 if v:version > 703 || v:version == 703 && has("patch541")
@@ -26,10 +26,10 @@ runtime! macros/matchit.vim
 augroup myfiletypes
     " Clear old autocmds in group
     autocmd!
-    " autoindent Ruby and Javascript with two spaces, always expand tabs
+    " autoindent Ruby and JavaScript with two spaces, always expand tabs
     autocmd FileType ruby,eruby,yaml,javascript,css,typescript set ai sw=2 sts=2 et
-    " prettyprint javascript and typescript files with prettier-eslint
-    autocmd FileType javascript,typescript set formatprg=prettier-eslint\ --stdin
+    " prettyprint JavaScript, TypeScript, css, html, md files with prettier-eslint
+    autocmd FileType javascript,typescript,css,html,md set formatprg=prettier-eslint\ --stdin
     " set filetype of .function files for IMDb_xref
     autocmd BufRead,BufNewFile *.function set filetype=sh
     " set spellcheck in .md file

@@ -19,20 +19,25 @@ endif
 augroup myfiletypes
     " Clear old autocmds in group
     autocmd!
-    " autoindent Ruby and Javascript with two spaces, always expand tabs
-    autocmd FileType ruby,eruby,yaml,javascript,css,typescript set ai sw=2 sts=2 et
-    " prettyprint javascript and typescript files with prettier-eslint
-    autocmd FileType javascript,typescript set formatprg=prettier-eslint\ --stdin
+
+    " prettyprint JavaScript, TypeScript, css, html, md files with prettier-eslint
+    autocmd FileType javascript,typescript,css,html,md set formatprg=prettier-eslint\ --stdin
+
+    " autoindent Ruby and JavaScript with two spaces, always expand tabs
+    autocmd FileType ruby,eruby,yaml,javascript,typescript,css set ai sw=2 sts=2 et
+
+    " copy/preserve indent in go, never expand tabs
+    autocmd BufNewFile,BufReadPost *.go set noet ci pi sts=0 sw=4 ts=4
+
+    " Keep tabs in Makefiles and csv files
+    autocmd BufNewFile,BufReadPost Makefile,*.csv set noexpandtab
+
+    " autoindent Topaz with four spaces, always expand tabs
+    autocmd BufNewFile,BufReadPost *.topaz set ai sw=4 sts=8 et
+
     " set filetype of .function files for IMDb_xref
     autocmd BufRead,BufNewFile *.function set filetype=sh
-    " set spellcheck in .md file
-    autocmd BufRead,BufNewFile *.md setlocal filetype=markdown spell incsearch
-    " copy/preserve indent in go, never expand tabs
-    au BufNewFile,BufReadPost *.go set noet ci pi sts=0 sw=4 ts=4
-    " autoindent Topaz with four spaces, always expand tabs
-    au BufNewFile,BufReadPost *.topaz set ai sw=4 sts=8 et
-    " Keep tabs in Makefiles
-    au BufNewFile,BufReadPost Makefile,*.csv set noexpandtab
+
 augroup END
 
 let g:shfmt_switches = ['-i 4']
