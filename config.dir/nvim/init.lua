@@ -13,6 +13,8 @@ set formatoptions+=j
 if !empty($SSH_TTY)
     colorscheme murphy
 else
+    set termguicolors
+    set background=dark
     colorscheme torte
 endif
 
