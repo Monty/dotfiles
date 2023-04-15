@@ -11,11 +11,13 @@ set formatoptions+=j
 
 " Use different colorscheme for SSH vs local
 if !empty($SSH_TTY)
+    set termguicolors
+    set background=dark
     colorscheme murphy
 else
     set termguicolors
     set background=dark
-    colorscheme torte
+    colorscheme mbwt
 endif
 
 augroup myfiletypes
