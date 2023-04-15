@@ -74,6 +74,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["lush.nvim"] = {
+    loaded = true,
+    path = "/Users/monty/.local/share/nvim/site/pack/packer/start/lush.nvim",
+    url = "https://github.com/rktjmp/lush.nvim"
+  },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
     path = "/Users/monty/.local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
@@ -83,11 +88,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/monty/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
-  },
-  ["nvim-base16"] = {
-    loaded = true,
-    path = "/Users/monty/.local/share/nvim/site/pack/packer/start/nvim-base16",
-    url = "https://github.com/RRethy/nvim-base16"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -99,10 +99,10 @@ _G.packer_plugins = {
     path = "/Users/monty/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
-  ["themer.lua"] = {
+  ["zenbones.nvim"] = {
     loaded = true,
-    path = "/Users/monty/.local/share/nvim/site/pack/packer/start/themer.lua",
-    url = "https://github.com/themercorp/themer.lua"
+    path = "/Users/monty/.local/share/nvim/site/pack/packer/start/zenbones.nvim",
+    url = "https://github.com/mcchrish/zenbones.nvim"
   }
 }
 
