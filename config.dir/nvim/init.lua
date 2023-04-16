@@ -17,7 +17,7 @@ if !empty($SSH_TTY)
 else
     set termguicolors
     set background=dark
-    colorscheme mbwt
+    colorscheme monty_torte
 endif
 
 augroup myfiletypes
