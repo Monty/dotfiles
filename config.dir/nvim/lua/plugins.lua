@@ -17,5 +17,19 @@ return require('packer').startup(function(use)
                 require('colorizer').setup()
             end,
         }
-        use 'lewis6991/gitsigns.nvim'
+        use {
+            'lewis6991/gitsigns.nvim',
+            config = function()
+                require('gitsigns').setup {
+                    signs = {
+                        add          = { text = '+' },
+                        change       = { text = '>' },
+                        delete       = { text = '-' },
+                        topdelete    = { text = '^' },
+                        changedelete = { text = '<' },
+                        untracked    = { text = '┆' },
+                    }
+                }
+            end
+        }
 end)
