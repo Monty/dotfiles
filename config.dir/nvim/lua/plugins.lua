@@ -24,9 +24,9 @@ return require('packer').startup(function(use)
                     signs = {
                         add          = { text = '+' },
                         change       = { text = '>' },
-                        delete       = { text = '-' },
-                        topdelete    = { text = '^' },
-                        changedelete = { text = '<' },
+                        delete       = { show_count },
+                        topdelete    = { show_count },
+                        changedelete = { show_count },
                         untracked    = { text = '┆' },
                     }
                 }
