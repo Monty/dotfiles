@@ -9,6 +9,7 @@ return require('packer').startup(function(use)
             requires = 'rktjmp/lush.nvim'
         }
         use 'RRethy/nvim-base16'
+        use 'wuelnerdotexe/vim-enfocado'
         use 'themercorp/themer.lua'
         use {
             'norcalli/nvim-colorizer.lua',

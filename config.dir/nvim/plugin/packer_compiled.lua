@@ -124,6 +124,11 @@ _G.packer_plugins = {
     path = "/Users/monty/.local/share/nvim/site/pack/packer/start/themer.lua",
     url = "https://github.com/themercorp/themer.lua"
   },
+  ["vim-enfocado"] = {
+    loaded = true,
+    path = "/Users/monty/.local/share/nvim/site/pack/packer/start/vim-enfocado",
+    url = "https://github.com/wuelnerdotexe/vim-enfocado"
+  },
   ["zenbones.nvim"] = {
     loaded = true,
     path = "/Users/monty/.local/share/nvim/site/pack/packer/start/zenbones.nvim",
