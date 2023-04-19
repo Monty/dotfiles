@@ -16,7 +16,7 @@ return {
     lazy = false,
     priority = 1000,
     opts = {
-      style = "storm",
+      style = "moon",
       transparent = false,
       styles = {
         sidebars = "transparent",
