@@ -35,12 +35,14 @@ return {
         },
         delete = {
           hl = "GitSignsDelete",
+          show_count = true,
           text = "-",
           numhl = "GitSignsDeleteNr",
           linehl = "GitSignsDeleteLn",
         },
         topdelete = {
           hl = "GitSignsDelete",
+          show_count = true,
           text = "^",
           numhl = "GitSignsDeleteNr",
           linehl = "GitSignsDeleteLn",
