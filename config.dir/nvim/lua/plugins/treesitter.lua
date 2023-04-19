@@ -31,6 +31,7 @@ return {
       ensure_installed = {
         "bash",
         "dockerfile",
+        "help",
         "html",
         "lua",
         "luadoc",
@@ -40,6 +41,7 @@ return {
         "org",
         "query",
         "regex",
+        "latex",
         "vim",
         "yaml",
       },
