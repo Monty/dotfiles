@@ -30,6 +30,7 @@ return {
     end,
   },
   { "catppuccin/nvim", lazy = false, enabled = false, name = "catppuccin" },
+  { "wuelnerdotexe/vim-enfocado", lazy = false, name = "enfocado" },
   { "rebelot/kanagawa.nvim", lazy = false, name = "kanagawa" },
   {
     "ellisonleao/gruvbox.nvim",
