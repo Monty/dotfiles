@@ -13,11 +13,19 @@ if v:version > 703 || v:version == 703 && has("patch541")
     set formatoptions+=j
 endif
 
+set termguicolors
+let g:tokyonight_disable_italic_comment = 1
+
+let g:airline_section_c = '%f%m'
+let g:airline_section_x = '%y'
+let g:airline_section_y = ''
+let g:airline_section_z = '%l/%L:%c'
+
 " Use different colorscheme for SSH vs local
 if !empty($SSH_TTY)
-    colorscheme murphy
+    colorscheme darkblue
 else
-    colorscheme torte
+    colorscheme monty_torte
 endif
 
 " Load matchit (% to bounce from do to end, etc.)
