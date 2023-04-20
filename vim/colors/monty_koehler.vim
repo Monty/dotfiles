@@ -10,7 +10,7 @@
 set background=dark
 
 hi clear
-let g:colors_name = 'koehler'
+let g:colors_name = 'monty_koehler'
 
 let s:t_Co = &t_Co
 

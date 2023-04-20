@@ -11,7 +11,7 @@
 set background=dark
 
 hi clear
-let g:colors_name = 'torte'
+let g:colors_name = 'monty_torte'
 
 let s:t_Co = &t_Co
 
