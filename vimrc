@@ -14,7 +14,19 @@ if v:version > 703 || v:version == 703 && has("patch541")
 endif
 
 set termguicolors
+set laststatus=2
+
 let g:tokyonight_disable_italic_comment = 1
+
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name'
+      \ },
+      \ }
 
 let g:airline_section_c = '%f%m'
 let g:airline_section_x = '%y'
