@@ -66,10 +66,11 @@ for each in \
     /usr/local/go/bin \
     $HOME/go/bin \
     $HOME/.cargo/bin \
+    $HOME/Projects/nvim-stable-macos/bin \
+    /Applications/kitty.app/Contents/MacOS \
     $HOME/.local/bin \
     $HOME/Library/Python/3.8/bin \
     $HOME/.gem/ruby/2.7.0/bin \
-    $HOME/Projects/nvim-stable-macos/bin \
     $HOME/Projects/dart-sass \
     /usr/local/git/bin \
     /usr/X11/bin; do
