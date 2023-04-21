@@ -4,19 +4,16 @@ call pathogen#helptags()
 set nocompatible          " We're running Vim, not Vi!
 set ignorecase            " Case-insensitive search
 set smartcase             " Case sensitive when uc present
+set termguicolors         " Use more than 256 colors
 syntax on                 " Enable syntax highlighting
 filetype plugin indent on " Enable filetype-specific indenting and plugins
 set re=2                  " Fix hang when editing TypeScript files
 
 " Delete comment character when joining commented lines
-if v:version > 703 || v:version == 703 && has("patch541")
-    set formatoptions+=j
-endif
+set formatoptions+=j
 
-set termguicolors
+" statusline modifications
 set laststatus=2
-
-let g:tokyonight_disable_italic_comment = 1
 
 let g:lightline = {
       \ 'active': {
@@ -32,6 +29,12 @@ let g:airline_section_c = '%f%m'
 let g:airline_section_x = '%y'
 let g:airline_section_y = ''
 let g:airline_section_z = '%l/%L:%c'
+
+let g:signify_sign_change = '>' 
+let g:signify_sign_delete_first_line = '^' 
+
+" colorscheme modifications
+let g:tokyonight_disable_italic_comment = 1
 
 " Use different colorscheme for SSH vs local
 if !empty($SSH_TTY)
@@ -79,6 +82,7 @@ set splitbelow
 set splitright
 set tabstop=4
 set textwidth=80
+set updatetime=100
 
 setlocal spelllang=en_us
 setlocal spellfile=~/.vim/spell/en.utf-8.add
