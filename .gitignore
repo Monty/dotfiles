@@ -17,3 +17,7 @@ vim/spell/*
 
 ## iTerm2
 config.dir/iTerm2/*
+
+## Kitty
+current-theme.conf
+themes.conf
