@@ -40,7 +40,7 @@ alias scko='shellcheck -o all -e SC2250 $@'
 alias sckf='shellcheck -x -P functions $@'
 
 # Kitty commands
-alias ktheme='kitty +kitten themes --config-file-name themes.conf --reload-in parent'
+alias ktheme='kitty +kitten themes --config-file-name themes.conf parent'
 
 # TERM number of color settings
 alias xt-16='export TERM=xterm'
