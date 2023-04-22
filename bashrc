@@ -46,7 +46,6 @@ export EDITOR=/usr/bin/vim
 export PAGER=less # strongly advised for backwards scrolling
 export LESS=seMi
 export CLICOLOR=1
-export TERM=xterm-256color
 # Make exa colors match ls colors as much as possible
 LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41"
 LS_COLORS+=":sg=30;46:tw=30;42:ow=30;43"
