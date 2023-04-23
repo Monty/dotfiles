@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 function tryTheme {
     read -r -p "Try $1? [Y/n] " YESNO
     if [ "$YESNO" = "n" ]; then
