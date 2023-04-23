@@ -53,7 +53,7 @@ alias psi-0='export PROMPT_COMMAND='\''echo -ne "\033]0;\007"'\'''
 alias psi-d='export PROMPT_COMMAND='\''echo -ne "\033]0;${PWD##*/}\007"'\'''
 
 # Kitty commands
-alias ktheme='kitty +kitten themes --config-file-name themes.conf parent'
+alias ktheme='kitty +kitten themes --config-file-name themes.conf'
 
 # TERM number of color settings
 alias xt-16='export TERM=xterm'
