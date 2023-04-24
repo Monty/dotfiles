@@ -20,4 +20,5 @@ config.dir/iTerm2/*
 
 ## Kitty
 current-theme.conf
+fonts.conf
 themes.conf
