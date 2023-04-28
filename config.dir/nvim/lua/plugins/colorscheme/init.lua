@@ -1,17 +1,5 @@
 return {
   {
-    "folke/styler.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("styler").setup {
-        themes = {
-          markdown = { colorscheme = "gruvbox" },
-          help = { colorscheme = "gruvbox" },
-        },
-      }
-    end,
-  },
-  {
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
