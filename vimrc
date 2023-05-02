@@ -38,7 +38,7 @@ let g:tokyonight_disable_italic_comment = 1
 
 " Use different colorscheme for SSH vs local
 if !empty($SSH_TTY)
-    colorscheme evening
+    colorscheme darkblue
 else
     colorscheme monty_torte
 endif
