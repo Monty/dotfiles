@@ -77,17 +77,17 @@ alias lsa='ls -A $COLOR_AUTO'
 # with special chars to indicate file type
 alias l='ls -CF'
 alias la='ls -AF'
-# If exa is installed
-if type -p exa >/dev/null; then
-    alias ll='exa --git -s Name --colour=always -lg'
-    alias lla='exa --git -s Name --colour=always -lga'
+# If eza is installed
+if type -p eza >/dev/null; then
+    alias ll='eza --git -s Name --colour=always -lg'
+    alias lla='eza --git -s Name --colour=always -lga'
     alias llh='_lwh'                                     # Most recent 20
     alias llt='_lwt'                                     # Today only
-    alias llr='exa --git -s Name --colour=always -lgR'   # Recurse
-    alias lls='exa --git -s size -r --colour=always -lg' # size
+    alias llr='eza --git -s Name --colour=always -lgR'   # Recurse
+    alias lls='eza --git -s size -r --colour=always -lg' # size
     # Dirs first, then by extension - both without & with gitignored files
-    alias lw='exa --git --git-ignore --group-directories-first -s ext --colour=always -lg'
-    alias lwg='exa --git --group-directories-first -s ext --colour=always -lg'
+    alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -lg'
+    alias lwg='eza --git --group-directories-first -s ext --colour=always -lg'
 else
     alias ll='ls -l $COLOR_AUTO'
     alias lla='ls -lA $COLOR_AUTO'
@@ -144,12 +144,12 @@ _lls() {
 }
 
 _lwh() {
-    exa --git -s date -r --colour=always -lg "$@" | head -20
+    eza --git -s date -r --colour=always -lg "$@" | head -20
 }
 
 _lwt() {
     today=$(date "+%e %b")
-    exa --git -s date -r --colour=always -lg "$@" | grep "$today "
+    eza --git -s date -r --colour=always -lg "$@" | grep "$today "
 }
 
 # From various distros
