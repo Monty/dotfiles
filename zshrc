@@ -74,7 +74,7 @@ for each in \
     /usr/X11/bin; do
     if [ -d "$each" ]; then
         # echo "### Found $each"
-        if ! echo "$PATH" | grep -E -s "(^|:)$each($|:)" >/dev/null; then
+        if ! echo ":$PATH:" | grep -s "$each" >/dev/null; then
             PATH=${PATH}:$each
         fi
     fi
