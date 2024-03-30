@@ -2,28 +2,28 @@
 # echo "### .all_aliases at `date`"
 
 # Shortcut commands
-alias catc='grep -h -e "^[[:space:]]*#" -e ^\;'
-alias catn='grep -hv -e ^$ -e "^[[:space:]]*#" -e ^\;'
+alias catc='rg -IN "^[[:space:]]*#|^[[:space:]]*//"'
+alias catn='rg -INv "^[[:space:]]*#|^[[:space:]]*//"'
 alias cls='clear'
 alias cpr='cp -Rp'
 alias df='df -Hl'
 alias du='du -sh'
 alias hexd="od -a -t x1"
 # Search recent history
-alias hgr='fc -lI 1 -1 | egrep'
+alias hgr='fc -lI 1 -1 | rg'
 # Search recent history, return last 20 matches
 hgrt() {
-    fc -lI 1 -1 | grep -E "$@" | tail -20
+    fc -lI 1 -1 | rg "$@" | tail -20
 }
 # Search all history, sort -u matches
 hgrz() {
-    fc -lLn 1 -1 | grep -E "$@" | sort -u
+    fc -lLn 1 -1 | rg "$@" | sort -u
 }
 alias ht='fc -l' # Tail history
 alias more='less'
 alias nv='nvim'
 alias od="od -ab"
-alias psx='ps -ef | head -1; ps -ef | egrep'
+alias psx='ps -ef | head -1; ps -ef | rg'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 if type -p shfmt >/dev/null; then
     alias shf='shfmt -i 4 -s'     # Default shell format
@@ -88,7 +88,7 @@ if type -p eza >/dev/null; then
     # Today only
     llt() {
         today=$(date "+%e %b")
-        eza --git -s date -r --colour=always -lg "$@" | grep "$today "
+        eza --git -s date -r --colour=always -lg "$@" | rg "$today "
     }
     alias llr='eza --git -s Name --colour=always -lgR'   # Recurse
     alias lls='eza --git -s size -r --colour=always -lg' # size
@@ -105,13 +105,13 @@ else
     # Today only
     llt() {
         today=$(date "+%b %e")
-        ls -lt "$@" | grep " $today "
+        ls -lt "$@" | rg " $today "
     }
 
     alias llr='ls -lR $COLOR_AUTO'
     alias lls='_lls' # size
     lls() {
-        ls -l "$@" | grep -v ^d | sort -nr --key=5
+        ls -l "$@" | rg -v ^d | sort -nr --key=5
     }
 fi
 
