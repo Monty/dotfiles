@@ -8,7 +8,9 @@ alias cls='clear'
 alias cpr='cp -Rp'
 alias df='df -Hl'
 alias du='du -sh'
-alias hexd="od -a -t x1"
+# Dump in octal and hex
+alias hexd="od -t x1"
+alias hexdump="hexdump -C"
 # Search recent history
 alias hgr='fc -lI 1 -1 | rg'
 # Search recent history, return last 20 matches
