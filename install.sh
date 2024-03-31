@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
 
 DOTDIR="${HOME}/dotfiles"
-HOMEDIR="${HOME}"
-printf "==> Setting up links to \n${DOTDIR} in \n${HOMEDIR}\n\n"
-cd ${HOMEDIR}
+printf "==> Setting up links to ${DOTDIR} \n    in ${HOME}\n\n"
+cd ${HOME} || exit
+
+printf "==> Processing aliases\n"
+rm -f .bash_aliases .zsh_aliases
+printf "    Linking to .bash_aliases\n"
+ln -s ${DOTDIR}/aliases .bash_aliases
+printf "    Linking to .zsh_aliases\n"
+ln -s ${DOTDIR}/aliases .zsh_aliases
 
 for file in $(ls ${DOTDIR}); do
-    if [[ ${file} =~ \.sh$ ]] || [[ ${file} =~ \.txt$ ]] ||
-        [[ ${file} =~ \.rdoc$ ]] || [[ ${file} =~ \.dir$ ]]; then
+    if [[ ${file} =~ aliases$ ]] ||
+        [[ ${file} =~ \. ]]; then
         printf "==> Skipping ${file}\n"
     else
-        printf "==> Processing ${file}\n"
-        rm -rf .${file}
+        printf "==> Linking ${file}\n"
+        rm -f .${file}
         ln -s ${DOTDIR}/${file} .${file}
     fi
 done
@@ -19,13 +25,13 @@ done
 echo ""
 
 for LINKDIR in $(ls -d ${DOTDIR}/*.dir); do
-    TARGETDIR="${HOMEDIR}/.$(basename ${LINKDIR} .dir)"
+    TARGETDIR="${HOME}/.$(basename ${LINKDIR} .dir)"
     mkdir -p ${TARGETDIR}
-    printf "==> Setting up links to \n${LINKDIR} in \n${TARGETDIR}\n"
+    printf "==> Setting up links to ${LINKDIR} \n    in ${TARGETDIR}\n"
     cd ${TARGETDIR}
     for file in $(ls ${LINKDIR}); do
-        printf "==> Processing ${file}\n"
-        rm -rf ${file}
+        printf "==> Linking ${file}\n"
+        rm -f ${file}
         ln -s ${LINKDIR}/${file} ${file}
     done
 done
