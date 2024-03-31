@@ -31,7 +31,7 @@ if type -p shfmt >/dev/null; then
     alias shf='shfmt -i 4 -s'     # Default shell format
     alias shfl='shfmt -i 4 -s -l' # List files whose formatting would change
     alias shfd='shfmt -d -i 4 -s' # Shell format with diff if file would change
-    alias shff='shfmt -f'         # Recursively find all shell files and print the paths
+    alias shff='shfmt -f'         # Recursively find shell files and print paths
 fi
 
 # shortcuts for prettier-eslint
