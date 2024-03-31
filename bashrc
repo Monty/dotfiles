@@ -152,8 +152,8 @@ fi
 export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${RPROMPT}${GPROMPT}${BE_COLOR}\$${NO_COLOR} "
 
 # Define aliases
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ~/.all_aliases ]; then
+    . ~/.all_aliases
 fi
 
 # end of .bashrc

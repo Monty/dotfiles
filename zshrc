@@ -152,8 +152,8 @@ parse_git_branch() {
 PROMPT='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
 
 # Define aliases
-if [ -f ~/.zsh_aliases ]; then
-    . ~/.zsh_aliases
+if [ -f ~/.all_aliases ]; then
+    . ~/.all_aliases
 fi
 
 # end of .zshrc
