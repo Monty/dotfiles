@@ -119,11 +119,11 @@ setTermTitle() {
 stt_both() { setTermTitle 0 $@; }
 stt_tab() { setTermTitle 1 $@; }
 stt_title() { setTermTitle 2 $@; }
-
+#
 # Set iTerm window and tab titles
 precmd() {
-    stt_title "$USER"@"${HOST%.Local}" "${PWD/#$HOME/'~'}"
-    local TILDE_HOME=${PWD/#$HOME/'~'}
+    stt_title "$USER"@"${HOST%.Local}" "${PWD/#$HOME/~}"
+    local TILDE_HOME=${PWD/#$HOME/~}
     stt_tab "$USER"@"${HOST%.Local}" "${TILDE_HOME##*/}"
 }
 
