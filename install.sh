@@ -12,7 +12,7 @@ ln -s "${DOTDIR}"/aliases .bash_aliases
 printf "    Linking to .zsh_aliases\n"
 ln -s "${DOTDIR}"/aliases .zsh_aliases
 
-for file in $(ls "${DOTDIR}"); do
+for file in $(eza "${DOTDIR}"); do
     if [[ ${file} =~ aliases$ ]] ||               # Already proceesed above
         [[ ${file} =~ \. ]]; then                 # Skip files with . in filename
         printf "==> Skipping %s\n" "${file}"
@@ -27,13 +27,13 @@ echo ""
 
 # By convention.link all files in any directories that end in .dir
 # But strip the .dir first so .config links to dotfiles/config.dir
-for LINKDIR in $(ls -d "${DOTDIR}"/*.dir); do
+for LINKDIR in $(eza -d "${DOTDIR}"/*.dir); do
     TARGETDIR="${HOME}/.${LINKDIR##*/}"
     TARGETDIR="${TARGETDIR%.dir}"
     mkdir -p "${TARGETDIR}"
     printf "# Setting up links to %s in %s\n" "${LINKDIR}" "${TARGETDIR}"
     cd "${TARGETDIR}" || exit
-    for file in $(ls "${LINKDIR}"); do
+    for file in $(eza "${LINKDIR}"); do
         printf "==> Linking %s\n" "${file}"
         rm -f "${file}"
         ln -s "${LINKDIR}"/"${file}" "${file}"
