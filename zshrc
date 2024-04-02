@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+#
 # ~/.zshrc: executed by zsh(1) for non-login shells.
 # echo "### .zshrc at `date`"
 
@@ -147,6 +149,7 @@ parse_git_branch() {
 PROMPT='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
 
 # Define aliases
+LOGIN_SHELL="zsh"  # Used to pick shell specific aliases
 if [ -f ~/.zsh_aliases ]; then
     . ~/.zsh_aliases
 fi

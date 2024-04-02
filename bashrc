@@ -147,6 +147,7 @@ fi
 export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${RPROMPT}${GPROMPT}${BE_COLOR}\$${NO_COLOR} "
 
 # Define aliases
+LOGIN_SHELL="bash"  # Used to pick shell specific aliases
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
