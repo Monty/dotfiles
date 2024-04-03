@@ -19,5 +19,4 @@ vim/spell/*
 config.dir/iTerm2/*
 
 ## Kitty
-current-theme.conf
 session*.conf
