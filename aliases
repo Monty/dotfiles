@@ -4,8 +4,7 @@
 # Shortcut commands
 alias bata="bat -A" # All invisible characters
 alias batd="bat -d" # Diffs only
-alias batp="bat -p" # Plain, i.e. no numbers
-alias batP="bat -P" # No pager
+alias batp="bat -pP" # Plain, i.e. no numbers, no pager
 alias catc='rg -IN "^[[:space:]]*#|^[[:space:]]*//"'
 alias catn='rg -INv "^[[:space:]]*#|^[[:space:]]*//"'
 alias cls='clear'
