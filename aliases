@@ -53,7 +53,7 @@ alias scko='shellcheck -o all -e SC2250 $@'
 alias sckf='shellcheck -x -P functions $@'
 
 # Prompts
-if [[ "$LOGIN_SHELL" == "bash" ]]; then
+if [[ $LOGIN_SHELL == "bash" ]]; then
     # In bash, use these aliases to change prompts
     # Time & history number
     alias ps1-T='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\! \$${NO_COLOR} "'
