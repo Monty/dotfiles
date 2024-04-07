@@ -9,6 +9,7 @@ alias catc='rg -IN "^[[:space:]]*#|^[[:space:]]*//"'
 alias catn='rg -INv "^[[:space:]]*#|^[[:space:]]*//"'
 alias cls='clear'
 alias cpr='cp -Rp'
+alias scpr='scp -rp'
 alias df='df -Hl'
 alias du='du -sh'
 # Dump in octal and hex
