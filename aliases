@@ -2,8 +2,8 @@
 # echo "### .all_aliases at `date`"
 
 # Shortcut commands
-alias bata="bat -A" # All invisible characters
-alias batd="bat -d" # Diffs only
+alias bata="bat -A"  # All invisible characters
+alias batd="bat -d"  # Diffs only
 alias batp="bat -pP" # Plain, i.e. no numbers, no pager
 alias catc='rg -IN "^[[:space:]]*#|^[[:space:]]*//"'
 alias catn='rg -INv "^[[:space:]]*#|^[[:space:]]*//"'
