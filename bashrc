@@ -144,7 +144,7 @@ fi
 if [[ $(who am i) =~ \([0-9\.]+\)$ ]]; then
     BE_COLOR="${YELLOW}"
 fi
-export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${RPROMPT}${GPROMPT}${BE_COLOR}\$${NO_COLOR} "
+export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${GPROMPT}${BE_COLOR}\$${NO_COLOR} "
 
 # Define aliases
 LOGIN_SHELL="bash"  # Used to pick shell specific aliases
