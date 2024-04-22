@@ -311,7 +311,7 @@ hi SpellLocal guisp=#7cac7c guifg=#9ccc9c  ctermfg=151 ctermbg=237
 
 if exists("g:zenburn_high_Contrast") && g:zenburn_high_Contrast
     " use new darker background
-    hi Normal        guifg=#dcdccc guibg=#1f1f1f           ctermfg=188 ctermbg=234
+    hi Normal        guifg=#dcdccc guibg=#050505           ctermfg=188 ctermbg=234
     hi Conceal       guifg=#8f8f8f guibg=#333333           ctermfg=246 ctermbg=235
     hi ColorColumn   guibg=#33332f                         ctermbg=235
     if exists("g:zenburn_disable_bold_CursorBars") && g:zenburn_disable_bold_CursorBars
@@ -531,7 +531,7 @@ endif
 " Terminal support for Vim 8+
 if version >= 802
     let g:terminal_ansi_colors = [
-        \ '#1f1f1f', '#cc9393',
+        \ '#050505', '#cc9393',
         \ '#5f7f5f', '#ffd7a7',
         \ '#8cb0d3', '#8f8f8f',
         \ '#71d3b4', '#dfe4cf',
