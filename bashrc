@@ -70,7 +70,7 @@ for each in \
     /usr/local/go/bin \
     $HOME/go/bin \
     $HOME/.cargo/bin \
-    $HOME/Projects/nvim-stable-macos/bin \
+    $HOME/Projects/nvim-macos/bin \
     /Applications/kitty.app/Contents/MacOS \
     $HOME/.local/bin \
     $HOME/Library/Python/3.8/bin \
