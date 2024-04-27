@@ -34,7 +34,6 @@ let g:signify_sign_change = '>'
 let g:signify_sign_delete_first_line = '^' 
 
 " colorscheme modifications
-let g:tokyonight_disable_italic_comment = 1
 let g:zenburn_high_Contrast = 1
 
 " Use different colorscheme for SSH vs local
