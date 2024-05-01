@@ -1,0 +1,11 @@
+# EditorConfig: https://EditorConfig.org
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.sh]
+# shfmt -i 4 -s
+indent_style = space
+indent_size = 4
