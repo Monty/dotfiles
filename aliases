@@ -49,8 +49,9 @@ alias rgpn='rg -N --sort path'
 
 # shortcuts for shellcheck
 alias sck='shellcheck $@'
+alias sckd='shellcheck -f diff $@'
 alias scko='shellcheck -o all -e SC2250 $@'
-alias sckf='shellcheck -x -P functions $@'
+alias sckf='shellcheck -x -P $XR/functions $@'
 
 # Prompts
 if [[ $LOGIN_SHELL == "bash" ]]; then
