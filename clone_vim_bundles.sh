@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DIRNAME=$(dirname "$0")
-cd $DIRNAME/vim/bundle
+cd "$DIRNAME"/vim/bundle || exit
 
 printf "==> Cloning vim bundles:\n"
 
@@ -15,9 +15,9 @@ for repo in https://github.com/vim-scripts/ScrollColors.git \
     https://github.com/tpope/vim-unimpaired.git; do
     directory="$(basename -s .git $repo)"
     if [ -e "$directory" ]; then
-        printf "$directory already exists.\n"
+        printf "%s already exists.\n" "$directory"
     else
-        printf "Cloning $repo into $directory\n"
+        printf "Cloning %s into %s\n" "$repo" "$directory"
         git clone -q "$repo"
     fi
 done
