@@ -114,22 +114,22 @@ alias l='ls -CF'
 alias la='ls -AF'
 # If eza is installed
 if type -p eza >/dev/null; then
-    alias ll='eza --git -s Name --colour=always -lg'
-    alias lla='eza --git -s Name --colour=always -lga'
+    alias ll='eza --git -s Name --colour=always -l'
+    alias lla='eza --git -s Name --colour=always -la'
     # Most recent 20
     llh() {
-        eza --git -s date -r --colour=always -lg "$@" | head -20
+        eza --git -s date -r --colour=always -l "$@" | head -20
     }
     # Today only
     llt() {
         today=$(date "+%e %b")
-        eza --git -s date -r --colour=always -lg "$@" | rg "$today "
+        eza --git -s date -r --colour=always -l "$@" | rg "$today "
     }
-    alias llr='eza --git -s Name --colour=always -lgR'   # Recurse
-    alias lls='eza --git -s size -r --colour=always -lg' # size
+    alias llr='eza --git -s Name --colour=always -lR'   # Recurse
+    alias lls='eza --git -s size -r --colour=always -l' # size
     # Dirs first, then by extension - both without & with gitignored files
-    alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -lg'
-    alias lwg='eza --git --group-directories-first -s ext --colour=always -lg'
+    alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -l'
+    alias lwg='eza --git --group-directories-first -s ext --colour=always -l'
 else
     alias ll='ls -l $COLOR_AUTO'
     alias lla='ls -lA $COLOR_AUTO'
