@@ -45,6 +45,10 @@ fi
 alias pel='prettier-eslint --list-different'
 alias pew='prettier-eslint --write'
 
+# shortcuts for prettier for awk scripts
+alias npa='npx prettier'
+alias npw='npx prettier --write'
+
 # shortcuts for rg
 alias rgn='rg -N'
 alias rgp='rg --sort path'
