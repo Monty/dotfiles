@@ -5,12 +5,19 @@
 alias bata="bat -A"  # All invisible characters
 alias batd="bat -d"  # Diffs only
 alias batp="bat -pP" # Plain, i.e. no numbers, no pager
+# Use bat to format man pages
+bman() {
+    man "$@" | sed -u -e 's/\x1B\[[0-9;]*m//g; s/.\x08//g' |
+        bat -p -lman
+}
 # Use bat to format -h and --help (also uses 'less')
 alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
 alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+#
 alias catc='rg -IN "^[[:space:]]*#|^[[:space:]]*//"'
 alias catn='rg -INv "^[[:space:]]*#|^[[:space:]]*//"'
 alias cls='clear'
+alias decolor='sed -e "s/\x1B\[[0-9;]*m//g" -e "s/.\x08//g"'
 alias cpr='cp -Rp'
 alias scpr='scp -rp'
 alias df='df -Hl'
