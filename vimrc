@@ -30,8 +30,8 @@ let g:airline_section_x = '%y'
 let g:airline_section_y = ''
 let g:airline_section_z = '%l/%L:%c'
 
-let g:signify_sign_change = '>' 
-let g:signify_sign_delete_first_line = '^' 
+let g:signify_sign_change = '>'
+let g:signify_sign_delete_first_line = '^'
 
 " colorscheme modifications
 let g:zenburn_high_Contrast = 1
@@ -51,8 +51,8 @@ augroup myfiletypes
     autocmd!
     " autoindent Ruby and JavaScript with two spaces, always expand tabs
     autocmd FileType ruby,eruby,yaml,javascript,css,typescript set ai sw=2 sts=2 et
-    " prettyprint JavaScript, TypeScript, css, html, md files with prettier-eslint
-    autocmd FileType javascript,typescript,css,html,md set formatprg=prettier-eslint\ --stdin
+    " prettyprint JavaScript, TypeScript, css, html, md files with prettier
+    autocmd FileType javascript,typescript,css,html,md set formatprg=prettier\ --stdin-filepath\ %
     " set filetype of .function files for IMDb_xref
     autocmd BufRead,BufNewFile *.function set filetype=sh
     " set spellcheck in .md file
