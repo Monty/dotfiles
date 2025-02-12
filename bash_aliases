@@ -24,9 +24,18 @@ if type -p shfmt >/dev/null; then
     alias shfl='shfmt -i 4 -s -l'
 fi
 
-# shortcuts for prettier-eslint
-alias pel='prettier-eslint --list-different'
-alias pew='prettier-eslint --write'
+# shortcuts for prettier
+alias prc='prettier --check'
+alias prw='prettier --write'
+
+# shortcuts for eslint
+pew() {
+    for file in "$@"; do
+        # printf "==> Processing %s\n" "${file}"
+        prettier "$file" |
+            eslint --fix-dry-run --stdin --stdin-filename "$file"
+    done
+}
 
 # shortcuts for rg
 alias rgn='rg -N'
