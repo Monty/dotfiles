@@ -30,10 +30,10 @@ export default [...compat.extends('eslint:recommended'), {
     'no-multi-str': 2,
     'no-new-wrappers': 2,
     'no-with': 2,
-    'array-bracket-spacing': [2, 'never'],
-    'block-spacing': [2, 'never'],
+    'array-bracket-spacing': ['error', 'never'],
+    'block-spacing': ['error', 'never'],
     'brace-style': 2,
-    'comma-dangle': [2, 'always-multiline'],
+    'comma-dangle': ['error', 'always-multiline'],
     'comma-spacing': 2,
     'comma-style': 2,
     'computed-property-spacing': 2,
@@ -43,7 +43,7 @@ export default [...compat.extends('eslint:recommended'), {
     'keyword-spacing': 2,
     'linebreak-style': 2,
 
-    'max-len': [2, {
+    'max-len': ['error', {
       code: 80,
       tabWidth: 2,
       ignoreUrls: true,
@@ -52,7 +52,7 @@ export default [...compat.extends('eslint:recommended'), {
     'new-cap': 2,
     'no-array-constructor': 2,
 
-    'no-multiple-empty-lines': [2, {
+    'no-multiple-empty-lines': ['error', {
       max: 2,
     }],
 
@@ -61,16 +61,16 @@ export default [...compat.extends('eslint:recommended'), {
     'no-trailing-spaces': 2,
     'object-curly-spacing': 2,
 
-    'one-var': [2, {
+    'one-var': ['error', {
       var: 'never',
       let: 'never',
       const: 'never',
     }],
 
-    'padded-blocks': [2, 'never'],
-    'quote-props': [2, 'consistent'],
+    'padded-blocks': ['error', 'never'],
+    'quote-props': ['error', 'consistent'],
 
-    'quotes': [2, 'single', {
+    'quotes': ['error', 'single', {
       allowTemplateLiterals: true,
     }],
 
@@ -78,31 +78,30 @@ export default [...compat.extends('eslint:recommended'), {
     'semi-spacing': 2,
     'space-before-blocks': 2,
 
-    'space-before-function-paren': [2, {
+    'space-before-function-paren': ['error', {
       asyncArrow: 'always',
       anonymous: 'never',
       named: 'never',
     }],
 
-    'spaced-comment': [2, 'always'],
+    'spaced-comment': ['error', 'always'],
     'switch-colon-spacing': 2,
     'curly': ['error'],
     'default-case': ['error'],
     'dot-notation': ['error'],
     'eqeqeq': ['error', 'smart'],
     'no-magic-numbers': ['error'],
-    'no-sequences': [1],
-    'no-useless-concat': [1],
-    'no-useless-escape': [1],
+    'no-sequences': ['warn'],
+    'no-useless-concat': ['warn'],
+    'no-useless-escape': ['warn'],
     'no-var': ['error'],
     'prefer-const': ['error'],
-    'vars-on-top': [1],
-    'yoda': [1],
+    'vars-on-top': ['warn'],
+    'yoda': ['warn'],
 
-    'capitalized-comments': [1, 'always', {
+    'capitalized-comments': ['warn', 'always', {
       ignoreConsecutiveComments: true,
     }],
 
-    'indent': ['error', 2],
   },
 }];
