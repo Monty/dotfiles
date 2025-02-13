@@ -25,6 +25,7 @@ if type -p shfmt >/dev/null; then
 fi
 
 # shortcuts for prettier
+# prettier for awk files requires node v18. Only works in $WSH
 alias prc='prettier --check'
 alias prw='prettier --write'
 
