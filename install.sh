@@ -24,12 +24,6 @@ ln -s "${DOTDIR}"/aliases .bash_aliases
 printf "    Linking to .zsh_aliases\n"
 ln -s "${DOTDIR}"/aliases .zsh_aliases
 
-# eslint.config.mjs belongs in the home directory
-printf "==> Linking eslint.config.mjs\n"
-rm -f eslint.config.mjs
-ln -s "${DOTDIR}"/eslint.config.mjs eslint.config.mjs
-echo ""
-
 # By convention.link all files in any directories that end in .dir
 # But strip the .dir first so .config links to dotfiles/config.dir
 for LINKDIR in $(eza -d "${DOTDIR}"/*.dir); do
