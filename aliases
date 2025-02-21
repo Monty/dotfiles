@@ -57,8 +57,10 @@ alias prw='prettier --write'
 pew() {
     for file in "$@"; do
         # printf "==> Processing %s\n" "${file}"
-        prettier "$file" |
-            eslint --fix-dry-run --stdin --stdin-filename "$file"
+        eslint --fix "$file"
+        if [ $? -ne 1 ]; then
+            prettier --write "$file"
+        fi
     done
 }
 
