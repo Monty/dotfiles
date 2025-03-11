@@ -14,7 +14,7 @@ for repo in https://github.com/vim-scripts/ScrollColors.git \
     https://github.com/micarmst/vim-spellsync.git \
     https://github.com/tpope/vim-unimpaired.git; do
     directory="$(basename -s .git "$repo")"
-    if [[ -e "$directory" ]]; then
+    if [[ -e $directory ]]; then
         printf "%s already exists.\n" "$directory"
     else
         printf "Cloning %s into %s\n" "$repo" "$directory"
