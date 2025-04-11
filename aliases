@@ -72,6 +72,7 @@ alias rgn='rg -N'
 alias rgp='rg --sort path'
 alias rgpn='rg -N --sort path'
 alias rga="rg -N --sort path '^\/'"
+alias rgaf="rg -N --sort path '^\/|^function |\(\)'"
 
 # shortcuts for shellcheck
 alias sck='shellcheck $@'
