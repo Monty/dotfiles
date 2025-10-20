@@ -67,6 +67,9 @@ pew() {
     done
 }
 
+# shortcuts for Python
+alias ruffc='ruff check'
+
 # shortcuts for rg
 alias rgn='rg -N'
 alias rgp='rg --sort path'
