@@ -24,5 +24,12 @@ update-notifier-npm.json
 hidden
 notgit
 
+# Save temp outputs as two lower case chars
+# i.e.:
+#   rg def mw-49.py >aa
+#   rg def mw-50.py >bb
+#   diff aa bb
+[a-z][a-z]
+
 # shellcheck 
 lint-*.sh
