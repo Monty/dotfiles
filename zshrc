@@ -90,8 +90,12 @@ Linux-x86_64)
 esac
 
 # Some useful environment variables
+if type -p moor >/dev/null; then
+    export PAGER=moor
+else
+    export PAGER=less
+fi
 export EDITOR=/usr/bin/vim
-export PAGER=less # strongly advised for backwards scrolling
 export LESS=seMi
 export CLICOLOR=1
 # Make eza colors match ls colors as much as possible
