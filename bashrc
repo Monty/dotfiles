@@ -88,6 +88,14 @@ Linux-x86_64)
     ;;
 esac
 
+# Kludge for lychee or other commands needing openssl-3 dylibs
+# uses dylibs from /Applications/kitty.app/Contents/Frameworks/
+if [[ -z "$DYLD_LIBRARY_PATH" ]]; then
+  export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks"
+else
+  export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks:$DYLD_LIBRARY_PATH"
+fi
+
 # Some useful environment variables
 if type -p moor >/dev/null; then
     export PAGER=moor
