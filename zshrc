@@ -95,8 +95,8 @@ if type -p moor >/dev/null; then
 else
     export PAGER=less
 fi
-export EDITOR=/usr/bin/vim
 export LESS=seMi
+export EDITOR=/usr/bin/vim
 export CLICOLOR=1
 # Make eza colors match ls colors as much as possible
 LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41"
