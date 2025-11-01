@@ -22,17 +22,12 @@ export HISTCONTROL=ignoreboth
 export HISTSIZE=3000
 export HISTFILESIZE=6000
 
-# Include directory name in iTerm tab titles by default
-if [ "$ITERM_SESSION_ID" ]; then
-    export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; '
-fi
+# append to the history file, don't overwrite it
+shopt -s histappend
 
 # Check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
-
-# append to the history file, don't overwrite it
-shopt -s histappend
 
 # Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -40,19 +35,6 @@ shopt -s histappend
 # So we can edit .gpg files directly in Vim
 GPG_TTY=$(tty)
 export GPG_TTY
-
-# Some useful environment variables
-export EDITOR=/usr/bin/vim
-export PAGER=less # strongly advised for backwards scrolling
-export LESS=seMi
-export CLICOLOR=1
-# Make eza colors match ls colors as much as possible
-LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41"
-LS_COLORS+=":sg=30;46:tw=30;42:ow=30;43"
-export LS_COLORS="$LS_COLORS"
-EZA_COLORS="su=30;41:sf=30;41:xa=33:uu=39:un=31:gu=39:gn=31:ur=39:uw=39:ux=39:ue=39"
-EZA_COLORS+=":gr=39:gw=39:gx=39:tr=39:tw=31:tx=39:sn=34:sb=36:da=34"
-export EZA_COLORS="$EZA_COLORS"
 
 # Make a sensible PATH and save it
 # set PATH so it includes private bin if it exists
@@ -86,14 +68,6 @@ for each in \
     fi
 done
 
-# golang setup
-export GOPATH=$HOME/Projects/go
-
-# broot setup
-if type -p broot >/dev/null; then
-    source "$HOME"/.config/broot/launcher/bash/br
-fi
-
 # It is sometimes useful to be able to "reset" your path to a clean state.
 export SAVED_PATH=${PATH}
 
@@ -113,6 +87,32 @@ Linux-x86_64)
     echo "Don't know where JAVA_HOME should be"
     ;;
 esac
+
+# Some useful environment variables
+export EDITOR=/usr/bin/vim
+export PAGER=less # strongly advised for backwards scrolling
+export LESS=seMi
+export CLICOLOR=1
+# Make eza colors match ls colors as much as possible
+LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41"
+LS_COLORS+=":sg=30;46:tw=30;42:ow=30;43"
+export LS_COLORS
+EZA_COLORS="su=30;41:sf=30;41:xa=33:uu=39:un=31:gu=39:gn=31:ur=39:uw=39:ux=39:ue=39"
+EZA_COLORS+=":gr=39:gw=39:gx=39:tr=39:tw=31:tx=39:sn=34:sb=36:da=34"
+export EZA_COLORS
+
+# golang setup
+export GOPATH=$HOME/Projects/go
+
+# broot setup
+if type -p broot >/dev/null; then
+    source "$HOME"/.config/broot/launcher/bash/br
+fi
+
+# Include directory name in iTerm tab titles by default
+if [ "$ITERM_SESSION_ID" ]; then
+    export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; '
+fi
 
 # Prompts
 # Colors
