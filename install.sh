@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Create appropriate links in ~ to files in ~/dotfiles
 
 DOTDIR="${HOME}/dotfiles"
 cd "${HOME}" || exit
@@ -9,7 +10,7 @@ for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg '\.'); do
     printf "==> Skipping %s\n" "${file}"
 done
 
-# Link files with . in filename
+# Link files without . in filename
 for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg -v '\.'); do
     printf "==> Linking .%s\n" "${file}"
     rm -f ."${file}"
@@ -24,17 +25,15 @@ ln -s "${DOTDIR}"/aliases .bash_aliases
 printf "    Linking to .zsh_aliases\n"
 ln -s "${DOTDIR}"/aliases .zsh_aliases
 
-# By convention.link all files in any directories that end in .dir
-# But strip the .dir first so .config links to dotfiles/config.dir
-for LINKDIR in $(eza -d "${DOTDIR}"/*.dir); do
-    TARGETDIR="${HOME}/.${LINKDIR##*/}"
-    TARGETDIR="${TARGETDIR%.dir}"
-    mkdir -p "${TARGETDIR}"
-    printf "# Setting up links to %s in %s\n" "${LINKDIR}" "${TARGETDIR}"
-    cd "${TARGETDIR}" || exit
-    for file in $(eza "${LINKDIR}"); do
-        printf "==> Linking %s\n" "${file}"
-        rm -f "${file}"
-        ln -s "${LINKDIR}"/"${file}" "${file}"
-    done
+# By convention, config files are kept in directories under ~/.config
+# Create links in ~/.config to directories in dotfiles/config.dir
+LINKDIR="${HOME}/dotfiles/config.dir"
+TARGETDIR="${HOME}/.config"
+mkdir -p "${TARGETDIR}"
+printf "# Setting up links to %s in %s\n" "${LINKDIR}" "${TARGETDIR}"
+cd "${TARGETDIR}" || exit
+for dir in $(eza -D "${LINKDIR}"); do
+    printf "==> Linking %s\n" "${dir}"
+    rm -rf "${dir}"
+    ln -s "${LINKDIR}"/"${dir}" "${dir}"
 done
