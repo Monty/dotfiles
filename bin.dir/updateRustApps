@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+rustup update
+
+cargo install --locked bat # Like cat with syntax coloration
+cargo install czkawka_cli  # Find duplicate files, empty folders, etc
+cargo install diffr        # Word-level diff on top of unified diffs
+cargo install difftastic   # Word-level diff highlighting
+cargo install eza          # More flexibls ls
+cargo install fclones      # Finds and removes duplicate files
+cargo install fd-find      # Find files matching a pattern
+cargo install hyperfine    # Run benchmarking tests
+cargo install lsd          # Powerful ls
+cargo install mdbook       # Creates a book from markdown files
+# cargo install prettydiff   # Easier to read diff
+cargo install ripgrep     # Improved faster grep
+cargo install rm-improved # Temporarily remove files and directories
+cargo install sd          # Change all occurences of a string in a file
+cargo install stdrename   # Rename files using differnt formats
+cargo install xls2txt     # Convert .ods or .xls files to text
+cargo install xsv         # Manipulate .csv files
+cargo install zet         # Union, intersection, difference of files
+
+if [ "$USER" = "monty" ]; then
+    cargo install --locked miniserve # Serve files and dirs over HTTP
+    cargo install stylua             # Format Lua code
+    cargo install tokei              # Count code stats
+    # Skip on Monarch
+    [ "$(hostname)" != "Monarch.local" ] &&
+        cargo install broot # Generate directory trees
+fi

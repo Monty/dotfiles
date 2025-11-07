@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Run selected the sitemap/* TV updates in the background
+#
+# shellcheck disable=SC2059
+
+source "$WS"/waitUntil.function
+
+LONGDATE="$(date +%y%m%d.%H%M%S)"
+
+printf "==> Any currently running jobs?\n"
+ps -ef | rg doit.sh | rg -v 'rg doit.sh'
+
+for service in Acorn BBox MHz OPB; do
+    jobname="$service"_doit
+    if waitUntil -s "\nStart $jobname.sh?"; then
+        cd "$WS/sitemaps/$service" || exit
+        nohup bash "$jobname.sh" >"$jobname-$LONGDATE"_out.txt 2>&1 &
+        printf "==> $jobname.sh started.\n"
+    fi
+done
+
+printf "\n==> Finished starting selected jobs.\n"
+
+# Show some helpful information on which processes are running
+cd "$WS"/sitemaps || exit
+printf "\n==> Any currently running jobs?\n"
+ps -ef | rg doit.sh | rg -v 'rg doit.sh'
+printf "\n==> Any current output files?\n"
+fd -I "$LONGDATE"_out.txt

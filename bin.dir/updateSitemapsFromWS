@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Copy any necessary files from $WS to their respective sitemaps subdirectory
+
+# shellcheck disable=SC2059,SC2086
+
+cd "$WS" || exit
+source waitUntil.function
+
+# define $ACORN_FILES $BBOX_FILES $MHZ_FILES $OPB_FILES
+# shellcheck disable=SC1091 # required_files.txt is a local file
+source required_files.txt
+
+ACORN_SUBDIR="sitemaps/Acorn"
+BBOX_SUBDIR="sitemaps/BBox"
+MHZ_SUBDIR="sitemaps/Mhz"
+OPB_SUBDIR="sitemaps/OPB"
+
+mkdir -pv "$ACORN_SUBDIR" "$BBOX_SUBDIR" "$MHZ_SUBDIR" "$OPB_SUBDIR"
+
+if waitUntil -s "Update $ACORN_SUBDIR files?"; then
+    printf "==> Copying latest files to $ACORN_SUBDIR.\n"
+    cp -p $ACORN_FILES "$ACORN_SUBDIR"
+    printf "$ACORN_FILES\n"
+else
+    printf "==> $ACORN_SUBDIR files not updated!\n\n"
+fi
+
+if waitUntil -s "Update $BBOX_SUBDIR files?"; then
+    printf "==> Copying latest files to $BBOX_SUBDIR.\n"
+    cp -p $BBOX_FILES "$BBOX_SUBDIR"
+    printf "$BBOX_FILES\n"
+else
+    printf "==> $BBOX_SUBDIR files not updated!\n\n"
+fi
+
+if waitUntil -s "Update $MHZ_SUBDIR files?"; then
+    printf "==> Copying latest files to $MHZ_SUBDIR.\n"
+    cp -p $MHZ_FILES "$MHZ_SUBDIR"
+    printf "$MHZ_FILES\n"
+else
+    printf "==> $MHZ_SUBDIR files not updated!\n\n"
+fi
+
+if waitUntil -s "Update $OPB_SUBDIR files?"; then
+    printf "==> Copying latest files to $OPB_SUBDIR.\n"
+    cp -p $OPB_FILES "$OPB_SUBDIR"
+    printf "$OPB_FILES\n"
+else
+    printf "==> $OPB_SUBDIR files not updated!\n\n"
+fi

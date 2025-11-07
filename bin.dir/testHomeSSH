@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2016
+
+cmd='echo $USER@$(hostname)'
+# cmd='cd dotfiles; git pull'
+# cmd='cat .ssh/config'
+# cmd='ls -l .ssh'
+# cmd='ls -l bin/tes*'
+for i in monty@holmes monty@irene junew@marleau junew@monarch monty@monarch; do
+    echo "==> ${i}"
+    ssh -o ConnectTimeout=10 ${i}.local "${cmd}"
+done

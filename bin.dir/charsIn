@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Print the string of all unique printable characters in a file
+
+# Complete list
+#   !#$%&()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{}
+
+cat "$@" | tr -cd '[:graph:]' | fold -w1 | sort -u | tr -d '\n' | sed '$ s/.$//'
+printf '\n'

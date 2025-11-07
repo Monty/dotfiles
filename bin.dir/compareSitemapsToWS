@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Copy any necessary files from $WS to their respective sitemaps subdirectory
+
+cd "$WS" || exit
+source waitUntil.function
+
+# define $ACORN_FILES $BBOX_FILES $MHZ_FILES $OPB_FILES
+# shellcheck disable=SC1091 # required_files.txt is a local file
+source required_files.txt
+
+ACORN_SUBDIR="sitemaps/Acorn"
+BBOX_SUBDIR="sitemaps/BBox"
+MHZ_SUBDIR="sitemaps/Mhz"
+OPB_SUBDIR="sitemaps/OPB"
+
+if waitUntil -Y "Compare $ACORN_SUBDIR files?"; then
+    cd "$AC" || exit
+    for file in $ACORN_FILES; do
+        diff -q "$file" "$WS/$file"
+    done
+fi
+
+if waitUntil -Y "Compare $BBOX_SUBDIR files?"; then
+    cd "$BB" || exit
+    for file in $BBOX_FILES; do
+        diff -q "$file" "$WS/$file"
+    done
+fi
+
+if waitUntil -Y "Compare $MHZ_SUBDIR files?"; then
+    cd "$MH" || exit
+    for file in $MHZ_FILES; do
+        diff -q "$file" "$WS/$file"
+    done
+fi
+
+if waitUntil -Y "Compare $OPB_SUBDIR files?"; then
+    cd "$OP" || exit
+    for file in $OPB_FILES; do
+        diff -q "$file" "$WS/$file"
+    done
+fi

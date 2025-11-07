@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Print the string of all unique punctuation characters in a file
+
+#   !#$%&()*+,-./:;<=>?@[\]^_`{}
+
+cat "$@" | tr -cd '[:punct:]' | fold -w1 | sort -u | tr -d '\n' | sed '$ s/.$//'
+printf '\n'

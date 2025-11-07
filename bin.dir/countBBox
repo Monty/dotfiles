@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Count movie, shows, and seasons in BBox files
+#
+# shellcheck disable=SC2086
+
+cd "$WS" || exit
+
+BBoxEpisodes="BBox_TV_ShowsEpisodes*csv"
+
+echo "--- Movies ---"
+grep -c -e /movie/ -e tv_movie $BBoxEpisodes | tail -5
+echo ""
+echo "--- Shows ---"
+grep -c -e /show/ -e tv_show $BBoxEpisodes | tail -5
+echo ""
+echo "--- Seasons ---"
+grep -c -e /season/ -e tv_season $BBoxEpisodes | tail -5
+echo ""
+echo "--- Episodes ---"
+grep -c -e /episode/ -e tv_episode $BBoxEpisodes | tail -5

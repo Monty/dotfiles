@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+#  zet diff the most recent episodes
+
+"$WS"/newEpisodes.sh "$@"

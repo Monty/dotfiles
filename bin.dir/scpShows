@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC2086
+
+cd $WS || exit
+ACORN=$(find Acorn_TV_ShowsEpisodes-*csv | tail -1)
+ACORN+=" "
+ACORN+=$(find Acorn_TV_Shows-*csv | tail -1)
+ACORN+=" "
+ACORN+=$(find Acorn_anomalies-*txt | tail -1)
+ACORN+=" "
+ACORN+=$(find Acorn_uniqTitles-*txt | tail -1)
+
+BBOX=$(find BBox_TV_ShowsEpisodes-*csv | tail -1)
+BBOX+=" "
+BBOX+=$(find BBox_TV_Shows-*csv | tail -1)
+BBOX+=" "
+BBOX+=$(find BBox_TV_Credits-*csv | tail -1)
+BBOX+=" "
+BBOX+=$(find BBox_anomalies-*txt | tail -1)
+BBOX+=" "
+BBOX+=$(find BBox_uniqPersons-*txt | tail -1)
+BBOX+=" "
+BBOX+=$(find BBox_uniqCharacters-*txt | tail -1)
+BBOX+=" "
+BBOX+=$(find BBox_uniqTitles-*txt | tail -1)
+
+MHZ=$(find MHz_TV_ShowsEpisodes-*csv | tail -1)
+MHZ+=" "
+MHZ+=$(find MHz_TV_Shows-*csv | tail -1)
+MHZ+=" "
+MHZ+=$(find MHz_TV_Shows_Avg-*csv | tail -1)
+MHZ+=" "
+MHZ+=$(find MHz_TV_Credits-*csv | tail -1)
+MHZ+=" "
+MHZ+=$(find MHz_anomalies-*txt | tail -1)
+MHZ+=" "
+MHZ+=$(find MHz_uniqPersons-*txt | tail -1)
+MHZ+=" "
+MHZ+=$(find MHz_uniqCharacters-*txt | tail -1)
+MHZ+=" "
+MHZ+=$(find MHz_uniqTitles-*txt | tail -1)
+
+OPB=$(find OPB_TV_ShowsEpisodes-*csv | tail -1)
+OPB+=" "
+OPB+=$(find OPB_TV_ExtraEpisodes-*csv | tail -1)
+OPB+=" "
+OPB+=$(find OPB_TV_Shows-*csv | tail -1)
+OPB+=" "
+OPB+=$(find OPB_anomalies-*txt | tail -1)
+OPB+=" "
+OPB+=$(find OPB_uniqTitles-*txt | tail -1)
+
+echo ACORN=$ACORN
+echo BBOX=$BBOX
+echo MHZ=$MHZ
+echo OPB=$OPB
+scp -p $ACORN $BBOX $MHZ $OPB monty@Irene.local:~/Projects/WhatsStreamingToday

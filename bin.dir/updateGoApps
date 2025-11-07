@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+printf "The latest go version is "
+curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[0].version'
+printf "Your go version is "
+go version
+printf "\n"
+
+printf "Download latest go from https://go.dev/doc/install\n"
+sleep 5
+
+shfmt --version
+printf "shfmt\n"
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
+shfmt --version
+printf "\n"
+
+scc --version
+printf "scc\n"
+go install github.com/boyter/scc/v3@latest
+scc --version
+printf "\n"
+
+eza -s date -r --colour=always -lg ~/go/pkg/mod/github.com/hhatto |
+    head -1
+printf "gocloc\n"
+go install github.com/hhatto/gocloc/cmd/gocloc@latest
+eza -s date -r --colour=always -lg ~/go/pkg/mod/github.com/hhatto |
+    head -1
+printf "\n"
+
+golangci-lint --version
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+golangci-lint --version
+printf "\n"
+
+moor -version
+go install github.com/walles/moor/v2/cmd/moor@latest
+moor -version
+printf "\n"
+
+rclone --version
+printf "rclone\n"
+rclone selfupdate
+rclone --version
+printf "\n"

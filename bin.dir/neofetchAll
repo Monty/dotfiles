@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2013,SC2059,SC2088
+
+# Run neofetch on accounts in ${HOME}/.accounts
+#   -m      Only on accounts containing monty
+#   -j      Only on accounts containing junew
+#   -s str  Only on accounts containing str
+#
+# To skip virtual machines
+#   neofetchAll -s "-v -- -V"
+
+accountsFile="${HOME}/.accounts"
+
+if [ ! -f "${accountsFile}" ]; then
+    printf "[Error] Accounts file ${accountsFile} not found\n"
+    exit 1
+fi
+
+while getopts ":jms:" opt; do
+    case $opt in
+    j)
+        ACCOUNT="junew@"
+        ;;
+    m)
+        ACCOUNT="monty@"
+        ;;
+    s)
+        ACCOUNT="$OPTARG"
+        ;;
+    :)
+        printf "[Error] Option -$OPTARG requires an argument\n" >&2
+        exit 1
+        ;;
+    *)
+        printf "Ignoring invalid option: -$OPTARG\n" >&2
+        ;;
+    esac
+done
+
+printf "Running '~/bin/neofetch --disk_show /Volumes/* /System/Volumes/Data' on ${ACCOUNT:-all} machines\n"
+read -r -p "==> Run without checking first? [y/N]" UNSAFE
+
+for i in $(grep -v ^# "${accountsFile}" | grep -i "${ACCOUNT:-@}"); do
+    VOL="/Volumes/* /System/Volumes/Data"
+    if [[ ${i} == *-V[BM] ]]; then
+        VOL="/"
+    fi
+    if [ "$UNSAFE" = "y" ]; then
+        printf "==> ${i}\n"
+        ssh -o ConnectTimeout=10 "${i}".local "~/bin/neofetch --stdout --disk_show ${VOL}"
+    else
+        read -r -p "==> Run on ${i}? [y/N]" YESNO
+        if [ "$YESNO" != "y" ]; then
+            printf "Skipping...\n"
+        else
+            ssh -o ConnectTimeout=10 "${i}".local "~/bin/neofetch --disk_show ${VOL}"
+        fi
+    fi
+done

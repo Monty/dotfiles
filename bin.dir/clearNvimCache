@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+source "$WS"/waitUntil.function
+
+if waitUntil -s "Clear all nvim caches?"; then
+    printf "\n==> Removing all nvim cache files\n"
+    rm -rf ~/.local/share/nvim
+    rm -rf ~/.local/state/nvim
+    rm -rf ~/.cache/nvim
+else
+    printf "\n==> Leaving the following nvim cache files:\n\n"
+    ls -l ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
+    printf "\n"
+fi

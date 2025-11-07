@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+#
+# Generate a list of shellcheck problems for each file
+# Use -s to generate a short summary of shellcheck problems
+
+# Need a tempfile
+TMPFILE=$(mktemp)
+RESULT=$(mktemp)
+
+# trap ctrl-c and call cleanup
+trap cleanup INT
+#
+function cleanup() {
+    rm -rf "$TMPFILE" "$RESULT"
+    printf "\n"
+    exit 130
+}
+
+SEVERITY="style"
+
+while getopts ":siwe" opt; do
+    case $opt in
+    s)
+        SHORT="yes"
+        ;;
+    i)
+        SEVERITY="info"
+        ;;
+    w)
+        SEVERITY="warning"
+        ;;
+    e)
+        SEVERITY="error"
+        ;;
+    *)
+        printf "==> Ignoring invalid option: -%s\n" "$OPTARG" >&2
+        ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+for file in "$@"; do
+    if [[ $(file "$file") == *Bourne-Again* ]]; then
+        printf "==> In %s:\n" "$file" >>"$RESULT"
+        # shellcheck disable=SC2154 # "$XR" is defined externally
+        shellcheck -x -P "$XR"/functions -o all \
+            --severity="$SEVERITY" -e SC2154,SC2250,SC2312 "$file" |
+            rg ' SC' | sd '^.*SC' '  SC' | sort -u >"$TMPFILE"
+        if [[ -s $TMPFILE ]]; then
+            rg -N --color always 'SC[0-9]*' "$TMPFILE" >>"$RESULT"
+        else
+            printf "  No Errors\n" >>"$RESULT"
+        fi
+        printf "\n" >>"$RESULT"
+    fi
+done
+
+if [[ -z $SHORT ]]; then
+    cat "$RESULT"
+else
+    sort -u "$RESULT" | rg -v '^In|^$'
+fi
+
+rm -rf "$TMPFILE" "$RESULT"

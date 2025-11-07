@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd "$PG" || exit
+./pangram.sh "$1"

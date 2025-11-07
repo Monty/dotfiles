@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# find git repositories in any subdirectories
+# add "-d 2" do only descend one level
+
+fd -IH --glob "$@" -td -p '**/.git' -X ls -1d '{//}'

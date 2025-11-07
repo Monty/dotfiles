@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+cd "$WS" || exit
+
+BBOX="$(find BBox_TV_Credits*csv | tail -1)"
+MHZ="$(find MHz_TV_Credits*csv | tail -1)"
+
+echo BBOX="$BBOX"
+echo MHZ="$MHZ"
+
+if [ "$(rg -wS -c "$*" "$BBOX")" ]; then
+    echo ""
+    echo "==> From $BBOX"
+    rg -S "$*" "$BBOX" | column -s $'\t' -t | rg --color=ansi -S "$*"
+fi
+
+if [ "$(rg -wS -c "$*" "$MHZ")" ]; then
+    echo ""
+    echo "==> From $MHZ"
+    rg -S "$*" "$MHZ" | column -s $'\t' -t | rg --color=ansi -S "$*"
+fi

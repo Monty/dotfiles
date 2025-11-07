@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Print episodes seen from the latest spreadsheets using a case insensitive search
+# If you get too many results,
+#       copy/paste a portion of the title string from one of the results
+
+xls2txt "$SHA"/All_watched_by_date.ods |
+    rg -NS "$*" | column -s $'\t' -t | rg --color=ansi -S "$*"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+for branch in $(git branch | grep -v '^\*'); do
+    check=$(git cherry -v "$branch" | grep "$1")
+    [[ $check == "+"* ]] && printf "Branch %s\tdoesn't have %s\n" "$branch" "$1"
+    [[ $check == "-"* ]] && printf "Branch %s\talready has %s\n" "$branch" "$1"
+    [[ $check == "" ]] && printf "Branch %s\tis not tracking %s\n" "$branch" "$1"
+done

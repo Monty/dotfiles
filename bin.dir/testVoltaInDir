@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+cd "$1" || exit
+
+echo "In $PWD:"
+echo
+
+volta list
+echo
+
+printf "==> "
+type volta
+printf "volta --version is: %s\n\n" "$(volta --version)"
+
+printf "==> "
+type node
+printf "node --version is: %s\n\n" "$(node --version)"
+
+printf "==> "
+type npm
+printf "npm --version is: %s\n\n" "$(npm --version)"
+
+printf "==> "
+type prettier
+printf "prettier --version is: %s\n\n" "$(prettier --version)"
+
+printf "==> "
+type eslint
+printf "eslint --version is: %s\n\n" "$(eslint --version)"
+
+printf "==> "
+type tree-sitter
+printf "tree-sitter --version is: %s\n\n" "$(tree-sitter --version)"

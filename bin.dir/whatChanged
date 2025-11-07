@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Create a human readable diff of any two files
+#     ./whatsChanged [-bs] oldFile newFile
+#
+#     -b brief. Don't output the diffs, just list what was done, e.g.
+#           ==> 2 insertions, 1 deletion, 1 modification
+#           deleted 1 line at line 35
+#           added 2 lines after line 98
+#           changed 1 line at line 101
+#
+#     -s summary. Only output the diffstat summary line, e.g.
+#           ==> 10 insertions, 10 deletions, 6 modifications
+#
+
+# shellcheck disable=SC2059
+
+while getopts ":bs" opt; do
+    case $opt in
+    b)
+        BRIEF="yes"
+        ;;
+    s)
+        SUMMARY="yes"
+        ;;
+    *)
+        printf "Ignoring invalid option: -$OPTARG\n" >&2
+        ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+printf "==> diff -b $1 $2\n"
+# first the stats
+diff -b -u "$1" "$2" | diffstat -sq \
+    -D "$(cd "$(dirname "$2")" && pwd -P)" |
+    sed -e "s/ 1 file changed,/==>/" -e "s/([+-=\!])//g"
+if [ "$SUMMARY" = "yes" ]; then
+    exit
+fi
+
+# Now the diffs
+function checkdiffs() {
+    if cmp --quiet "$1" "$2"; then
+        printf "==> no diffs found.\n"
+    else
+        diff -b -U 0 "$1" "$2" |
+            diffr |
+            awk -f ~/Projects/awkfiles/formatUnifiedDiffOutput.awk
+    fi
+}
+
+if [ "$BRIEF" = "yes" ]; then
+    # Only print lines beginning with "==>"
+    # but delete the "==>"
+    # since that looks better in this context
+    checkdiffs "$1" "$2" |
+        sed -e "/==>/!D" -e "s/==> /    /"
+else
+    checkdiffs "$1" "$2"
+fi

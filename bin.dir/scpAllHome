@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2013,SC2059
+
+# Copy files to accounts in ${HOME}/.accounts using scp
+#   -m      Only on accounts containing monty
+#   -j      Only on accounts containing junew
+#   -s str  Only on accounts containing str
+
+# Example
+# scpAllHome ~/bin/updateRustApps bin
+
+accountsFile="${HOME}/.accounts"
+
+if [ ! -f "${accountsFile}" ]; then
+    printf "[Error] Accounts file ${accountsFile} not found\n"
+    exit 1
+fi
+
+while getopts ":jms:" opt; do
+    case $opt in
+    j)
+        ACCOUNT="junew@"
+        ;;
+    m)
+        ACCOUNT="monty@"
+        ;;
+    s)
+        ACCOUNT="$OPTARG"
+        ;;
+    :)
+        printf "[Error] Option -$OPTARG requires an argument\n" >&2
+        exit 1
+        ;;
+    *)
+        printf "==> Ignoring invalid option: -%s\n" "$OPTARG" >&2
+        ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ $# -ne 2 ]; then
+    printf "[Error] Two parameters required, i.e. 'scpAllHome <file> <destination directory>\n"
+    exit 1
+fi
+
+printf "scp '$1' to '$2' in ${ACCOUNT:-all} accounts on home machines\n"
+read -r -p "==> Run without checking first? [y/N]" UNSAFE
+
+for i in $(grep -v ^# "${accountsFile}" | grep -i "${ACCOUNT:-@}"); do
+    if [ "$UNSAFE" = "y" ]; then
+        printf "==> ${i}\n"
+        printf "\$ scp -p $1 ${i}.local:$2\n"
+        scp -p -o ConnectTimeout=10 "$1" "${i}".local:"$2"
+    else
+        read -r -p "==> Copy to ${i}? [y/N]" YESNO
+        if [ "$YESNO" != "y" ]; then
+            printf "Skipping...\n"
+        else
+            printf "\$ scp -p $1 ${i}.local:$2\n"
+            scp -p -o ConnectTimeout=10 "$1" "${i}".local:"$2"
+        fi
+    fi
+done

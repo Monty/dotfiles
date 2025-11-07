@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Update all git repositories in any subdirectories
+# add "-d 2" do only descend one level
+
+# These repos in ~/Projects should be skipped
+skippers=":CountEpisodes:TeaboxScraper-new:tumblr_blog:guess5:wordled:wordled-smaller:worldle:Spell-tower-solver:Cross-country_Road_Trip:Spelltower_Magic:Spelltower_http:"
+
+savedDirectory="$PWD"
+for i in $(fd -HI --glob "$@" -td -p '**/.git' -X ls -1d '{//}'); do
+    cd "${i}" || exit
+    repo=":$(basename "${i}"):"
+    if [ -e .git/config ]; then
+        if grep -q "$repo" <<<"$skippers"; then
+            echo "==> Skipping ${i}"
+        else
+            echo "==> Pulling ${i}"
+            git pull
+        fi
+        echo
+    fi
+    cd "$savedDirectory" || exit
+done

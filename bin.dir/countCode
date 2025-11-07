@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# count code using multiple methods
+
+printf "\nscc:\n"
+scc --by-file --no-cocomo -s code "$@"
+
+printf "\ntokei:\n"
+tokei -f -c 80 -s code "$@"
+
+# printf "\ngocloc:\n"
+# gocloc --by-file --sort code "$@"

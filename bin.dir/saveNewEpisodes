@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Save newEpisodes output without manual generation
+
+# shellcheck disable=SC2059,2154
+
+DATE_ID="-$(date +%y%m%d)"
+OUTFILE="newEpisodes$DATE_ID.txt"
+
+printf "==> File written to $OUTFILE\n"
+"$WS"/newEpisodes.sh >"$NE/$OUTFILE"
+"$WS"/newEpisodes.sh | "$WS"/compress_newEpisodes.py >~/Desktop/"$OUTFILE"

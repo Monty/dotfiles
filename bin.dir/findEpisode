@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# Print title, length, and description of episodes from the latest spreadsheets
+# using a case insensitive search.
+#
+# Put each on a separate line, don't run fmt
+#
+# If you get too many results, copy/paste a portion of the title string
+# from one of the results
+
+cd "$WS" || exit
+./listEpisodes.sh "$@"

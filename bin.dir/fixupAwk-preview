@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Fix awk syntax errors so awkfiles work with prettier-plugin-awk
+#
+# shellcheck disable=SC2016
+
+sd -p 'split \(' 'split(' "$@"
+sd -p 'match \(' 'match(' "$@"
+sd -p 'printf \(' 'printf(' "$@"
+sd -p 'substr \(' 'substr(' "$@"
+sd -p 'gsub \(' 'gsub(' "$@"
+sd -p ' sub \(' ' sub(' "$@"
+sd ' close \(' ' close(' "$@"
+
+sd -p -F 'split($0,fld,"\/")' 'split($0,fld,"/")' "$@"
+sd -p -F 'split($0,fld,"\|")' 'split($0,fld,"|")' "$@"
+sd -p -F 'RS="\<"' 'RS="<"' "$@"

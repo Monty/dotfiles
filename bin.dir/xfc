@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Findcast with matches limited to 25 and no menus
+
+cd "$XRM" || exit
+export NO_MENUS="yes"
+export FULLCAST=25
+./findCastOf.sh "$@"

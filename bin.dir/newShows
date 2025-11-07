@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+#  prettydiff the most recent uniqTitles
+
+"$WS"/newTitles.sh "$@"

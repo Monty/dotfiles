@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+cd "$WS" || exit
+
+ACORN=$(find Acorn_TV_ShowsEpisodes*csv | tail -1)
+BBOX=$(find BBox_TV_ShowsEpisodes*csv | tail -1)
+MHZ=$(find MHz_TV_ShowsEpisodes*csv | tail -1)
+OPB=$(find OPB_TV_ShowsEpisodes*csv | tail -1)
+
+# echo ACORN=$ACORN
+# echo BBOX=$BBOX
+# echo MHZ=$MHZ
+# echo OPB=$OPB
+
+if [ "$(grep -i -c "$*" "$ACORN")" != 0 ]; then
+    echo "==> From $ACORN"
+    rg -S --color always "$*" "$ACORN" | cut -f 1
+fi
+
+if [ "$(grep -i -c "$*" "$BBOX")" != 0 ]; then
+    echo "==> From $BBOX"
+    rg -S --color always "$*" "$BBOX" | cut -f 1
+fi
+
+if [ "$(grep -i -c "$*" "$MHZ")" != 0 ]; then
+    echo "==> From $MHZ"
+    rg -S --color always "$*" "$MHZ" | cut -f 1
+fi
+
+if [ "$(grep -i -c "$*" "$OPB")" != 0 ]; then
+    echo "==> From $OPB"
+    rg -S --color always "$*" "$OPB" | cut -f 1
+fi

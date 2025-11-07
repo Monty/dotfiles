@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+#  Change .xlsx or .ods file to .csv
+
+TARGET="$1"
+OUTDIR=$(dirname "$1")
+
+nohup /Applications/LibreOffice.app/Contents/MacOS/soffice --headless --convert-to \
+    csv:"Text - txt - csv (StarCalc)":9,34,UTF8,1,,0,false,true,false,false,-1 \
+    "$TARGET" --outdir "$OUTDIR" > /dev/null 2>&1 </dev/null

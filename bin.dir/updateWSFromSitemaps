@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Copy any necessary files from sitemaps subdirectories to $WS
+
+# shellcheck disable=SC2059,SC2086
+
+source "$WS/waitUntil.function"
+
+# define $ACORN_FILES $BBOX_FILES $MHZ_FILES $OPB_FILES
+# shellcheck disable=SC1091 # required_files.txt is a local file
+source "$WS/required_files.txt"
+
+ACORN_DIR="sitemaps/Acorn"
+BBOX_DIR="sitemaps/BBox"
+MHZ_DIR="sitemaps/Mhz"
+OPB_DIR="sitemaps/OPB"
+
+if waitUntil -s "Copy $ACORN_DIR files to \$WS?"; then
+    cd "$WS/$ACORN_DIR" || exit
+    printf "==> Copying latest $ACORN_DIR files to \$WS.\n"
+    cp -p $ACORN_FILES "$WS"
+    printf "$ACORN_FILES\n"
+else
+    printf "==> $ACORN_DIR files not copied to \$WS!\n\n"
+fi
+
+if waitUntil -s "Copy $BBOX_DIR files to \$WS?"; then
+    cd "$WS/$BBOX_DIR" || exit
+    printf "==> Copying latest $BBOX_DIR files to \$WS.\n"
+    cp -p $BBOX_FILES "$WS"
+    printf "$BBOX_FILES\n"
+else
+    printf "==> $BBOX_DIR files not copied to \$WS!\n\n"
+fi
+
+if waitUntil -s "Copy $MHZ_DIR files to \$WS?"; then
+    cd "$WS/$MHZ_DIR" || exit
+    printf "==> Copying latest $MHZ_DIR files to \$WS.\n"
+    cp -p $MHZ_FILES "$WS"
+    printf "$MHZ_FILES\n"
+else
+    printf "==> $MHZ_DIR files not copied to \$WS!\n\n"
+fi
+
+if waitUntil -s "Copy $OPB_DIR files to \$WS?"; then
+    cd "$WS/$OPB_DIR" || exit
+    printf "==> Copying latest $OPB_DIR files to \$WS.\n"
+    cp -p $OPB_FILES "$WS"
+    printf "$OPB_FILES\n"
+else
+    printf "==> $OPB_DIR files not copied to \$WS!\n\n"
+fi

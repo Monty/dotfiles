@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+function waitForKey() {
+    read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
+}
+
+echo 'Checking ports 8080, 8081, and 8082...'
+echo ''
+
+lsof -i :8080
+lsof -i :8081
+lsof -i :8082
+waitForKey
+
+cd ~/Projects/Spelltower_http || exit
+git checkout http
+nohup go run main.go &
+sleep 3
+tail -2 nohup.out
+
+cd ~/Projects/Spelltower_Tower || exit
+git checkout Tower
+nohup go run main.go &
+sleep 3
+tail -2 nohup.out
+
+cd ~/Projects/Spelltower_Search || exit
+git checkout Search
+nohup go run main.go &
+sleep 3
+tail -2 nohup.out
+
+echo 'Checking ports 8080, 8081, and 8082 again...'
+echo ''
+
+lsof -i :8080
+lsof -i :8081
+lsof -i :8082

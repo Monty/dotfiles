@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Copy any necessary files from sitemaps subdirectories to sitemaps subdirectories
+# on Holmes
+
+# shellcheck disable=SC2059,SC2086
+
+source "$WS/waitUntil.function"
+
+# define $ACORN_FILES $BBOX_FILES $MHZ_FILES $OPB_FILES
+# shellcheck disable=SC1091 # required_files.txt is a local file
+source "$WS/required_files.txt"
+
+ACORN_DIR="sitemaps/Acorn"
+BBOX_DIR="sitemaps/BBox"
+MHZ_DIR="sitemaps/Mhz"
+OPB_DIR="sitemaps/OPB"
+
+HOLMES_ACORN_DIR="monty@Holmes.local:~/Projects/WhatsStreamingToday/sitemaps/Acorn"
+HOLMES_BBOX_DIR="monty@Holmes.local:~/Projects/WhatsStreamingToday/sitemaps/BBox"
+HOLMES_MHZ_DIR="monty@Holmes.local:~/Projects/WhatsStreamingToday/sitemaps/Mhz"
+HOLMES_OPB_DIR="monty@Holmes.local:~/Projects/WhatsStreamingToday/sitemaps/OPB"
+
+if waitUntil -s "Copy $ACORN_DIR files to Holmes?"; then
+    cd "$WS/$ACORN_DIR" || exit
+    printf "==> Copying latest $ACORN_DIR files to Holmes.\n"
+    scp -p $ACORN_FILES "$HOLMES_ACORN_DIR"
+else
+    printf "==> $ACORN_DIR files not copied to Holmes!\n"
+fi
+
+if waitUntil -s "\nCopy $BBOX_DIR files to Holmes?"; then
+    cd "$WS/$BBOX_DIR" || exit
+    printf "==> Copying latest $BBOX_DIR files to Holmes.\n"
+    scp -p $BBOX_FILES "$HOLMES_BBOX_DIR"
+else
+    printf "==> $BBOX_DIR files not copied to Holmes!\n"
+fi
+
+if waitUntil -s "\nCopy $MHZ_DIR files to Holmes?"; then
+    cd "$WS/$MHZ_DIR" || exit
+    printf "==> Copying latest $MHZ_DIR files to Holmes.\n"
+    scp -p $MHZ_FILES "$HOLMES_MHZ_DIR"
+else
+    printf "==> $MHZ_DIR files not copied to Holmes!\n"
+fi
+
+if waitUntil -s "\nCopy $OPB_DIR files to Holmes?"; then
+    cd "$WS/$OPB_DIR" || exit
+    printf "==> Copying latest $OPB_DIR files to Holmes.\n"
+    scp -p $OPB_FILES "$HOLMES_OPB_DIR"
+else
+    printf "==> $OPB_DIR files not copied to Holmes!\n\n"
+fi

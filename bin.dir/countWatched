@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+#
+# Return the count of episodes watched of any show
+
+cd "$CE" || exit
+
+ACORN_WATCHED="Acorn_episode_count.ods"
+BBOX_WATCHED="BBox_episode_count.ods"
+MHZ_WATCHED="MHz_episode_count.ods"
+OPB_WATCHED="OPB_episode_count.ods"
+#
+BY_TITLE="/Users/monty/Library/CloudStorage/Dropbox/Monty/Shared/All_watched_by_title.ods"
+
+ALL_WATCHED=$(mktemp)
+
+printf "Title\tEp\tSeen\tLeft\tService\n" >"$ALL_WATCHED"
+{
+    xls2txt "$ACORN_WATCHED" | cut -f 1,3-6 | rg -S "$*"
+    xls2txt "$BBOX_WATCHED" | cut -f 1,3-6 | rg -S "$*"
+    xls2txt "$MHZ_WATCHED" | cut -f 1,3-6 | rg -S "$*"
+    xls2txt "$OPB_WATCHED" | cut -f 1,3-6 | rg -S "$*"
+} >>"$ALL_WATCHED"
+column -s $'\t' -t "$ALL_WATCHED" | head -1
+column -s $'\t' -t "$ALL_WATCHED" | rg --color=ansi -S "$*"
+#
+rm -f "$ALL_WATCHED"
+
+printf "\nSeen\tTitle\n"
+xls2csv "$BY_TITLE" | xsv select 1 | awk -f cleanupWatched.awk |
+    perl -pe 's/""/"/g; s/^"//; s/"$//' | uniq -c |
+    perl -pe 's/ ([0-9]+) /$1\t/' | rg -S "$*"

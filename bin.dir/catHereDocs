@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Print the portions of a shell script that are "here docs"
+# i.e
+#   cat <<EOF
+#        I can find all shows listing a person as a principal cast or crew member
+#       based on their name or nconst ID, such as nm0000123 -- which is the nconst
+#       for George Clooney.
+#   EOF
+
+awk '{if (NR == 1) printf ("==> %s\n", FILENAME)}; /cat.*<<E/,/^E/ {printf ("    %s\n"), $0}' "$@"

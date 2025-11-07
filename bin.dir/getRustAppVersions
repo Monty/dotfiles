@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# To run on Irene or Holmes
+# cd /Users/monty/Library/CloudStorage/Dropbox/Admin/System_details
+# sshAllHome bin/getRustAppVersions | decolor \
+#   >getRustAppVersions-250304.txt
+
+cargo --version | cut -d " " -f 1,2
+bat --version
+czkawka_cli --version
+diffr --version 2>&1
+difft -V
+printf "eza "
+eza --version | grep v
+fclones --version
+fd --version
+hyperfine --version
+lsd --version
+mdbook --version
+prettydiff --version
+rg -V
+rip --version
+sd --version
+stdrename --version
+xls2txt --version
+printf "xsv "
+xsv --version
+zet --version
+if [ "$USER" = "monty" ]; then
+    miniserve --version
+    stylua --version
+    tokei --version | cut -d " " -f 1,2
+    [ "$(hostname)" != "Monarch.local" ] &&
+        broot --version
+fi

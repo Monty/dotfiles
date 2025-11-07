@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#
+#  Print common cast members between multiple shows
+
+cd "$WS" || exit
+./commCast.sh "$@"
