@@ -4,7 +4,7 @@
 DOTDIR="${HOME}/dotfiles"
 cd "${HOME}" || exit
 
-printf "# Creating links to %s in %s\n" "${DOTDIR#$HOME/}" "${HOME}"
+printf "# Creating links to %s in %s\n" "${DOTDIR#"$HOME"/}" "${HOME}"
 # Skip files with . in filename
 for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg '\.'); do
     printf "==> Skipping %s\n" "${file}"
@@ -18,7 +18,7 @@ for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg -v '\.'); do
 done
 
 # .bash_aliases and .zsh_aliases should both link to dotfiles/aliases
-printf "# Creating links to dotfiles/aliases\n"
+printf "# Creating links to dotfiles/aliases in %s\n" "${HOME}"
 rm -f .bash_aliases .zsh_aliases
 printf "==> Linking .bash_aliases\n"
 ln -s "${DOTDIR}"/aliases .bash_aliases
@@ -31,10 +31,19 @@ LINKDIR="${HOME}/dotfiles/config.dir"
 TARGETDIR="${HOME}/.config"
 mkdir -p "${TARGETDIR}"
 printf "# Creating links to %s in %s\n" \
-    "${LINKDIR#$HOME/}" "${TARGETDIR#$HOME/}"
+    "${LINKDIR#"$HOME"/}" "${TARGETDIR#"$HOME"/}"
 cd "${TARGETDIR}" || exit
 for dir in $(eza -D "${LINKDIR}"); do
     printf "==> Linking %s\n" "${dir}"
     rm -rf "${dir}"
     ln -s "${LINKDIR}"/"${dir}" "${dir}"
 done
+
+# Special location required for fastfetch presets
+LINKDIR="${LINKDIR}/fastfetch"
+TARGETDIR="${HOME}/.local/share"
+mkdir -p "${TARGETDIR}"
+printf "# Creating link to %s in %s\n" \
+    "${LINKDIR#"$HOME"/}" "${TARGETDIR#"$HOME"/}"
+printf "==> Linking fastfetch\n"
+ln -sf "${LINKDIR}" "${TARGETDIR}"
