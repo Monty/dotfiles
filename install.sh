@@ -4,7 +4,7 @@
 DOTDIR="${HOME}/dotfiles"
 cd "${HOME}" || exit
 
-printf "# Setting up links to %s in %s\n" "${DOTDIR}" "${HOME}"
+printf "# Creating links to %s in %s\n" "${DOTDIR#$HOME/}" "${HOME}"
 # Skip files with . in filename
 for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg '\.'); do
     printf "==> Skipping %s\n" "${file}"
@@ -18,11 +18,11 @@ for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg -v '\.'); do
 done
 
 # .bash_aliases and .zsh_aliases should both link to dotfiles/aliases
-printf "==> Processing aliases\n"
+printf "# Creating links to dotfiles/aliases\n"
 rm -f .bash_aliases .zsh_aliases
-printf "    Linking to .bash_aliases\n"
+printf "==> Linking .bash_aliases\n"
 ln -s "${DOTDIR}"/aliases .bash_aliases
-printf "    Linking to .zsh_aliases\n"
+printf "==> Linking .zsh_aliases\n"
 ln -s "${DOTDIR}"/aliases .zsh_aliases
 
 # By convention, config files are kept in directories under ~/.config
@@ -30,7 +30,8 @@ ln -s "${DOTDIR}"/aliases .zsh_aliases
 LINKDIR="${HOME}/dotfiles/config.dir"
 TARGETDIR="${HOME}/.config"
 mkdir -p "${TARGETDIR}"
-printf "# Setting up links to %s in %s\n" "${LINKDIR}" "${TARGETDIR}"
+printf "# Creating links to %s in %s\n" \
+    "${LINKDIR#$HOME/}" "${TARGETDIR#$HOME/}"
 cd "${TARGETDIR}" || exit
 for dir in $(eza -D "${LINKDIR}"); do
     printf "==> Linking %s\n" "${dir}"
