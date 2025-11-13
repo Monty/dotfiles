@@ -1,0 +1,182 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "padding": {
+      "top": 2
+    }
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    {
+      "type": "separator",
+      "string": "—",
+      "times": 60
+    },
+    {
+      "type": "command",
+      "key": "Serial Number",
+      "text": "system_profiler SPHardwareDataType | awk '/ Serial Number/ {print $4}'"
+    },
+    {
+      "type": "command",
+      "key": "Hardware UUID",
+      "text": "system_profiler SPHardwareDataType | awk '/ Hardware UUID/ {print $3}'"
+    },
+    {
+      "type": "command",
+      "key": "System Firmware",
+      "text": "system_profiler SPHardwareDataType | awk '/ System Firmware / {print $4}'"
+    },
+    {
+      "type": "command",
+      "key": "MAC Address (en0)",
+      "text": "ifconfig | grep -A 2 ^en0 | awk '/ether/ {print $2}'"
+    },
+    {
+      "type": "command",
+      "key": "MAC Address (en1)",
+      "text": "ifconfig | grep -A 2 ^en1 | awk '/ether/ {print $2}'"
+    },
+    {
+      "type": "command",
+      "key": "Computer",
+      "text": "sysctl -n hw.model"
+    },
+    {
+      "type": "command",
+      "key": "Resolution",
+      "text": "system_profiler SPDisplaysDataType | grep Resolution: | tr -s ' ' | cut -d ' ' -f3-"
+    },
+    "btrfs",
+    {
+      "type": "separator",
+      "times": 3
+    },
+    {
+      "type": "command",
+      "key": "Go",
+      "text": "go version"
+    },
+    {
+      "type": "command",
+      "key": "Kitty",
+      "text": "/Applications/kitty.app/Contents/MacOS/kitty -v"
+    },
+    {
+      "type": "command",
+      "key": "Node",
+      "text": "node --version",
+      "format": "node {1}"
+    },
+    {
+      "type": "command",
+      "key": "Rust",
+      "text": "rustc --version"
+    },
+    {
+      "type": "separator",
+      "string": "—",
+      "times": 60
+    },
+    "bios",
+    "bootmgr",
+    "board",
+    "chassis",
+    "kernel",
+    "initsystem",
+    "uptime",
+    "loadavg",
+    "processes",
+    "packages",
+    "shell",
+    "editor",
+    "display",
+    "brightness",
+    "monitor",
+    "lm",
+    "de",
+    "wm",
+    "wmtheme",
+    "theme",
+    "icons",
+    "font",
+    "cursor",
+    "wallpaper",
+    "terminal",
+    "terminalfont",
+    "terminalsize",
+    "terminaltheme",
+    {
+      "type": "cpu",
+      "showPeCoreCount": true,
+      "temp": true
+    },
+    "cpucache",
+    "cpuusage",
+    {
+      "type": "gpu",
+      "driverSpecific": true,
+      "temp": true
+    },
+    "memory",
+    "physicalmemory",
+    {
+      "type": "swap",
+      "separate": true
+    },
+    "disk",
+    "btrfs",
+    "zpool",
+    {
+      "type": "battery",
+      "temp": true
+    },
+    "poweradapter",
+    "player",
+    "media",
+    {
+      "type": "publicip",
+      "timeout": 1000
+    },
+    {
+      "type": "localip",
+      "showIpv6": true,
+      "showMac": true,
+      "showSpeed": true,
+      "showMtu": true,
+      "showLoop": true,
+      "showFlags": true,
+      "showAllIps": true
+    },
+    "dns",
+    "wifi",
+    "datetime",
+    "locale",
+    "vulkan",
+    "opengl",
+    "opencl",
+    "users",
+    "bluetooth",
+    "bluetoothradio",
+    "sound",
+    "camera",
+    "gamepad",
+    "mouse",
+    "keyboard",
+    {
+      "type": "weather",
+      "timeout": 1000
+    },
+    "netio",
+    "diskio",
+    {
+      "type": "physicaldisk",
+      "temp": true
+    },
+    "tpm",
+    "version"
+  ]
+}
