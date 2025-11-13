@@ -65,11 +65,7 @@
     },
     "gpu",
     "memory",
-    {
-      "type": "disk",
-      "key": "Disk",
-      "format": "{size-used} \/ {size-total} ({size-percentage}) - {filesystem}"
-    },
+    "disk",
     {
       "type": "command",
       "key": "Resolution",
