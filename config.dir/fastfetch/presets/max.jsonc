@@ -58,7 +58,7 @@
     {
       "type": "command",
       "key": "Go",
-      "text": "go version"
+      "text": "/usr/local/go/bin/go version"
     },
     {
       "type": "command",
@@ -68,7 +68,7 @@
     {
       "type": "command",
       "key": "Node",
-      "text": "node --version",
+      "text": "$HOME/.volta/bin/node --version",
       "format": "node {1}"
     },
     {
