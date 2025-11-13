@@ -63,7 +63,7 @@
     {
       "type": "command",
       "key": "Kitty",
-      "text": "/Applications/kitty.app/Contents/MacOS/kitty -v"
+      "text": "kitty -v"
     },
     {
       "type": "command",
