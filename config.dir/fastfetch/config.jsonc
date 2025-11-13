@@ -65,10 +65,7 @@
       "spaceBeforeUnit": "default"
     },
     "percent": {
-      "type": [
-        "num",
-        "num-color"
-      ],
+      "type": ["num", "num-color"],
       "ndigits": 0,
       "color": {
         "green": "32",
@@ -153,9 +150,7 @@
     {
       "type": "packages",
       "keyIcon": "󰏖",
-      "disabled": [
-        "winget"
-      ],
+      "disabled": ["winget"],
       "combined": false
     },
     {
@@ -307,10 +302,7 @@
       "paddingLeft": 0,
       "block": {
         "width": 3,
-        "range": [
-          0,
-          15
-        ]
+        "range": [0, 15]
       }
     }
   ]
