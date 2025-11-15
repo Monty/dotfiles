@@ -16,7 +16,7 @@ for file in $(fd -d 1 -t f); do
     if [ -f "${LINKDIR}/${file}" ] && file "${LINKDIR}/${file}" |
         grep -q 'script text executable'; then
         if ! cmp -s "${file}" "${LINKDIR}/${file}"; then
-            printf "==> $WARNING Skipping %s as %s is different\n" \
+            printf "==> $WARNING Skipping %s as ~/%s is different\n" \
                 "${file}" "${LINKDIR#"$HOME"/}/${file}"
         else
             printf "==> Linking %s\n" "${file}"
