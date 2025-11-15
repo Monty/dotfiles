@@ -19,11 +19,10 @@ done
 
 # .bash_aliases and .zsh_aliases should both link to dotfiles/aliases
 printf "# Creating links to dotfiles/aliases in %s\n" "${HOME}"
-rm -f .bash_aliases .zsh_aliases
 printf "==> Linking .bash_aliases\n"
-ln -s "${DOTDIR}"/aliases .bash_aliases
+ln -sf "${DOTDIR}"/aliases .bash_aliases
 printf "==> Linking .zsh_aliases\n"
-ln -s "${DOTDIR}"/aliases .zsh_aliases
+ln -sf "${DOTDIR}"/aliases .zsh_aliases
 
 # By convention, config files are kept in directories under ~/.config
 # Create links in ~/.config to directories in dotfiles/config.dir
