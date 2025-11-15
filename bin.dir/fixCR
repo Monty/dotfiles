@@ -1,0 +1,2 @@
+#!/usr/bin/env perl -pi
+tr/\r/\n/
