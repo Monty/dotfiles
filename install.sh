@@ -6,10 +6,17 @@ set -euo pipefail
 
 # Check for dry run arguments
 DRY_RUN=false
-if [[ ${1-} =~ ^(--dry-run|-d)$ ]]; then
+case ${1-} in
+"") ;; # no argument → no dry run, no error
+-d | --dry-run)
     DRY_RUN=true
     printf "==> Starting dry run...\n"
-fi
+    ;;
+*)
+    printf "[Warning] Ignoring invalid argument: '%s'\n" "$1" >&2
+    exit 1
+    ;;
+esac
 
 # Function to execute command unless in dry-run mode
 maybe_run() {
