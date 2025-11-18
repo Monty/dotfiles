@@ -4,13 +4,17 @@
 # Prevent cascading or pipe failures
 set -euo pipefail
 
-# Check for dry run arguments
+# Check for either dry run or verbose option
 DRY_RUN=false
+VERBOSE=false
 case ${1-} in
 "") ;; # no argument → no dry run, no error
 -d | --dry-run)
     DRY_RUN=true
     printf "==> Starting dry run...\n"
+    ;;
+-v | --verbose)
+    VERBOSE=true
     ;;
 *)
     printf "[Warning] Ignoring invalid argument: '%s'\n" "$1" >&2
@@ -31,7 +35,10 @@ link_if_needed() {
     local source="$1"
     local target="$2"
     local label="${3:-$target}"
-    if [ -L "${target}" ] && [ "$(readlink "${target}")" = "${source}" ]; then
+    if [[ -L ${target} ]] &&
+        [[ "$(readlink "${target}")" == "${source}" ]]; then
+        [[ $VERBOSE == true ]] &&
+            printf "    Skipping %s\n" "$label"
         return 0
     else
         printf "    Linking %s\n" "${label}"
@@ -43,9 +50,17 @@ link_if_needed() {
 DOTDIR="${HOME}/dotfiles"
 cd "${HOME}" || exit
 
-printf -- "--- Note: Some sections may have no links to create or update\n"
+[[ $VERBOSE == false ]] &&
+    printf -- "--- Note: Some sections may have no links to create or update\n"
 
-printf "==> Creating links to %s in %s\n" "${DOTDIR#"$HOME"/}" "${HOME}"
+printf "# Creating links to %s in %s\n" "${DOTDIR#"$HOME"/}" "${HOME}"
+
+# Skip files with . in filename
+if [[ $VERBOSE == true ]]; then
+    for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg '\.'); do
+        printf "    Ignoring %s\n" "${file}"
+    done
+fi
 
 # Link files without . in filename
 for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg -v '\.'); do
@@ -53,7 +68,7 @@ for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg -v '\.'); do
 done
 
 # .bash_aliases and .zsh_aliases should both link to dotfiles/aliases
-printf "==> Creating links to dotfiles/aliases in %s\n" "${HOME}"
+printf "# Creating links to dotfiles/aliases in %s\n" "${HOME}"
 for aliasfile in .bash_aliases .zsh_aliases; do
     link_if_needed "${DOTDIR}/aliases" "${aliasfile}" "${aliasfile}"
 done
@@ -63,7 +78,7 @@ done
 LINKDIR="${HOME}/dotfiles/config.dir"
 TARGETDIR="${HOME}/.config"
 maybe_run mkdir -p "${TARGETDIR}"
-printf "==> Creating links to %s in %s\n" \
+printf "# Creating links to %s in %s\n" \
     "${LINKDIR#"$HOME"/}" "${TARGETDIR#"$HOME"/}"
 cd "${TARGETDIR}" || exit
 for dir in $(eza -D "${LINKDIR}"); do
@@ -74,6 +89,6 @@ done
 LINKDIR="${LINKDIR}/fastfetch"
 TARGETDIR="${HOME}/.local/share"
 maybe_run mkdir -p "${TARGETDIR}"
-printf "==> Creating link to %s in %s\n" \
+printf "# Creating link to %s in %s\n" \
     "${LINKDIR#"$HOME"/}" "${TARGETDIR#"$HOME"/}"
 link_if_needed "${LINKDIR}" "${TARGETDIR}/fastfetch" "fastfetch"
