@@ -18,56 +18,62 @@ case ${1-} in
     ;;
 esac
 
-# Function to execute command unless in dry-run mode
+# Helper function to execute command unless in dry-run mode
 maybe_run() {
     if [[ $DRY_RUN == false ]]; then
         "$@"
     fi
 }
 
+# Helper function to create or skip symbolic links
+# Usage: link_if_needed <source> <target> <label>
+link_if_needed() {
+    local source="$1"
+    local target="$2"
+    local label="${3:-$target}"
+    if [ -L "${target}" ] && [ "$(readlink "${target}")" = "${source}" ]; then
+        return 0
+    else
+        printf "    Linking %s\n" "${label}"
+        maybe_run rm -rf "${target}"
+        maybe_run ln -s "${source}" "${target}"
+    fi
+}
+
 DOTDIR="${HOME}/dotfiles"
 cd "${HOME}" || exit
 
-printf "# Creating links to %s in %s\n" "${DOTDIR#"$HOME"/}" "${HOME}"
+printf -- "--- Note: Some sections may have no links to create or update\n"
 
-# Skip files with . in filename
-for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg '\.'); do
-    printf "==> Ignoring %s\n" "${file}"
-done
+printf "==> Creating links to %s in %s\n" "${DOTDIR#"$HOME"/}" "${HOME}"
 
 # Link files without . in filename
 for file in $(eza -1 "${DOTDIR}" | rg -v "aliases$" | rg -v '\.'); do
-    printf "==> Linking .%s\n" "${file}"
-    maybe_run rm -f ."${file}"
-    maybe_run ln -s "${DOTDIR}"/"${file}" ."${file}" # Add a leading . and link
+    link_if_needed "${DOTDIR}/${file}" ".${file}" ".${file}"
 done
 
 # .bash_aliases and .zsh_aliases should both link to dotfiles/aliases
-printf "# Creating links to dotfiles/aliases in %s\n" "${HOME}"
-printf "==> Linking .bash_aliases\n"
-maybe_run ln -sf "${DOTDIR}"/aliases .bash_aliases
-printf "==> Linking .zsh_aliases\n"
-maybe_run ln -sf "${DOTDIR}"/aliases .zsh_aliases
+printf "==> Creating links to dotfiles/aliases in %s\n" "${HOME}"
+for aliasfile in .bash_aliases .zsh_aliases; do
+    link_if_needed "${DOTDIR}/aliases" "${aliasfile}" "${aliasfile}"
+done
 
 # By convention, config files are kept in directories under ~/.config
 # Create links in ~/.config to directories in dotfiles/config.dir
 LINKDIR="${HOME}/dotfiles/config.dir"
 TARGETDIR="${HOME}/.config"
 maybe_run mkdir -p "${TARGETDIR}"
-printf "# Creating links to %s in %s\n" \
+printf "==> Creating links to %s in %s\n" \
     "${LINKDIR#"$HOME"/}" "${TARGETDIR#"$HOME"/}"
 cd "${TARGETDIR}" || exit
 for dir in $(eza -D "${LINKDIR}"); do
-    printf "==> Linking %s\n" "${dir}"
-    maybe_run rm -rf "${dir}"
-    maybe_run ln -s "${LINKDIR}"/"${dir}" "${dir}"
+    link_if_needed "${LINKDIR}/${dir}" "${dir}" "${dir}"
 done
 
 # Special location required for fastfetch presets
 LINKDIR="${LINKDIR}/fastfetch"
 TARGETDIR="${HOME}/.local/share"
 maybe_run mkdir -p "${TARGETDIR}"
-printf "# Creating link to %s in %s\n" \
+printf "==> Creating link to %s in %s\n" \
     "${LINKDIR#"$HOME"/}" "${TARGETDIR#"$HOME"/}"
-printf "==> Linking fastfetch\n"
-maybe_run ln -sf "${LINKDIR}" "${TARGETDIR}"
+link_if_needed "${LINKDIR}" "${TARGETDIR}/fastfetch" "fastfetch"
