@@ -50,8 +50,8 @@ link_if_needed() {
 DOTDIR="${HOME}/dotfiles"
 cd "${HOME}" || exit
 
-[[ $VERBOSE == false ]] &&
-    printf -- "--- Note: Some sections may have no links to create or update\n"
+[[ $VERBOSE == false ]] && printf "%s\n" \
+    "--- Note: Some sections may have no links to create or update"
 
 printf "# Creating links to %s in %s\n" "${DOTDIR#"$HOME"/}" "${HOME}"
 
