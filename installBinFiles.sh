@@ -7,20 +7,26 @@ set -euo pipefail
 # Check for either dry run or verbose option
 DRY_RUN=false
 VERBOSE=false
-case ${1-} in
-"") ;; # no argument → no dry run, no error
--d | --dry-run)
-    DRY_RUN=true
-    printf "==> Starting dry run...\n"
-    ;;
--v | --verbose)
-    VERBOSE=true
-    ;;
-*)
-    printf "[Warning] Ignoring invalid argument: '%s'\n" "$1" >&2
-    exit 1
-    ;;
-esac
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -d | --dry-run)
+        DRY_RUN=true
+        shift
+        ;;
+    -v | --verbose)
+        VERBOSE=true
+        shift
+        ;;
+    *)
+        printf "[Error] Invalid argument: '%s'\n" "$1" >&2
+        exit 1
+        ;;
+    esac
+done
+
+if [[ $DRY_RUN == true ]]; then
+    printf "==> Starting dry run...\n\n"
+fi
 
 # Helper function to execute command unless in dry-run mode
 maybe_run() {
