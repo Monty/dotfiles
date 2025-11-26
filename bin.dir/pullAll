@@ -1,28 +1,65 @@
 #!/usr/bin/env bash
 
+# Prevent cascading or pipe failures
+set -euo pipefail
+
+# Check for dry run option
+DRY_RUN=false
+FD_ARGS=()
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    --dry-run)
+        DRY_RUN=true
+        printf "==> Starting dry run...\n\n"
+        shift
+        ;;
+    *)
+        FD_ARGS+=("$1")
+        shift
+        ;;
+    esac
+done
+
+# Helper function to execute command unless in dry-run mode
+maybe_run() {
+    if [[ $DRY_RUN == false ]]; then
+        "$@"
+    fi
+}
+
 cat <<EOF
-This will update all git repositories in any subdirectories
-you can add "-d 2" do only descend one level
+This will update the git repositories in any subdirectories
+    Use "--dry-run" to preview actions that would be taken
+    Use "-d 2" to prevent recursion
 
 EOF
 
 read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
+echo
 
 # These repos in ~/Projects should be skipped
 skippers=":CountEpisodes:TeaboxScraper-new:tumblr_blog:guess5:wordled:wordled-smaller:worldle:Spell-tower-solver:Cross-country_Road_Trip:Spelltower_Magic:Spelltower_http:"
 
 savedDirectory="$PWD"
-for i in $(fd -HI --glob "$@" -td -p '**/.git' -X ls -1d '{//}'); do
+for i in $(fd -HI --glob ${FD_ARGS[@]+"${FD_ARGS[@]}"} -td -p '**/.git' -X ls -1d '{//}'); do
     cd "${i}" || exit
     repo=":$(basename "${i}"):"
     if [ -e .git/config ]; then
         if grep -q "$repo" <<<"$skippers"; then
             echo "==> Skipping ${i}"
         else
-            echo "==> Pulling ${i}"
-            git pull
+            # Fetch updates silently to check if there are changes
+            git fetch --quiet
+
+            # Check if local branch is behind remote
+            LOCAL=$(git rev-parse @)
+            REMOTE=$(git rev-parse @{u} 2>/dev/null)
+
+            if [ -n "$REMOTE" ] && [ "$LOCAL" != "$REMOTE" ]; then
+                echo "==> Pulling ${i}"
+                maybe_run git pull
+            fi
         fi
-        echo
     fi
     cd "$savedDirectory" || exit
 done
