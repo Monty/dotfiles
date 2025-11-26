@@ -166,10 +166,6 @@
     "gamepad",
     "mouse",
     "keyboard",
-    {
-      "type": "weather",
-      "timeout": 1000
-    },
     "netio",
     "diskio",
     {
