@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
-# Update all git repositories in any subdirectories
-# add "-d 2" do only descend one level
+
+cat <<EOF
+This will update all git repositories in any subdirectories
+you can add "-d 2" do only descend one level
+
+EOF
+
+read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
 
 # These repos in ~/Projects should be skipped
 skippers=":CountEpisodes:TeaboxScraper-new:tumblr_blog:guess5:wordled:wordled-smaller:worldle:Spell-tower-solver:Cross-country_Road_Trip:Spelltower_Magic:Spelltower_http:"
