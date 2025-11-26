@@ -44,18 +44,22 @@ savedDirectory="$PWD"
 for i in $(fd -HI --glob ${FD_ARGS[@]+"${FD_ARGS[@]}"} -td -p '**/.git' -X ls -1d '{//}'); do
     cd "${i}" || exit
     repo=":$(basename "${i}"):"
-    if [ -e .git/config ]; then
+    if [[ -e .git/config ]]; then
         if grep -q "$repo" <<<"$skippers"; then
             echo "==> Skipping ${i}"
         else
             # Fetch updates silently to check if there are changes
-            git fetch --quiet
+            git fetch --quiet 2>/dev/null || true
 
             # Check if local branch is behind remote
-            LOCAL=$(git rev-parse @)
-            REMOTE=$(git rev-parse @{u} 2>/dev/null)
+            LOCAL=$(git rev-parse @ 2>/dev/null)
+            REMOTE=$(git rev-parse '@{u}' 2>/dev/null || echo "")
+            BASE=$(git merge-base @ '@{u}' 2>/dev/null || echo "")
 
-            if [ -n "$REMOTE" ] && [ "$LOCAL" != "$REMOTE" ]; then
+            # Only pull if we have a remote and local is behind remote
+            if [[ -n "$REMOTE" ]] && [[ -n "$BASE" ]] &&
+                [[ "$LOCAL" != "$REMOTE" ]] &&
+                [[ "$LOCAL" = "$BASE" ]]; then
                 echo "==> Pulling ${i}"
                 maybe_run git pull
             fi
