@@ -38,7 +38,7 @@ read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
 echo
 
 # These repos in ~/Projects should be skipped
-skippers=":CountEpisodes:TeaboxScraper-new:tumblr_blog:guess5:wordled:wordled-smaller:worldle:Spell-tower-solver:Cross-country_Road_Trip:Spelltower_Magic:Spelltower_http:"
+skippers=":nvim-local-shares:CountEpisodes:TeaboxScraper-new:tumblr_blog:guess5:wordled:wordled-smaller:worldle:Spell-tower-solver:Cross-country_Road_Trip:Spelltower_Magic:Spelltower_http:"
 
 savedDirectory="$PWD"
 for i in $(fd -HI --glob ${FD_ARGS[@]+"${FD_ARGS[@]}"} -td -p '**/.git' -X ls -1d '{//}'); do
