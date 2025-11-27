@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Update the git repositories in any subdirectories
 
 # Prevent cascading or pipe failures
 set -euo pipefail
@@ -36,53 +37,66 @@ WARNING="\e[0;31m[Warning]\e[0m"
 
 cat <<EOF
 This will update the git repositories in any subdirectories
-    Use "--dry-run" to preview actions that would be taken
     Use "-d 2" to prevent recursion
+    Use "--dry-run" to preview actions that would be taken
+    Use "-v" or "--verbose" to see every repository checked
 
 EOF
 
 read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
 echo ""
 
-# These repos in ~/Projects should be skipped
-skippers=":CountEpisodes:TeaboxScraper-new:tumblr_blog:guess5:wordled:wordled-smaller:worldle:Spell-tower-solver:Cross-country_Road_Trip:Spelltower_Magic:Spelltower_http:"
+# Directories to skip entirely (will show one message per directory)
+skip_dirs=("nvim-local-shares")
+
+# Track which skip directories we've already reported (as a string)
+reported_skips=""
 
 savedDirectory="$PWD"
 for i in $(fd -HI --glob ${FD_ARGS[@]+"${FD_ARGS[@]}"} -td -p '**/.git' -X ls -1d '{//}'); do
     cd "${i}" || exit
-    # Skip entire nvim-local-shares directory
-    if [[ ${i} == *"/nvim-local-shares/"* ]]; then
-        printf "==> Skipping %s\n" "${i}"
+
+    # Check if this repo is in a skip directory
+    skip_this=false
+    for skip_dir in "${skip_dirs[@]}"; do
+        if [[ ${i} == *"/${skip_dir}/"* ]]; then
+            if [[ ! $reported_skips =~ :$skip_dir: ]]; then
+                printf "==> Skipping all repos in %s/\n" "${skip_dir}"
+                reported_skips="${reported_skips}:${skip_dir}:"
+            fi
+            skip_this=true
+            break
+        fi
+    done
+
+    if [[ $skip_this == true ]]; then
         cd "$savedDirectory" || exit
         continue
     fi
+
     repo=":$(basename "${i}"):"
     if [[ -e .git/config ]]; then
-        if grep -q "$repo" <<<"$skippers"; then
-            printf "==> Skipping %s\n" "${i}"
-        else
-            # Check if repo has a remote configured
-            if ! git remote | grep -q .; then
-                printf "==> $WARNING No remote in %s\n" "${i}"
-                cd "$savedDirectory" || exit
-                continue
-            fi
-            [[ $VERBOSE == true ]] && printf "==> Checking %s\n" "${i}"
-            # Fetch updates silently to check if there are changes
-            git fetch --quiet 2>/dev/null || true
+        # Check if repo has a remote configured
+        if ! git remote | grep -q .; then
+            printf "==> $WARNING No remote in %s\n" "${i}"
+            cd "$savedDirectory" || exit
+            continue
+        fi
+        [[ $VERBOSE == true ]] && printf "==> Checking %s\n" "${i}"
+        # Fetch updates silently to check if there are changes
+        git fetch --quiet 2>/dev/null || true
 
-            # Check if local branch is behind remote
-            LOCAL=$(git rev-parse @ 2>/dev/null)
-            REMOTE=$(git rev-parse '@{u}' 2>/dev/null || echo "")
-            BASE=$(git merge-base @ '@{u}' 2>/dev/null || echo "")
+        # Check if local branch is behind remote
+        LOCAL=$(git rev-parse @ 2>/dev/null)
+        REMOTE=$(git rev-parse '@{u}' 2>/dev/null || echo "")
+        BASE=$(git merge-base @ '@{u}' 2>/dev/null || echo "")
 
-            # Only pull if we have a remote and local is behind remote
-            if [[ -n $REMOTE ]] && [[ -n $BASE ]] &&
-                [[ $LOCAL != "$REMOTE" ]] &&
-                [[ $LOCAL == "$BASE" ]]; then
-                printf "==> Pulling %s\n" "${i}"
-                maybe_run git pull
-            fi
+        # Only pull if we have a remote and local is behind remote
+        if [[ -n $REMOTE ]] && [[ -n $BASE ]] &&
+            [[ $LOCAL != "$REMOTE" ]] &&
+            [[ $LOCAL == "$BASE" ]]; then
+            printf "==> Pulling %s\n" "${i}"
+            maybe_run git pull
         fi
     fi
     cd "$savedDirectory" || exit
