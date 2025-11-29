@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Replace XX ... XX sections as appropriate
-# XX <Basic description> XX
+# Replace XX... sections as appropriate
+# XX <Basic description>
 # shellcheck disable=SC2034
 
 # Prevent cascading or pipe failures
@@ -71,7 +71,7 @@ maybe_run() {
 }
 
 cat <<EOF >&2
-This will XX <what it will do> XX
+This will XX <what it will do>
     Use "-d | --dry-run" to preview actions that would be taken
     Use "-v | --verbose" to see every action
 
@@ -81,17 +81,17 @@ read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
 printf "\n\n"
 
 [[ $VERBOSE == false ]] && printf "==> $INFO %s\n" \
-    "XX <if not verbose> XX"
+    "XX <if not verbose>"
 
 [[ $VERBOSE == true ]] && printf "==> $INFO %s\n" \
-    "XX <if verbose> XX"
+    "XX <if verbose>"
 
 if [[ $VERBOSE == true ]]; then
     printf "==> $INFO %s\n" \
-        "XX <long if verbose> XX"
+        "XX <long if verbose>"
 else
     printf "==> $INFO %s\n" \
-        "XX <long if not verbose> XX"
+        "XX <long if not verbose>"
 fi
 
 # Argument with count
@@ -105,4 +105,4 @@ for i in ${FD_ARGS[@]+"${FD_ARGS[@]}"}; do
 done
 
 # As many as needed -- replace everything after maybe_run
-maybe_run printf "==> $INFO %s\n" "XX <maybe_run ran this command> XX"
+maybe_run printf "==> $INFO %s\n" "XX <maybe_run ran this command>"
