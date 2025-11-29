@@ -59,6 +59,14 @@ printf "\n\n"
 [[ $VERBOSE == true ]] && printf "==> $INFO %s\n" \
     "XX <if verbose> XX"
 
+if [[ $VERBOSE == true ]]; then
+    printf "==> $INFO %s\n" \
+    "XX <long if verbose> XX"
+else
+    printf "==> $INFO %s\n" \
+    "XX <long if not verbose> XX"
+fi
+
 # Argument with count
 for i in "${!FD_ARGS[@]}"; do
     printf 'Argument # %d: %s\n' "$((i + 1))" "${FD_ARGS[$i]}"

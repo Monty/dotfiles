@@ -58,5 +58,13 @@ printf "\n\n"
 [[ $VERBOSE == true ]] && printf "==> $INFO %s\n" \
     "XX <if verbose> XX"
 
+if [[ $VERBOSE == true ]]; then
+    printf "==> $INFO %s\n" \
+    "XX <long if verbose> XX"
+else
+    printf "==> $INFO %s\n" \
+    "XX <long if not verbose> XX"
+fi
+
 # As many as needed -- replace everything after maybe_run
 maybe_run printf "==> $INFO %s\n" "XX <maybe_run ran this command> XX"
