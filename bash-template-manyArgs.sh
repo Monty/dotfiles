@@ -10,12 +10,39 @@ ERROR="\e[0;31m[Error]\e[0m"
 WARNING="\e[0;33m[Warning]\e[0m"
 INFO="\e[0;34m[Info]\e[0m"
 
+help() {
+    cat <<EOF
+bash-template-manyArgs.sh <version number>
+
+Copy and edit this template to create a bash script
+that accepts both options and regular arguments.
+
+USAGE:
+    <command> [OPTIONS...] [FILE]...
+
+ARGUMENTS:
+    [FILE]...  File(s) to process
+
+OPTIONS:
+    -h | --help     Print this message.
+    -d | --dry-run  Preview actions that would be taken
+    -v | --verbose  See all actions that would normally have no output
+
+EOF
+}
+
 # Check for either dry run or verbose option
 DRY_RUN=false
 VERBOSE=false
 FD_ARGS=()
 while [[ $# -gt 0 ]]; do
     case $1 in
+    -h | --help)
+        help
+        shift
+        # or
+        exit
+        ;;
     -d | --dry-run)
         DRY_RUN=true
         shift
@@ -61,10 +88,10 @@ printf "\n\n"
 
 if [[ $VERBOSE == true ]]; then
     printf "==> $INFO %s\n" \
-    "XX <long if verbose> XX"
+        "XX <long if verbose> XX"
 else
     printf "==> $INFO %s\n" \
-    "XX <long if not verbose> XX"
+        "XX <long if not verbose> XX"
 fi
 
 # Argument with count
