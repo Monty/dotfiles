@@ -6,6 +6,14 @@
 # Prevent cascading or pipe failures
 set -euo pipefail
 
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+#
+function cleanup() {
+    printf "\n"
+}
+
 ERROR="\e[0;31m[Error]\e[0m"
 WARNING="\e[0;33m[Warning]\e[0m"
 INFO="\e[0;34m[Info]\e[0m"
