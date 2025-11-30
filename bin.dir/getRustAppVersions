@@ -1,35 +1,81 @@
 #!/usr/bin/env bash
+# Get the app version of relevant files in ~/.cargo/bin
 
-# To run on Irene or Holmes
-# cd /Users/monty/Library/CloudStorage/Dropbox/Admin/System_details
-# sshAllHome bin/getRustAppVersions | decolor \
-#   >getRustAppVersions-250304.txt
+# Prevent cascading or pipe failures
+set -euo pipefail
 
-cargo --version | cut -d " " -f 1,2
-bat --version
-czkawka_cli --version
-diffr --version 2>&1
-difft -V
-printf "eza "
-eza --version | grep v
-fclones --version
-fd --version
-hyperfine --version
-lsd --version
-mdbook --version
-prettydiff --version
-rg -V
-rip --version
-sd --version
-stdrename --version
-xls2txt --version
-printf "xsv "
-xsv --version
-zet --version
-if [ "$USER" = "monty" ]; then
-    miniserve --version
-    stylua --version
-    tokei --version | cut -d " " -f 1,2
-    [ "$(hostname)" != "Monarch.local" ] &&
-        broot --version
+# trap ctrl-c -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+#
+function cleanup() {
+    printf "\n"
+}
+
+ERROR="\e[0;31m[Error]\e[0m"
+
+help() {
+    cat <<EOF
+List the semantic version of apps in ~/.cargo/bin
+
+USAGE:
+    getRustAppVersions [OPTIONS...]
+
+OPTIONS:
+    -h | --help     Print this message.
+    -v | --verbose  Print --version output as well as semantic version
+    e.g.,
+        ==> tokei --version
+        tokei 12.1.2 compiled with serialization support: json
+        >>> Semantic version
+        tokei 12.1.2
+
+EOF
+}
+
+# Check for a verbose option
+VERBOSE=false
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        help
+        exit
+        ;;
+    -v | --verbose)
+        VERBOSE=true
+        shift
+        ;;
+    *)
+        printf "$ERROR Invalid argument: '%s'\n" "$1" >&2
+        exit 1
+        ;;
+    esac
+done
+
+# Kludge for lychee or other commands needing openssl-3 dylibs
+# uses dylibs from /Applications/kitty.app/Contents/Frameworks/
+if [[ -z ${DYLD_LIBRARY_PATH:-} ]]; then
+    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks"
+else
+    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks:$DYLD_LIBRARY_PATH"
 fi
+
+# Extract the semantic version of a complex --version output
+get_semver() {
+    "$1" --version 2>&1 |
+        grep -om1 -E 'v?[0-9]+\.[0-9]+(\.[0-9]+)?' ||
+        printf "(unknown)\n"
+}
+
+while read -r command; do
+    semantic_version=$(get_semver "$command")
+    if [[ $VERBOSE == true ]]; then
+        printf "==> %s --version\n" "$command"
+        "$command" --version
+        printf ">>> Semantic version\n%s %s\n" \
+            "$command" "$semantic_version"
+        echo ""
+    else
+        printf "%s %s\n" "$command" "$semantic_version"
+    fi
+done < <(fd -I -t f . ~/.cargo/bin -0 |
+    xargs -0 -n1 basename | rg -v '^nu_')
