@@ -11,6 +11,7 @@ trap 'cleanup; exit 130' INT
 trap 'cleanup; exit 143' TERM
 #
 function cleanup() {
+    stty sane
     printf "\n"
 }
 
