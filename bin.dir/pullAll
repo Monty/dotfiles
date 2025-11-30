@@ -4,24 +4,60 @@
 # Prevent cascading or pipe failures
 set -euo pipefail
 
-# Check for dry run option
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+#
+function cleanup() {
+    stty sane
+    printf "\n"
+}
+
+ERROR="\e[0;31m[Error]\e[0m"
+WARNING="\e[0;33m[Warning]\e[0m"
+INFO="\e[0;34m[Info]\e[0m"
+
+help() {
+    cat <<EOF
+Update git repositories in any subdirectories
+
+USAGE:
+    pullAll [OPTIONS]
+
+OPTIONS:
+    -h | --help      Print this message
+    -d | --dry-run   Preview update actions that would be taken
+    -v | --verbose   See every repository that is checked
+    -d[2-9]          Set maximum search depth (default: no maximum)
+
+EOF
+}
+
+# Check for options
 DRY_RUN=false
 VERBOSE=false
 FD_ARGS=()
 while [[ $# -gt 0 ]]; do
     case $1 in
-    --dry-run)
+    -h | --help)
+        help
+        exit
+        ;;
+    -d | --dry-run)
         DRY_RUN=true
-        printf "==> Starting dry run...\n\n"
         shift
         ;;
     -v | --verbose)
         VERBOSE=true
         shift
         ;;
-    *)
-        FD_ARGS+=("$1")
+    -d[2-9])
+        depth="${1#-d}" # Strip off the -d prefix
+        FD_ARGS=("-d" "$depth")
         shift
+        ;;
+    *)
+        printf "==> $ERROR Invalid argument: '%s'\n" "$1" >&2
+        exit 1
         ;;
     esac
 done
@@ -33,15 +69,11 @@ maybe_run() {
     fi
 }
 
-WARNING="\e[0;31m[Warning]\e[0m"
+# shellcheck disable=SC2059
+[[ $DRY_RUN == true ]] && printf "==> $INFO Starting dry run...\n\n"
 
-cat <<EOF
-This will update the git repositories in any subdirectories
-    Use "-d 2" to prevent recursion
-    Use "--dry-run" to preview actions that would be taken
-    Use "-v" or "--verbose" to see every repository checked
-
-EOF
+# Explain before running
+help
 
 read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
 echo ""
@@ -74,7 +106,6 @@ for i in $(fd -HI --glob ${FD_ARGS[@]+"${FD_ARGS[@]}"} -td -p '**/.git' -X ls -1
         continue
     fi
 
-    repo=":$(basename "${i}"):"
     if [[ -e .git/config ]]; then
         # Check if repo has a remote configured
         if ! git remote | grep -q .; then
