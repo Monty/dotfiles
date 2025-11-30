@@ -43,7 +43,7 @@ EOF
 # Check for either dry run or verbose option
 DRY_RUN=false
 VERBOSE=false
-FD_ARGS=()
+ARGS=()
 while [[ $# -gt 0 ]]; do
     case $1 in
     -h | --help)
@@ -61,7 +61,7 @@ while [[ $# -gt 0 ]]; do
         shift
         ;;
     *)
-        FD_ARGS+=("$1")
+        ARGS+=("$1")
         shift
         ;;
     esac
@@ -104,12 +104,12 @@ else
 fi
 
 # Argument with count
-for i in "${!FD_ARGS[@]}"; do
-    printf 'Argument # %d: %s\n' "$((i + 1))" "${FD_ARGS[$i]}"
+for i in "${!ARGS[@]}"; do
+    printf 'Argument # %d: %s\n' "$((i + 1))" "${ARGS[$i]}"
 done
 
 # Argument without count
-for i in ${FD_ARGS[@]+"${FD_ARGS[@]}"}; do
+for i in ${ARGS[@]+"${ARGS[@]}"}; do
     printf 'Argument: %s\n' "${i}"
 done
 
