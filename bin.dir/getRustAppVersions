@@ -8,6 +8,7 @@ set -euo pipefail
 trap 'cleanup; exit 130' INT
 #
 function cleanup() {
+    stty sane
     printf "\n"
 }
 
@@ -32,7 +33,7 @@ OPTIONS:
 EOF
 }
 
-# Check for a verbose option
+# Check for options
 VERBOSE=false
 while [[ $# -gt 0 ]]; do
     case $1 in
