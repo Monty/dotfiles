@@ -27,7 +27,7 @@ Copy and edit this template to create a bash script
 that accepts both options and regular arguments.
 
 USAGE:
-    <command> [OPTIONS...] [FILE]...
+    <command> [OPTIONS] [FILE]...
 
 ARGUMENTS:
     [FILE]...  File(s) to process
@@ -40,7 +40,7 @@ OPTIONS:
 EOF
 }
 
-# Check for either dry run or verbose option
+# Check for options
 DRY_RUN=false
 VERBOSE=false
 ARGS=()
@@ -67,11 +67,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# shellcheck disable=SC2059
-if [[ $DRY_RUN == true ]]; then
-    printf "==> $INFO Starting dry run...\n\n"
-fi
-
 # Helper function to execute command unless in dry-run mode
 maybe_run() {
     if [[ $DRY_RUN == false ]]; then
@@ -79,12 +74,11 @@ maybe_run() {
     fi
 }
 
-cat <<EOF >&2
-This will XX <what it will do>
-    Use "-d | --dry-run" to preview actions that would be taken
-    Use "-v | --verbose" to see every action
+# shellcheck disable=SC2059
+[[ $DRY_RUN == true ]] && printf "==> $INFO Starting dry run...\n\n"
 
-EOF
+# Explain before running
+help
 
 read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
 printf "\n\n"
