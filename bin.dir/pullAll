@@ -18,16 +18,26 @@ INFO="\e[0;34m[Info]\e[0m"
 
 help() {
     cat <<EOF
-Update git repositories in any subdirectories
+pullAll
+
+Updates git repositories in subdirectories by pulling changes from
+their remotes. Only pulls when the local branch is behind the remote
+(fast-forward updates).
+
+BEHAVIOR:
+    - Searches for .git directories in subdirectories
+    - Skips repositories without remotes
+    - Only pulls when local branch is behind (safe, no conflicts)
+    - Shows interactive confirmation before running
 
 USAGE:
     pullAll [OPTIONS]
 
 OPTIONS:
-    -h | --help      Print this message
-    -d | --dry-run   Preview update actions that would be taken
-    -v | --verbose   See every repository that is checked
-    -d[2-9]          Set maximum search depth (default: no maximum)
+    -h, --help      Show this help message and exit
+    -d, --dry-run   Preview repositories that would be updated
+    -v, --verbose   Show all repositories checked (not just updated ones)
+    -d[2-9]         Limit subdirectory search depth (e.g., -d3 for 3 levels)
 
 EOF
 }

@@ -16,19 +16,24 @@ ERROR="\e[0;31m[Error]\e[0m"
 
 help() {
     cat <<EOF
-List the semantic version of apps in ~/.cargo/bin
+getRustAppVersions
+
+Lists installed Rust applications from ~/.cargo/bin with their
+semantic versions extracted from --version output. Useful for
+tracking installed tool versions.
 
 USAGE:
-    getRustAppVersions [OPTIONS...]
+    getRustAppVersions [OPTIONS]
 
 OPTIONS:
-    -h | --help     Print this message.
-    -v | --verbose  Print --version output as well as semantic version
-    e.g.,
-        ==> tokei --version
-        tokei 12.1.2 compiled with serialization support: json
-        >>> Semantic version
-        tokei 12.1.2
+    -h, --help      Show this help message and exit
+    -v, --verbose   Show full --version output alongside semantic version
+
+EXAMPLE (verbose):
+    ==> tokei --version
+    tokei 12.1.2 compiled with serialization support: json
+    >>> Semantic version
+    tokei 12.1.2
 
 EOF
 }
@@ -79,4 +84,4 @@ while read -r command; do
         printf "%s %s\n" "$command" "$semantic_version"
     fi
 done < <(fd -I -t f . ~/.cargo/bin -0 |
-    xargs -0 -n1 basename | rg -v '^nu_')
+    xargs -0 -n1 basename)
