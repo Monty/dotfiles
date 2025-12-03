@@ -61,7 +61,7 @@ pew() {
     for file in "$@"; do
         # printf "==> Processing %s\n" "${file}"
         eslint --fix "$file"
-        if [ $? -ne 1 ]; then
+        if [[ $? -ne 1 ]]; then
             prettier --write "$file"
         fi
     done
@@ -86,7 +86,7 @@ alias scko='shellcheck -x -P $XR/functions -o all -e SC2250,SC2312 $@'
 # SC2312 Don't pipe commands to avoid masking return values
 # List files that don't pass shellcheck
 sckl() {
-    shellcheck -x -P $XR/functions "$@" |
+    shellcheck -x -P "$XR"/functions "$@" |
         rg "^In" | cut -f 2 -d " " | sort -u
 }
 
@@ -142,11 +142,12 @@ alias xt-256='export TERM=xterm-256color'
 
 # Directory listings
 # normal
-alias ls='ls $COLOR_AUTO'
-alias lsa='ls -A $COLOR_AUTO'
+alias ls='ls --color=auto'
+alias lsa='ls -A'
 # with special chars to indicate file type
 alias l='ls -CF'
 alias la='ls -AF'
+# long form
 # If eza is installed
 if type -p eza >/dev/null; then
     alias ll='eza --git -s Name --colour=always -l'
@@ -157,10 +158,18 @@ if type -p eza >/dev/null; then
     }
     # Today only
     llt() {
-        today=$(date "+%e %b")
+        local today=$(date "+%e %b")
         eza --git -s old --colour=always -l "$@" |
-            rg "$today [0-9]{2}:[0-9]{2}\b"
+            rg --color=never "$today \d{2}:\d{2}\b"
     }
+    # Today or yesterday
+    llt2d() {
+        local today=$(date "+%e %b")
+        local yesterday=$(date -v-1d "+%e %b")
+        eza --git -s old --color=always -l "$@" |
+            rg --color=never "($today|$yesterday) \d{2}:\d{2}"
+    }
+    # Last 24 hours
     ll24() {
         # Doesn't take arguments: cd first, use rg to filter
         fd -I -d 1 --strip-cwd-prefix --newer 24h \
@@ -171,23 +180,29 @@ if type -p eza >/dev/null; then
     # Dirs first, then by extension - both without & with gitignored files
     alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -l'
     alias lwg='eza --git --group-directories-first -s ext --colour=always -l'
-else
-    alias ll='ls -l $COLOR_AUTO'
-    alias lla='ls -lA $COLOR_AUTO'
+else # eza is not available
+    alias ll='ls -l'
+    alias lla='ls -lA'
     # Most recent 20
     llh() {
-        ls -lt "$@" | head -20
+        ls -lt --color=always "$@" | head -20
     }
     # Today only
     llt() {
-        today=$(date "+%b %e")
-        ls -lt "$@" | rg "$today [0-9]{2}:[0-9]{2}\b"
+        local today=$(date "+%b %e")
+        ls -lt --color=always "$@" |
+            rg --color=never "$today \d{2}:\d{2}\b"
     }
-
-    alias llr='ls -lR $COLOR_AUTO'
-    alias lls='_lls' # size
+    # Today or yesterday
+    llt2d() {
+        local today=$(date "+%b %e")
+        local yesterday=$(date -v-1d "+%b %e")
+        ls -lt --color=always "$@" |
+            rg --color=never "($today|$yesterday) \d{2}:\d{2}"
+    }
+    alias llr='ls -lR'
     lls() {
-        ls -l "$@" | rg -v ^d | sort -nr --key=5
+        ls -l --color=always "$@" | rg -v ^d | sort -nr --key=5
     }
 fi
 
