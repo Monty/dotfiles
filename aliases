@@ -158,8 +158,8 @@ if type -p eza >/dev/null; then
     # Today only
     llt() {
         today=$(date "+%e %b")
-        eza --git -s old --colour=always -l "$@" |
-            rg "$today "
+        eza --git -s old --color=always -l "$@" |
+            rg "$today [0-9]{2}:[0-9]{2}\b"
     }
     ll24() {
         # Doesn't take arguments: cd first, use rg to filter
@@ -181,7 +181,7 @@ else
     # Today only
     llt() {
         today=$(date "+%b %e")
-        ls -lt "$@" | rg " $today "
+        ls -lt "$@" | rg "$today [0-9]{2}:[0-9]{2}\b"
     }
 
     alias llr='ls -lR $COLOR_AUTO'
