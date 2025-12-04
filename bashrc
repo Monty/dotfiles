@@ -4,7 +4,8 @@
 # echo "### .bashrc at `date`"
 
 # Directory shortcuts
-if [ -f ~/.directory_shortcuts ]; then
+if [[ -f ~/.directory_shortcuts ]]; then
+    # shellcheck source=/dev/null
     . ~/.directory_shortcuts
 fi
 
@@ -30,7 +31,7 @@ shopt -s histappend
 shopt -s checkwinsize
 
 # Make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # So we can edit .gpg files directly in Vim
 GPG_TTY=$(tty)
@@ -38,11 +39,11 @@ export GPG_TTY
 
 # Make a sensible PATH and save it
 # set PATH so it includes private bin if it exists
-if [ -d "$HOME/bin" ]; then
+if [[ -d "$HOME/bin" ]]; then
     PATH="$HOME/bin:$PATH"
 fi
 # set PATH so it includes ~/.volta/bin if it exists
-if [ -d "$HOME/.volta" ]; then
+if [[ -d "$HOME/.volta" ]]; then
     export VOLTA_HOME="$HOME/.volta"
     export PATH="$VOLTA_HOME/bin:$PATH"
 fi
@@ -60,7 +61,7 @@ for each in \
     $HOME/Projects/dart-sass \
     /usr/local/git/bin \
     /usr/X11/bin; do
-    if [ -d "$each" ]; then
+    if [[ -d $each ]]; then
         # echo "### Found $each"
         if ! echo ":$PATH:" | grep -s ":$each:" >/dev/null; then
             PATH=${PATH}:$each
@@ -90,10 +91,10 @@ esac
 
 # Kludge for lychee or other commands needing openssl-3 dylibs
 # uses dylibs from /Applications/kitty.app/Contents/Frameworks/
-if [[ -z "$DYLD_LIBRARY_PATH" ]]; then
-  export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks"
+if [[ -z $DYLD_LIBRARY_PATH ]]; then
+    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks"
 else
-  export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks:$DYLD_LIBRARY_PATH"
+    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks:$DYLD_LIBRARY_PATH"
 fi
 
 # Some useful environment variables
@@ -118,24 +119,20 @@ export GOPATH=$HOME/Projects/go
 
 # broot setup
 if type -p broot >/dev/null; then
+    # shellcheck source=/dev/null
     source "$HOME"/.config/broot/launcher/bash/br
 fi
 
 # Include directory name in iTerm tab titles by default
-if [ "$ITERM_SESSION_ID" ]; then
+if [[ -n $ITERM_SESSION_ID ]]; then
     export PROMPT_COMMAND='echo -ne "\033];${PWD##*/}\007"; '
 fi
 
 # Prompts
 # Colors
-BLACK="\[\e[0;30m\]"
 RED="\[\e[0;31m\]"
-GREEN="\[\e[0;32m\]"
 YELLOW="\[\e[0;33m\]"
 BLUE="\[\e[0;34;1m\]"
-PURPLE="\[\e[0;35m\]"
-CYAN="\[\e[0;36m\]"
-GRAY="\[\e[0;37m\]"
 TBAR='\[\e]2;\u@\H \w\a\]'
 BE_COLOR="${BLUE}"
 NO_COLOR="\[\e[0m\]"
@@ -153,14 +150,14 @@ else
 fi
 # Default prompt
 # If SSH session, change prompt color to yellow
-if [[ $(who am i) =~ \([0-9\.]+\)$ ]]; then
+if [[ -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
     BE_COLOR="${YELLOW}"
 fi
 export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W ${GPROMPT}${BE_COLOR}\$${NO_COLOR} "
 
 # Define aliases
-LOGIN_SHELL="bash" # Used to pick shell specific aliases
-if [ -f ~/.bash_aliases ]; then
+if [[ -f ~/.bash_aliases ]]; then
+    # shellcheck source=/dev/null
     . ~/.bash_aliases
 fi
 
