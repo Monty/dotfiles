@@ -103,48 +103,30 @@ sckl() {
 }
 
 # Prompts
-# Some variables are defined in .bashrc and .zshrc
+# Some variables are defined in .zshrc
 # shellcheck disable=SC2154
-if [[ $(ps -p $$ -o comm=) == "-bash" ]]; then
-    # In bash, use these aliases to change prompts
-    # Time & history number
-    alias ps1-T='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\! \$${NO_COLOR} "'
-    # Time without history number
-    alias ps1-t='export PS1="${TBAR}${BE_COLOR}\t \u@\h: \$${NO_COLOR} "'
-    # Long path
-    alias ps1-l='export PS1="${TBAR}${BE_COLOR}\u@\h.local:\w \$${NO_COLOR} "'
-    # Short path
-    alias ps1-s='export PS1="${TBAR}${BE_COLOR}\u@\h:\W \$${NO_COLOR} "'
-    # No path
-    alias ps1-n='export PS1="${TBAR}${BE_COLOR}\u@\h: \$${NO_COLOR} "'
-    # No host
-    alias ps1-0='export PS1="${TBAR}${BE_COLOR}\u: \$${NO_COLOR} "'
-    # git prompt
-    alias ps1-g='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\W${GPROMPT}${BE_COLOR}\$${NO_COLOR} "'
-else
-    # Assume zsh, use these functions to change prompts
-    ps1-T() { # Time & history number
-        PS1='%B${prompt_color}%* %n@%m:%h $%f %b'
-    }
-    ps1-t() { # Time without history number
-        PS1='%B${prompt_color}%* %n@%m: $%f %b'
-    }
-    ps1-l() { # Long path
-        PS1='%B${prompt_color}%n@%m.local:%~ $%f %b'
-    }
-    ps1-s() { # Short path
-        PS1='%B${prompt_color}%n@%m:%1~ $%f %b'
-    }
-    ps1-n() { # No path
-        PS1='%B${prompt_color}%n@%m: $%f %b'
-    }
-    ps1-0() { # No host
-        PS1='%B${prompt_color}%n: $%f %b'
-    }
-    ps1-g() { # Reset to standard git prompt
-        PS1='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
-    }
-fi
+# Assume zsh login, use these functions to change prompts
+ps1-T() { # Time & history number
+    PS1='%B${prompt_color}%* %n@%m:%h $%f %b'
+}
+ps1-t() { # Time without history number
+    PS1='%B${prompt_color}%* %n@%m: $%f %b'
+}
+ps1-l() { # Long path
+    PS1='%B${prompt_color}%n@%m.local:%~ $%f %b'
+}
+ps1-s() { # Short path
+    PS1='%B${prompt_color}%n@%m:%1~ $%f %b'
+}
+ps1-n() { # No path
+    PS1='%B${prompt_color}%n@%m: $%f %b'
+}
+ps1-0() { # No host
+    PS1='%B${prompt_color}%n: $%f %b'
+}
+ps1-g() { # Reset to standard git prompt
+    PS1='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
+}
 
 # Kitty commands
 alias ktheme='kitty +kitten themes --config-file-name themes.conf'
