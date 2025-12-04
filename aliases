@@ -144,67 +144,38 @@ alias lsa='ls -A'
 alias l='ls -CF'
 alias la='ls -AF'
 # Long form
-# Declare and assign separately only used with today=$(date)
-# shellcheck disable=SC2155
-# "ls -l" is only used because we want to process its output
-# shellcheck disable=SC2012
-# If eza is installed
-if type -p eza >/dev/null; then
-    alias ll='eza --git -s Name --colour=always -l'
-    alias lla='eza --git -s Name --colour=always -la'
-    # Most recent 20
-    llh() {
-        eza --git -s old --colour=always -l "$@" | head -20
-    }
-    # Today only
-    llt() {
-        local today=$(date "+%e %b")
-        eza --git -s old --colour=always -l "$@" |
-            rg --color=never "$today \d{2}:\d{2}\b"
-    }
-    # Today or yesterday
-    llt2d() {
-        local today=$(date "+%e %b")
-        local yesterday=$(date -v-1d "+%e %b")
-        eza --git -s old --color=always -l "$@" |
-            rg --color=never "($today|$yesterday) \d{2}:\d{2}"
-    }
-    # Last 24 hours
-    ll24() {
-        # Doesn't take arguments: cd first, use rg to filter
-        fd -I -d 1 --strip-cwd-prefix --newer 24h \
-            -X eza -d --git -s old --colour=always -l
-    }
-    alias llr='eza --git -s Name --colour=always -lR'   # Recurse
-    alias lls='eza --git -s size -r --colour=always -l' # size
-    # Dirs first, then by extension - both without & with gitignored files
-    alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -l'
-    alias lwg='eza --git --group-directories-first -s ext --colour=always -l'
-else # If eza is not installed
-    alias ll='ls -l'
-    alias lla='ls -lA'
-    # Most recent 20
-    llh() {
-        ls -lt --color=always "$@" | head -20
-    }
-    # Today only
-    llt() {
-        local today=$(date "+%b %e")
-        ls -lt --color=always "$@" |
-            rg --color=never "$today \d{2}:\d{2}\b"
-    }
-    # Today or yesterday
-    llt2d() {
-        local today=$(date "+%b %e")
-        local yesterday=$(date -v-1d "+%b %e")
-        ls -lt --color=always "$@" |
-            rg --color=never "($today|$yesterday) \d{2}:\d{2}"
-    }
-    alias llr='ls -lR'
-    lls() {
-        ls -l --color=always "$@" | rg -v ^d | sort -nr --key=5
-    }
-fi
+alias ll='eza --git -s Name --colour=always -l'
+alias lla='eza --git -s Name --colour=always -la'
+# Most recent 20
+llh() {
+    eza --git -s old --colour=always -l "$@" | head -20
+}
+# Today only
+llt() {
+    local today
+    today=$(date "+%e %b")
+    eza --git -s old --colour=always -l "$@" |
+        rg --color=never "$today \d{2}:\d{2}\b"
+}
+# Today or yesterday
+llt2d() {
+    local today yesterday
+    today=$(date "+%e %b")
+    yesterday=$(date -v-1d "+%e %b")
+    eza --git -s old --color=always -l "$@" |
+        rg --color=never "($today|$yesterday) \d{2}:\d{2}"
+}
+# Last 24 hours
+ll24() {
+    # Doesn't take arguments: cd first, use rg to filter
+    fd -I -d 1 --strip-cwd-prefix --newer 24h \
+        -X eza -d --git -s old --colour=always -l
+}
+alias llr='eza --git -s Name --colour=always -lR'   # Recurse
+alias lls='eza --git -s size -r --colour=always -l' # size
+# Dirs first, then by extension - both without & with gitignored files
+alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -l'
+alias lwg='eza --git --group-directories-first -s ext --colour=always -l'
 
 # ssh shortcuts to various systems
 # For ssh allow quote "$@" so it expands on the client side.
