@@ -1,5 +1,4 @@
-# ~/.all_aliases: sourced by ~/.zshrc and ~/.bashrc
-# echo "### .all_aliases at `date`"
+# ~/dotfiles/aliases sourced by ~/.zshrc and ~/.bashrc
 
 # Shortcut commands
 alias bata="bat -A"  # All invisible characters
@@ -10,6 +9,7 @@ bman() {
     man "$@" | sed -u -e 's/\x1B\[[0-9;]*m//g; s/.\x08//g' |
         bat -p -lman
 }
+# Use bat to format help pages
 # alias -g only works in zsh
 if [[ $(ps -p $$ -o comm=) == "-zsh" ]]; then
     # Use bat to format -h and --help (also uses 'less')
@@ -26,6 +26,7 @@ alias scpr='scp -rp'
 alias df='df -Hl'
 alias du='du -sh'
 # Dump in octal and hex
+alias od="od -ab"
 alias hexd="od -t x1"
 alias hexdump="hexdump -C"
 # Search recent history
@@ -41,9 +42,10 @@ hgrz() {
 alias ht='fc -l' # Tail history
 alias more='less'
 alias nv='nvim'
-alias od="od -ab"
 alias psx='ps -ef | rg -v " \d{2}\.\d{2} rg " | rg'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
+
+# shortcuts for shfmt
 if type -p shfmt >/dev/null; then
     alias shf='shfmt -i 4 -s'     # Default shell format
     alias shfl='shfmt -i 4 -s -l' # List files whose formatting would change
@@ -78,20 +80,32 @@ alias rga="rg -N --sort path '^\/'"
 alias rgaf="rg -N --sort path '^\/|^function |\(\)'"
 
 # shortcuts for shellcheck
-alias sck='shellcheck $@'
-alias sckd='shellcheck -x -P $XR/functions -f diff $@'
-alias sckf='shellcheck -x -P $XR/functions $@'
-alias scko='shellcheck -x -P $XR/functions -o all -e SC2250,SC2312 $@'
-# SC2250 Prefer always putting braces around variable references
-# SC2312 Don't pipe commands to avoid masking return values
+sck() {
+    shellcheck -s bash "$@"
+}
+# "$XR" is defined elsewhere
+# shellcheck disable=SC2154
+sckd() {
+    shellcheck -s bash -x -P "$XR"/functions -f diff "$@"
+}
+sckf() {
+    shellcheck -s bash -x -P "$XR"/functions "$@"
+}
+scko() {
+    # SC2250 Prefer always putting braces around variable references
+    # SC2312 Don't pipe commands to avoid masking return values
+    shellcheck -s bash -x -P "$XR"/functions -o all -e SC2250,SC2312 "$@"
+}
 # List files that don't pass shellcheck
 sckl() {
-    shellcheck -x -P "$XR"/functions "$@" |
+    shellcheck -s bash -x -P "$XR"/functions "$@" |
         rg "^In" | cut -f 2 -d " " | sort -u
 }
 
 # Prompts
-if [[ $LOGIN_SHELL == "bash" ]]; then
+# Some variables are defined in .bashrc and .zshrc
+# shellcheck disable=SC2154
+if [[ $(ps -p $$ -o comm=) == "-bash" ]]; then
     # In bash, use these aliases to change prompts
     # Time & history number
     alias ps1-T='export PS1="${TBAR}${BE_COLOR}\t \u@\h:\! \$${NO_COLOR} "'
@@ -141,13 +155,17 @@ alias xt-88='export TERM=xterm-88color'
 alias xt-256='export TERM=xterm-256color'
 
 # Directory listings
-# normal
+# Short form
 alias ls='ls --color=auto'
 alias lsa='ls -A'
 # with special chars to indicate file type
 alias l='ls -CF'
 alias la='ls -AF'
-# long form
+# Long form
+# Declare and assign separately only used with today=$(date)
+# shellcheck disable=SC2155
+# "ls -l" is only used because we want to process its output
+# shellcheck disable=SC2012
 # If eza is installed
 if type -p eza >/dev/null; then
     alias ll='eza --git -s Name --colour=always -l'
@@ -180,7 +198,7 @@ if type -p eza >/dev/null; then
     # Dirs first, then by extension - both without & with gitignored files
     alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -l'
     alias lwg='eza --git --group-directories-first -s ext --colour=always -l'
-else # eza is not available
+else # If eza is not installed
     alias ll='ls -l'
     alias lla='ls -lA'
     # Most recent 20
@@ -207,26 +225,40 @@ else # eza is not available
 fi
 
 # ssh shortcuts to various systems
-# p m g -- see id_rsa
-#
+# For ssh allow quote "$@" so it expands on the client side.
+# shellcheck disable=SC2029
 if [[ "$(uname -n)" == *[Ll]ocal ]]; then
-    alias ssh-ho='ssh monty@holmes.local $@'
-    alias ssh-ir='ssh monty@irene.local $@'
-    alias ssh-ma='ssh junew@marleau.local $@'
-    alias ssh-moj='ssh junew@monarch.local $@'
-    alias ssh-mom='ssh monty@monarch.local $@'
+    ssh-ho() {
+        ssh monty@holmes.local "$@"
+    }
+    ssh-ir() {
+        ssh monty@irene.local "$@"
+    }
+    ssh-ma() {
+        ssh junew@marleau.local "$@"
+    }
+    ssh-moj() {
+        ssh junew@monarch.local "$@"
+    }
+    ssh-mom() {
+        ssh monty@monarch.local "$@"
+    }
 fi
 
 # From various distros
 colors() {
     local fgc bgc vals seq0
 
+    # Allow not expanding this expression in single quotes
+    # shellcheck disable=SC2016
     printf "Color escapes are %s\n" '\e[${value};...;${value}m'
     printf "Values 30..37 are \e[33mforeground colors\e[m\n"
     printf "Values 40..47 are \e[43mbackground colors\e[m\n"
     printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
 
     # foreground colors
+    # Allow using variables in these printf statements
+    # shellcheck disable=SC2059
     for fgc in {30..37}; do
         # background colors
         for bgc in {40..47}; do
@@ -246,4 +278,4 @@ colors() {
     done
 }
 
-# end of .all_aliases
+# end of aliases
