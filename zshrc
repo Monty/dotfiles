@@ -4,7 +4,8 @@
 # echo "### .zshrc at `date`"
 
 # Directory shortcuts
-if [ -f ~/.directory_shortcuts ]; then
+if [[ -f ~/.directory_shortcuts ]]; then
+    # shellcheck source=/dev/null
     . ~/.directory_shortcuts
 fi
 
@@ -19,8 +20,7 @@ PLATFORM="$(uname -sm | tr ' ' '-')"
 
 # Setup history
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=3000
-SAVEHIST=$HISTSIZE
+HISTSIZE=6000
 # Don't put duplicate lines or lines starting with spaces in the history
 setopt hist_ignore_dups
 setopt hist_ignore_space
@@ -39,11 +39,11 @@ export FULLCAST=50
 
 # Make a sensible PATH and save it
 # set PATH so it includes private bin if it exists
-if [ -d "$HOME/bin" ]; then
+if [[ -d "$HOME/bin" ]]; then
     PATH="$HOME/bin:$PATH"
 fi
 # set PATH so it includes ~/.volta/bin if it exists
-if [ -d "$HOME/.volta" ]; then
+if [[ -d "$HOME/.volta" ]]; then
     export VOLTA_HOME="$HOME/.volta"
     export PATH="$VOLTA_HOME/bin:$PATH"
 fi
@@ -61,7 +61,7 @@ for each in \
     $HOME/Projects/dart-sass \
     /usr/local/git/bin \
     /usr/X11/bin; do
-    if [ -d "$each" ]; then
+    if [[ -d $each ]]; then
         # echo "### Found $each"
         if ! echo ":$PATH:" | grep -s ":$each:" >/dev/null; then
             PATH=${PATH}:$each
@@ -91,10 +91,10 @@ esac
 
 # Kludge for lychee or other commands needing openssl-3 dylibs
 # uses dylibs from /Applications/kitty.app/Contents/Frameworks/
-if [[ -z "$DYLD_LIBRARY_PATH" ]]; then
-  export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks"
+if [[ -z $DYLD_LIBRARY_PATH ]]; then
+    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks"
 else
-  export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks:$DYLD_LIBRARY_PATH"
+    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks:$DYLD_LIBRARY_PATH"
 fi
 
 # Some useful environment variables
@@ -119,6 +119,7 @@ export GOPATH=$HOME/Projects/go
 
 # broot setup
 if type -p broot >/dev/null; then
+    # shellcheck source=/dev/null
     source "$HOME"/.config/broot/launcher/bash/br
 fi
 
@@ -128,14 +129,15 @@ setTermTitle() {
     # echo works in bash & zsh
     local mode=$1
     shift
-    echo -ne "\033]$mode;$@\007"
+    echo -ne "\033]$mode;$*\007"
 }
-stt_both() { setTermTitle 0 $@; }
-stt_tab() { setTermTitle 1 $@; }
-stt_title() { setTermTitle 2 $@; }
+stt_both() { setTermTitle 0 "$@"; }
+stt_tab() { setTermTitle 1 "$@"; }
+stt_title() { setTermTitle 2 "$@"; }
 #
 # Set iTerm window and tab titles
 precmd() {
+    # shellcheck disable=SC2154
     stt_title "$USER"@"${HOST%.Local}" "${PWD/#$HOME/~}"
     local TILDE_HOME=${PWD/#$HOME/~}
     stt_tab "$USER"@"${HOST%.Local}" "${TILDE_HOME##*/}"
@@ -144,8 +146,10 @@ precmd() {
 # Setup prompt
 setopt prompt_subst
 #
-# Pick prompt colors - normally blue, but yellow if SSH, red if root or privileged
-if [[ -n $SSH_CLIENT || -n $SSH2_CLIENT ]]; then
+# Pick prompt colors - normally blue, but yellow if SSH,
+# red if root or privileged
+# shellcheck disable=SC2034
+if [[ -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
     prompt_color='%F{%(#.red.yellow)}'
 else
     prompt_color='%F{%(#.red.blue)}'
@@ -158,11 +162,13 @@ parse_git_branch() {
 }
 #
 # Default prompt
+# Allow not expanding this expression in single quotes
+# shellcheck disable=SC2016,SC2034
 PROMPT='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
 
 # Define aliases
-LOGIN_SHELL="zsh" # Used to pick shell specific aliases
-if [ -f ~/.zsh_aliases ]; then
+if [[ -f ~/.zsh_aliases ]]; then
+    # shellcheck source=/dev/null
     . ~/.zsh_aliases
 fi
 
