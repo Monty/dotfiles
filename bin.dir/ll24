@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+# List files changed in the last 24 hours
+
+# Prevent cascading or pipe failures
+set -euo pipefail
+
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+
+function cleanup() {
+    stty sane
+    printf "\n"
+}
+
+ERROR="\e[0;31m[Error]\e[0m"
+INFO="\e[0;34m[Info]\e[0m"
+
+help() {
+    cat <<EOF
+ll24
+
+List files changed within a prior time period
+
+No arguments:  Directory: current directory, time period: 24 hrs
+One argument:  Directory or time period (auto-detected)
+Two arguments: Directory and time period (in any order)
+
+The script intelligently determines which argument is the directory and
+which is the time period based on pattern matching.
+
+USAGE:
+    ll24 [OPTIONS] [DIRECTORY] [TIMEPERIOD]
+
+ARGUMENTS:
+    [DIRECTORY]     Directory to search (default: current directory)
+    [TIMEPERIOD]    Time period (default: 24h)
+                    Format: number + unit (s/m/h/d/w/y)
+                    Examples: 30m, 2h, 7d, 1w
+
+EXAMPLES:
+    ll24                    # Current directory, last 24 hours
+    ll24 30m                # Current directory, last 30 minutes
+    ll24 /var/log           # /var/log directory, last 24 hours
+    ll24 ./src 2h           # ./src directory, last 2 hours
+    ll24 1d ~/projects      # ~/projects directory, last 1 day (any order)
+
+OPTIONS:
+    -h | --help     Show this message and exit
+    -v | --verbose  Show full paths instead of stripped paths
+
+EOF
+}
+
+# Check for options
+VERBOSE=false
+ARGS=()
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        help
+        exit 0
+        ;;
+    -v | --verbose)
+        VERBOSE=true
+        shift
+        ;;
+    *)
+        ARGS+=("$1")
+        shift
+        ;;
+    esac
+done
+
+# Default values
+target="."
+period="24h"
+
+# Check argument count
+if [[ ${#ARGS[@]} -gt 2 ]]; then
+    printf \
+        "${ERROR} Too many arguments. Expected at most 2, got %d\n" \
+        "${#ARGS[@]}" >&2
+    # shellcheck disable=SC2059
+    printf "${INFO}  Run 'll24 --help' for usage information\n" >&2
+    exit 1
+fi
+
+# Parse arguments intelligently
+for arg in ${ARGS[@]+"${ARGS[@]}"}; do
+    if [[ -d $arg ]]; then
+        # It's an existing directory
+        # (checks expanded paths and relative paths)
+        target="$arg"
+    elif [[ $arg =~ ^[0-9]+[smhdwy]$ ]]; then
+        # It's a time period (number + time unit)
+        period="$arg"
+    elif [[ $arg =~ / ]] || [[ $arg == "." ]] ||
+        [[ $arg == ".." ]]; then
+        # Looks like a path (contains / or is . or ..)
+        target="$arg"
+    elif [[ -e $arg ]]; then
+        # It exists
+        # (could be a file or directory without path separators)
+        target="$arg"
+    else
+        # Doesn't match any known pattern
+        printf \
+            "${ERROR} Not a valid directory or time period: %s\n" \
+            "$arg" >&2
+        exit 1
+    fi
+done
+
+# Validate target directory
+if [[ ! -e $target ]]; then
+    printf "${ERROR} Directory does not exist: %s\n" "$target" >&2
+    exit 1
+elif [[ ! -d $target ]]; then
+    printf "${ERROR} Not a directory: %s\n" "$target" >&2
+    exit 1
+fi
+
+# Run the file listing
+if [[ $VERBOSE == true ]]; then
+    fd -I -d 1 --newer "$period" . "$target" \
+        -X eza -d --git -s old --colour=always -l
+else
+    cd "$target" || exit 1
+    fd -I -d 1 --strip-cwd-prefix --newer "$period" \
+        -X eza -d --git -s old --colour=always -l
+fi

@@ -156,18 +156,12 @@ llt() {
         rg --color=never "$today \d{2}:\d{2}\b"
 }
 # Today or yesterday
-llt2d() {
+ll2d() {
     local today yesterday
     today=$(date "+%e %b")
     yesterday=$(date -v-1d "+%e %b")
     eza --git -s old --color=always -l "$@" |
         rg --color=never "($today|$yesterday) \d{2}:\d{2}"
-}
-# Last 24 hours
-ll24() {
-    # Doesn't take arguments: cd first, use rg to filter
-    fd -I -d 1 --strip-cwd-prefix --newer 24h \
-        -X eza -d --git -s old --colour=always -l
 }
 alias llr='eza --git -s Name --colour=always -lR'   # Recurse
 alias lls='eza --git -s size -r --colour=always -l' # size
