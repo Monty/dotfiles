@@ -98,7 +98,6 @@ get_crate_name() {
     rip) echo "rm-improved" ;;
     tree) echo "rust_tree" ;;
     tldr) echo "tealdeer" ;;
-    xls2csv) echo "xls2txt" ;;
     *) echo "$1" ;;
     esac
 }
@@ -108,13 +107,7 @@ get_latest_version() {
     local app_name="$1"
     local crate="$2"
 
-    # Special handling for rustup - check rustc version from official Rust channel
-    if [[ $app_name == "rustup" ]]; then
-        curl -s "https://static.rust-lang.org/dist/channel-rust-stable.toml" 2>/dev/null |
-            grep "rust-[0-9].*aarch64-apple-darwin.tar.gz" |
-            grep -oE '[0-9]+\.[0-9]+\.[0-9]+' |
-            head -1 || true
-    elif [[ -z $crate ]]; then
+    if [[ -z $crate ]]; then
         # Empty crate name means check GitHub instead
         local github_repo
         case "$app_name" in
@@ -126,28 +119,82 @@ get_latest_version() {
         esac
 
         curl -s "https://api.github.com/repos/$github_repo/releases/latest" 2>/dev/null |
-            grep '"tag_name":' |
-            cut -d'"' -f4 |
+            jq -r '.tag_name // empty' |
             sed 's/^v//' || true # Remove 'v' prefix if present
     else
         curl -s "https://crates.io/api/v1/crates/$crate" 2>/dev/null |
-            grep -o '"max_stable_version":"[^"]*"' |
-            cut -d'"' -f4 || true
+            jq -r '.crate.max_stable_version // empty' || true
     fi
+}
+
+# Get latest rustc version from official Rust channel
+get_latest_rustc_version() {
+    curl -s "https://static.rust-lang.org/dist/channel-rust-stable.toml" 2>/dev/null |
+        grep "rust-[0-9].*aarch64-apple-darwin.tar.gz" |
+        grep -oE '[0-9]+\.[0-9]+\.[0-9]+' |
+        head -1 || true
 }
 
 # Parse version from app output
 parse_version() {
     local output="$1"
-    local app_name="$2"
+    # Try to extract semantic version (x.y.z with optional v prefix)
+    # Also handle versions with only x.y
+    echo "$output" | grep -oE 'v?[0-9]+\.[0-9]+(\.[0-9]+)?' |
+        head -1 || true
+}
 
-    # Special handling for rustup - extract rustc version (more critical than rustup version)
-    if [[ $app_name == "rustup" ]]; then
-        echo "$output" | grep "currently active.*rustc" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true
-    else
-        # Try to extract semantic version (x.y.z with optional v prefix)
-        # Also handle versions with only x.y
-        echo "$output" | grep -oE 'v?[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1 || true
+# Process rustc as a special synthetic entry
+process_rustc() {
+    local rustup_path="$HOME/.cargo/bin/rustup"
+
+    # Only process if rustup exists
+    [[ ! -x $rustup_path ]] && return
+
+    if $verbose; then
+        echo "=> rustc (via rustup)"
+    fi
+
+    # Get rustc version from rustup
+    version_output=$("$rustup_path" --version 2>&1)
+
+    # Extract rustc version from the "currently active" line
+    version=$(echo "$version_output" | grep "currently active.*rustc" |
+        grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true)
+
+    if $verbose; then
+        echo "$version_output" | grep "currently active"
+        echo ">>> Semantic version"
+    fi
+
+    if [[ -n $version ]]; then
+        has_update=false
+        latest=""
+
+        if ! $quiet; then
+            latest=$(get_latest_rustc_version)
+
+            if [[ -n $latest && $latest != "$version" ]]; then
+                has_update=true
+            fi
+        fi
+
+        # Show output based on mode
+        if $updates_only; then
+            if $has_update; then
+                printf "%-20s %s → %s\n" "rustc" "$version" "$latest"
+            fi
+        else
+            printf "%-20s %s" "rustc" "$version"
+            if $has_update; then
+                printf " → %s available" "$latest"
+            fi
+            echo
+        fi
+    fi
+
+    if $verbose; then
+        echo
     fi
 }
 
@@ -156,6 +203,14 @@ for app in ~/.cargo/bin/*; do
     [[ -x $app ]] || continue
     [[ -L $app ]] && continue # Skip symlinks (rustup-managed)
     basename_app=$(basename "$app")
+
+    # Skip apps managed by other crates
+    [[ $basename_app == "xls2csv" ]] && continue # Managed by xls2txt
+
+    # Special handling: process rustc before rustup
+    if [[ $basename_app == "rustup" ]]; then
+        process_rustc
+    fi
 
     if $verbose; then
         echo "=> $basename_app --version"
@@ -170,7 +225,7 @@ for app in ~/.cargo/bin/*; do
     fi
 
     # Parse and display version
-    version=$(parse_version "$version_output" "$basename_app")
+    version=$(parse_version "$version_output")
     if [[ -n $version ]]; then
         # Check for updates unless in quiet mode
         has_update=false
