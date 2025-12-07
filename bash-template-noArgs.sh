@@ -40,6 +40,7 @@ EOF
 # Check for options
 DRY_RUN=false
 VERBOSE=false
+QUIET=false
 while [[ $# -gt 0 ]]; do
     case $1 in
     -h | --help)
@@ -56,8 +57,19 @@ while [[ $# -gt 0 ]]; do
         VERBOSE=true
         shift
         ;;
+    -q | --quiet)
+        QUIET=true
+        shift
+        ;;
     *)
-        printf "$ERROR Invalid argument: '%s'\n" "$1" >&2
+        # shellcheck disable=SC2059
+        if [[ $1 == -* ]]; then
+            printf "${ERROR} Unknown option: %s\n" "$1"
+            printf "${INFO}  Run with --help to see available options\n"
+        else
+            printf "${ERROR} Invalid argument: %s\n" "$1"
+            printf "${INFO}  This script does not accept positional arguments\n"
+        fi
         exit 1
         ;;
     esac

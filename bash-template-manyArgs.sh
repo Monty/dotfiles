@@ -43,6 +43,7 @@ EOF
 # Check for options
 DRY_RUN=false
 VERBOSE=false
+QUIET=false
 ARGS=()
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -58,6 +59,10 @@ while [[ $# -gt 0 ]]; do
         ;;
     -v | --verbose)
         VERBOSE=true
+        shift
+        ;;
+    -q | --quiet)
+        QUIET=true
         shift
         ;;
     *)
