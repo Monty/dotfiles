@@ -1,0 +1,189 @@
+#!/usr/bin/env bash
+# Get the app version of Go binaries in ~/go/bin
+
+# Prevent cascading or pipe failures
+set -euo pipefail
+
+# trap ctrl-c -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+
+function cleanup() {
+    stty sane
+    printf "\n"
+}
+
+ERROR="\e[0;31m[Error]\e[0m"
+INFO="\e[0;34m[Info]\e[0m"
+
+help() {
+    cat <<EOF
+getGoAppVersions
+
+Lists installed Go applications from ~/go/bin with their versions
+extracted from binary metadata. Compares with latest versions from
+the Go module proxy.
+
+USAGE:
+    getGoAppVersions [OPTIONS]
+
+OPTIONS:
+    -h, --help      Show this help message and exit
+    -u, --updates   Only show apps with available updates
+    -q, --quiet     Skip update checks (only shows current versions)
+    -v, --verbose   Show full module metadata
+
+EXAMPLE (verbose):
+    ==> gocloc
+    Module: github.com/hhatto/gocloc
+    Version: v0.7.0
+    >>> Latest: v0.7.0
+
+EOF
+}
+
+updates_only=false
+verbose=false
+quiet=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        help
+        exit
+        ;;
+    -u | --updates)
+        updates_only=true
+        shift
+        ;;
+    -v | --verbose)
+        verbose=true
+        shift
+        ;;
+    -q | --quiet)
+        quiet=true
+        shift
+        ;;
+    *)
+        # shellcheck disable=SC2059
+        if [[ $1 == -* ]]; then
+            printf "${ERROR} Unknown option: %s\n" "$1"
+            printf "${INFO}  Run with --help to see available options\n"
+        else
+            printf "${ERROR} Invalid argument: %s\n" "$1"
+            printf "${INFO}  This script does not accept positional arguments\n"
+        fi
+        exit 1
+        ;;
+    esac
+done
+
+# Get latest version from Go proxy
+get_latest_version() {
+    local module_path="$1"
+
+    curl -s "https://proxy.golang.org/$module_path/@latest" 2>/dev/null |
+        jq -r '.Version // empty' || true
+}
+
+# Get module info from binary
+get_module_info() {
+    local app_path="$1"
+
+    go version -m "$app_path" 2>/dev/null || true
+}
+
+# Parse module path and version from go version output
+parse_module_version() {
+    local version_output="$1"
+
+    # Extract module path (skip command-line-arguments)
+    module=$(echo "$version_output" | awk '$1=="mod" && $2!="command-line-arguments" {print $2; exit}')
+    # Extract version
+    version=$(echo "$version_output" | awk '$1=="mod" && $2!="command-line-arguments" {print $3; exit}')
+
+    echo "$module|$version"
+}
+
+# Get list of executables in ~/go/bin
+for app in ~/go/bin/*; do
+    [[ -x $app ]] || continue
+    basename_app=$(basename "$app")
+
+    # Always show header in verbose mode
+    if $verbose; then
+        echo "==> $basename_app"
+    fi
+
+    # Get module info from binary
+    version_output=$(get_module_info "$app")
+
+    if [[ -z $version_output ]]; then
+        if $verbose; then
+            echo "Unable to read module info"
+            echo
+        fi
+        continue
+    fi
+
+    # Parse module and version
+    IFS='|' read -r module version <<<"$(parse_module_version \
+        "$version_output")"
+
+    if [[ -z $module || -z $version ]]; then
+        if $verbose; then
+            echo "Could not parse module info"
+            echo
+        fi
+        continue
+    fi
+
+    # Now show detailed info in verbose mode
+    if $verbose; then
+        echo "$version_output" |
+            awk '/^[[:space:]]+(path|mod)[[:space:]]+/ {print "    " $1, $2, $3}'
+        echo ">>> Parsed version"
+        echo "Module: $module"
+        echo "Version: $version"
+    fi
+
+    # Check for updates unless in quiet mode
+    has_update=false
+    latest=""
+
+    if ! $quiet; then
+        latest=$(get_latest_version "$module")
+
+        if [[ -n $latest && $latest != "$version" ]]; then
+            # Remove 'v' prefix for comparison if present
+            current_ver="${version#v}"
+            latest_ver="${latest#v}"
+
+            if [[ $current_ver != "$latest_ver" ]]; then
+                has_update=true
+            fi
+        fi
+    fi
+
+    # Show output based on mode
+    if $updates_only; then
+        # Only show apps with updates available
+        if $has_update; then
+            printf "%-20s %s → %s\n" "$basename_app" "$version" "$latest"
+        fi
+    else
+        # Show all apps, mark updates
+        printf "%-20s %s" "$basename_app" "$version"
+        if $has_update; then
+            printf " → %s available" "$latest"
+        fi
+        echo
+    fi
+
+    if $verbose; then
+        if [[ -n $latest ]]; then
+            echo ">>> Latest: $latest"
+        fi
+        echo
+    fi
+done
