@@ -42,7 +42,7 @@ hgrz() {
 alias ht='fc -l' # Tail history
 alias more='less'
 alias nv='nvim'
-alias psx='ps -ef | rg -v " \d{2}\.\d{2} rg " | rg'
+alias psx='ps -ef | rg -v ":\d{2}\.\d{2} rg " | rg'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 
 # shortcuts for shfmt
