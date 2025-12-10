@@ -63,6 +63,21 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Ensure go is in PATH if installed
+[[ -d /usr/local/go/bin ]] && export PATH="/usr/local/go/bin:$PATH"
+
+if ! command -v go &>/dev/null; then
+    # shellcheck disable=SC2059
+    printf "${WARNING} Go is not installed, skipping\n"
+    exit 0
+fi
+
+if [[ ! -d ~/go/bin ]]; then
+    # shellcheck disable=SC2059
+    printf "${WARNING} ~/go/bin does not exist, skipping\n"
+    exit 0
+fi
+
 currentVersion=$(go version | awk '{print $3}')
 latestVersion=$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[0].version')
 
@@ -127,6 +142,7 @@ EOF
         install_all
     else
         # If SSH session, exit rather than prompt
+        # shellcheck disable=SC2059
         if [[ -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
             printf "${ERROR} Unable to prompt over SSH\n"
             printf "${INFO}  Use 'updateGoApps --force' to avoid prompting\n"
@@ -134,6 +150,7 @@ EOF
         fi
         printf "Update/install all Go apps"
         # "waitUntil -N" supplies "? [y/N]" and waits
+        # shellcheck disable=SC2310
         if waitUntil -N "?"; then
             install_all
         else
