@@ -84,6 +84,10 @@ if [[ ! -d ~/go/bin ]]; then
     exit 0
 fi
 
+# Make a directory to use for installing releases
+mkdir -p ~/go/releases
+cd ~/go/releases || exit 1
+
 currentVersion=$(go version | awk '{print $3}')
 latestVersion=$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[0].version')
 
@@ -92,7 +96,22 @@ printf "Your installed go version is %s, the latest is %s\n" \
 
 # Check if Go version is out of date
 if [[ $currentVersion != "$latestVersion" ]]; then
-    printf "Please update Go from https://go.dev/doc/install before proceeding\n\n"
+    cat <<EOF
+Before you can proceed, either:
+
+Update Go from https://go.dev/doc/install
+  - or -
+# Download the tarball
+curl -OL https://go.dev/dl/$latestVersion.darwin-arm64.tar.gz
+
+# Replace any previous Go installation with the latest
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf $latestVersion.darwin-arm64.tar.gz
+
+# Remove the download tarball
+rm -f $latestVersion.darwin-arm64.tar.gz
+
+EOF
     exit 1
 else
     printf "You already have the most recent version of Go\n\n"
@@ -126,9 +145,7 @@ EOF
         go install github.com/boyter/scc/v3@latest
         go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
-        # Special installs
-        mkdir -p ~/go/releases
-        cd ~/go/releases || exit 1
+        # Special install for rclone
         curl -O https://downloads.rclone.org/rclone-current-osx-arm64.zip
         unzip -a rclone-current-osx-arm64.zip
         cd rclone-*-osx-arm64 || exit 1
