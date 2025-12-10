@@ -1,46 +1,144 @@
 #!/usr/bin/env bash
+# Update known Go files from ~/go/bin
+# If you install new ones, add them to the install section below
 
-printf "The latest go version is "
-curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[0].version'
-printf "Your go version is "
-go version
-printf "\n"
+# Prevent cascading or pipe failures
+set -euo pipefail
 
-printf "Download latest go from https://go.dev/doc/install\n"
-sleep 5
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+#
+function cleanup() {
+    stty sane
+    # Safe because it's created if missing
+    rm -rf ~/go/releases
+    printf "\n"
+}
 
-shfmt --version
-printf "shfmt\n"
-go install mvdan.cc/sh/v3/cmd/shfmt@latest
-shfmt --version
-printf "\n"
+ERROR="\e[0;31m[Error]\e[0m"
+WARNING="\e[0;33m[Warning]\e[0m"
+INFO="\e[0;34m[Info]\e[0m"
 
-scc --version
-printf "scc\n"
-go install github.com/boyter/scc/v3@latest
-scc --version
-printf "\n"
+help() {
+    cat <<EOF
+updateGoApps
 
-eza -s date -r --colour=always -lg ~/go/pkg/mod/github.com/hhatto |
-    head -1
-printf "gocloc\n"
-go install github.com/hhatto/gocloc/cmd/gocloc@latest
-eza -s date -r --colour=always -lg ~/go/pkg/mod/github.com/hhatto |
-    head -1
-printf "\n"
+Install or update the following Go apps in ~/go/bin:
+    gocloc golangci-lint jqfmt moor rclone scc shfmt
 
-golangci-lint --version
-go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-golangci-lint --version
-printf "\n"
+USAGE:
+    updateGoApps [OPTIONS]
 
-moor -version
-go install github.com/walles/moor/v2/cmd/moor@latest
-moor -version
-printf "\n"
+OPTIONS:
+    -h | --help     Show this message and exit
+    -f | --force    Force an update without asking
 
-rclone --version
-printf "rclone\n"
-rclone selfupdate
-rclone --version
-printf "\n"
+EOF
+}
+
+# Check for options
+FORCE=false
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        help
+        exit 0
+        ;;
+    -f | --force)
+        FORCE=true
+        shift
+        ;;
+    *)
+        # shellcheck disable=SC2059
+        if [[ $1 == -* ]]; then
+            printf "${ERROR} Unknown option: %s\n" "$1"
+            printf "${INFO}  Run with --help to see available options\n"
+        else
+            printf "${ERROR} Invalid argument: %s\n" "$1"
+            printf "${INFO}  This script does not accept positional arguments\n"
+        fi
+        exit 1
+        ;;
+    esac
+done
+
+currentVersion=$(go version | awk '{print $3}')
+latestVersion=$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[0].version')
+
+printf "Your installed go version is %s, the latest is %s\n" \
+    "$currentVersion" "$latestVersion"
+
+# Check if Go version is out of date
+if [[ $currentVersion != "$latestVersion" ]]; then
+    printf "Please update Go from https://go.dev/doc/install before proceeding\n\n"
+    exit 1
+else
+    printf "You already have the most recent version of Go\n\n"
+fi
+
+# shellcheck disable=SC2154
+source "$WS"/waitUntil.function
+
+printf "==> Looking in ~/go/bin for Go apps to update:\n"
+
+appsNeedingUpdate=$(getGoAppVersions -u)
+allApps=$(getGoAppVersions)
+
+# Check if any newer files were found
+printf "\n%s\n\n" "$allApps"
+if [[ -z $appsNeedingUpdate ]]; then
+    printf "==> None of the above Go apps need updating\n"
+    exit 0
+else
+    cat <<EOF
+==> Some of the above Go apps need updating
+    Doing so will update or install all these apps:
+    gocloc golangci-lint jqfmt moor rclone scc shfmt
+
+EOF
+
+    install_all() {
+        # Standard installs
+        go install github.com/hhatto/gocloc/cmd/gocloc@latest
+        go install \
+            github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+        go install github.com/noperator/jqfmt/cmd/jqfmt@latest
+        go install github.com/walles/moor/v2/cmd/moor@latest
+        go install github.com/boyter/scc/v3@latest
+        go install mvdan.cc/sh/v3/cmd/shfmt@latest
+
+        # Special installs
+        mkdir -p ~/go/releases
+        cd ~/go/releases || exit 1
+        curl -O https://downloads.rclone.org/rclone-current-osx-arm64.zip
+        unzip -a rclone-current-osx-arm64.zip
+        cd rclone-*-osx-arm64 || exit 1
+        mv rclone ~/go/bin
+        cd .. || exit 1
+        rm -rf rclone-*-osx-arm64 rclone-current-osx-arm64.zip
+
+        printf "==> All Go app versions after update\n\n"
+        getGoAppVersions
+    }
+
+    if [[ $FORCE == true ]]; then
+        printf "==> Forcing all apps to be updated!\n"
+        install_all
+    else
+        # If SSH session, exit rather than prompt
+        if [[ -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
+            printf "${ERROR} Unable to prompt over SSH\n"
+            printf "${INFO}  Use 'updateGoApps --force' to avoid prompting\n"
+            exit 1
+        fi
+        printf "Update/install all Go apps"
+        # "waitUntil -N" supplies "? [y/N]" and waits
+        if waitUntil -N "?"; then
+            install_all
+        else
+            printf "==> Updates skipped\n"
+        fi
+    fi
+
+fi
