@@ -72,6 +72,12 @@ if ! command -v go &>/dev/null; then
     exit 0
 fi
 
+if [[ ! -x ~/bin/getGoAppVersions ]]; then
+    # shellcheck disable=SC2059
+    printf "${WARNING} ~/bin/getGoAppVersions does not exist, skipping\n"
+    exit 0
+fi
+
 if [[ ! -d ~/go/bin ]]; then
     # shellcheck disable=SC2059
     printf "${WARNING} ~/go/bin does not exist, skipping\n"
@@ -92,13 +98,10 @@ else
     printf "You already have the most recent version of Go\n\n"
 fi
 
-# shellcheck disable=SC2154
-source "$WS"/waitUntil.function
-
 printf "==> Looking in ~/go/bin for Go apps to update:\n"
 
-appsNeedingUpdate=$(getGoAppVersions -u)
-allApps=$(getGoAppVersions)
+appsNeedingUpdate=$(~/bin/getGoAppVersions -u)
+allApps=$(~/bin/getGoAppVersions)
 
 # Check if any newer files were found
 printf "\n%s\n\n" "$allApps"
@@ -134,7 +137,7 @@ EOF
         rm -rf rclone-*-osx-arm64 rclone-current-osx-arm64.zip
 
         printf "==> All Go app versions after update\n\n"
-        getGoAppVersions
+        ~/bin/getGoAppVersions
     }
 
     if [[ $FORCE == true ]]; then
@@ -143,19 +146,18 @@ EOF
     else
         # If SSH session, exit rather than prompt
         # shellcheck disable=SC2059
-        if [[ -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
+        if [[ -n ${SSH_TTY:-} || -n ${SSH_CONNECTION:-} ]]; then
             printf "${ERROR} Unable to prompt over SSH\n"
-            printf "${INFO}  Use 'updateGoApps --force' to avoid prompting\n"
+            printf "${INFO}  Use '--force' to avoid prompting\n"
             exit 1
         fi
-        printf "Update/install all Go apps"
-        # "waitUntil -N" supplies "? [y/N]" and waits
-        # shellcheck disable=SC2310
-        if waitUntil -N "?"; then
+        printf "Update/install all Go apps? [y/N] "
+        read -r -n 1 reply
+        printf "\n"
+        if [[ $reply =~ ^[Yy]$ ]]; then
             install_all
         else
             printf "==> Updates skipped\n"
         fi
     fi
-
 fi
