@@ -1,31 +1,332 @@
 #!/usr/bin/env bash
+# Update known Rust apps from ~/.cargo/bin
+# If you install new ones, add them to the install section below
 
-rustup update
+# Prevent cascading or pipe failures
+set -euo pipefail
 
-cargo install --locked bat # Like cat with syntax coloration
-cargo install czkawka_cli  # Find duplicate files, empty folders, etc
-cargo install diffr        # Word-level diff on top of unified diffs
-cargo install difftastic   # Word-level diff highlighting
-cargo install eza          # More flexibls ls
-cargo install fclones      # Finds and removes duplicate files
-cargo install fd-find      # Find files matching a pattern
-cargo install hyperfine    # Run benchmarking tests
-cargo install lsd          # Powerful ls
-cargo install mdbook       # Creates a book from markdown files
-# cargo install prettydiff   # Easier to read diff
-cargo install ripgrep     # Improved faster grep
-cargo install rm-improved # Temporarily remove files and directories
-cargo install sd          # Change all occurences of a string in a file
-cargo install stdrename   # Rename files using differnt formats
-cargo install xls2txt     # Convert .ods or .xls files to text
-cargo install xsv         # Manipulate .csv files
-cargo install zet         # Union, intersection, difference of files
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+#
+function cleanup() {
+    stty sane
+    # Safe because it's created if missing
+    rm -rf ~/.cargo/releases
+    printf "\n"
+}
 
-if [ "$USER" = "monty" ]; then
-    cargo install --locked miniserve # Serve files and dirs over HTTP
-    cargo install stylua             # Format Lua code
-    cargo install tokei              # Count code stats
-    # Skip on Monarch
-    [ "$(hostname)" != "Monarch.local" ] &&
-        cargo install broot # Generate directory trees
+ERROR="\e[0;31m[Error]\e[0m"
+WARNING="\e[0;33m[Warning]\e[0m"
+INFO="\e[0;34m[Info]\e[0m"
+
+help() {
+    cat <<EOF
+updateRustApps
+
+Install or update any Rust apps in ~/.cargo/bin
+
+USAGE:
+    updateRustApps [OPTIONS]
+
+OPTIONS:
+    -h | --help     Show this message and exit
+    -f | --force    Force an update without asking
+
+EOF
+}
+
+# Check for options
+FORCE=false
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        help
+        exit 0
+        ;;
+    -f | --force)
+        FORCE=true
+        shift
+        ;;
+    *)
+        # shellcheck disable=SC2059
+        if [[ $1 == -* ]]; then
+            printf "${ERROR} Unknown option: %s\n" "$1"
+            printf "${INFO}  Run with --help to see available options\n"
+        else
+            printf "${ERROR} Invalid argument: %s\n" "$1"
+            printf "${INFO}  This script does not accept positional arguments\n"
+        fi
+        exit 1
+        ;;
+    esac
+done
+
+# Ensure Rust bin directory is in PATH if installed
+[[ -d ~/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
+
+if ! command -v rustup &>/dev/null; then
+    # shellcheck disable=SC2059
+    printf "${WARNING} Rust is not installed\n"
+    cat <<EOF
+
+Before you can proceed, install Rust by using rustup:
+
+Run the following in your terminal:
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+then follow the on-screen instructions.
+
+EOF
+    exit 0
+fi
+
+if [[ ! -x ~/bin/getRustAppVersions ]]; then
+    # shellcheck disable=SC2059
+    printf "${WARNING} ~/bin/getRustAppVersions does not exist, skipping\n"
+    exit 0
+fi
+
+if [[ ! -d ~/.cargo/bin ]]; then
+    # shellcheck disable=SC2059
+    printf "${WARNING} ~/.cargo/bin does not exist, skipping\n"
+    exit 0
+fi
+
+# Make a directory to use for installing releases
+mkdir -p ~/.cargo/releases
+cd ~/.cargo/releases || exit 1
+
+# Get rustc version (the actual Rust compiler version)
+currentVersion=$(rustc --version 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' |
+    head -1 || echo "unknown")
+
+# Get latest rustc version from official Rust channel
+latestVersion=$(curl -s 'https://static.rust-lang.org/dist/channel-rust-stable.toml' 2>/dev/null |
+    grep "rust-[0-9].*aarch64-apple-darwin.tar.gz" |
+    grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "")
+
+printf "Your installed Rust toolchain is %s, the latest is %s\n" \
+    "$currentVersion" "$latestVersion"
+
+# Check if Rust version is out of date
+if [[ $currentVersion != "$latestVersion" ]]; then
+    printf "It will be automatically updated via 'rustup update'\n\n"
+else
+    printf "You already have the most recent version of Rust\n\n"
+fi
+
+printf "==> Looking in ~/.cargo/bin for Rust apps to update:\n"
+
+appsNeedingUpdate=$(~/bin/getRustAppVersions -u)
+allApps=$(~/bin/getRustAppVersions)
+
+# Check if any newer files were found
+printf "\n%s\n\n" "$allApps"
+if [[ -z $appsNeedingUpdate ]]; then
+    printf "==> None of the above Rust apps need updating\n"
+    exit 0
+else
+    cat <<EOF
+==> Some of the above Rust apps need updating
+    Doing so will update or install these apps:
+
+$appsNeedingUpdate
+
+EOF
+
+    install_apps() {
+        local apps_to_update="$1"
+
+        # First update rustup and the rust toolchain
+        printf "Updating rustup and Rust toolchain...\n"
+        rustup -q update
+
+        # Install each app that needs updating
+        while IFS= read -r line; do
+            # Skip empty lines
+            [[ -z $line ]] && continue
+
+            # Extract just the app name (first word before whitespace)
+            app=$(echo "$line" | awk '{print $1}')
+
+            case "$app" in
+            bat)
+                # Modern cat clone with syntax highlighting & git support
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force --locked bat
+                bat cache --build
+                ;;
+            broot)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force broot
+                ;;
+            czkawka_cli)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force czkawka_cli
+                ;;
+            delta)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force git-delta
+                ;;
+            diffr)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force diffr
+                ;;
+            difft)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force difftastic
+                ;;
+            eza)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force eza
+                ;;
+            fclones)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force fclones
+                ;;
+            fd)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force fd-find
+                ;;
+            hexyl)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force hexyl
+                ;;
+            hx)
+                printf "Installing %s...\n" "$app"
+                if [[ -d ~/Projects/helix ]]; then
+                    cd ~/Projects/helix || exit 1
+                    git pull
+                    # Build optimized version
+                    cargo install -q --force \
+                        --profile opt \
+                        --config 'build.rustflags="-C target-cpu=native"' \
+                        --path helix-term \
+                        --locked
+                    # Ensure runtime symlink exists
+                    [[ ! -L ~/.config/helix/runtime ]] &&
+                        ln -s "$PWD/runtime" ~/.config/helix/runtime
+                    cd - >/dev/null
+                else
+                    # shellcheck disable=SC2059
+                    printf "${WARNING} ~/Projects/helix does not exist, skipping\n"
+                fi
+                ;;
+            hyperfine)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force hyperfine
+                ;;
+            lsd)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force lsd
+                ;;
+            lychee)
+                printf "Installing %s...\n" "$app"
+                # Get the latest release download URL
+                download_url=$(curl -s "https://api.github.com/repos/lycheeverse/lychee/releases/latest" |
+                    jq -r '.assets[] | select(.name == "lychee-arm64-macos.tar.gz") | .browser_download_url')
+                curl -sL "$download_url" -o lychee-arm64-macos.tar.gz
+                tar -xzf lychee-arm64-macos.tar.gz lychee
+                mv lychee ~/.cargo/bin
+                rm -f lychee-arm64-macos.tar.gz
+                ;;
+            mdbook)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force mdbook
+                ;;
+            miniserve)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force --locked miniserve
+                ;;
+            nu)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force --locked nu
+                ;;
+            prettydiff)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force prettydiff --version 0.6.4
+                ;;
+            rg)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force ripgrep
+                ;;
+            rip)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force rm-improved
+                ;;
+            rustc)
+                # rustc is updated via rustup, skip individual install
+                printf "Skipping %s (updated via rustup)...\n" "$app"
+                ;;
+            sd)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force sd
+                ;;
+            stdrename)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force stdrename
+                ;;
+            stylua)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force stylua
+                ;;
+            tldr)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force tealdeer
+                tldr --update
+                ;;
+            tokei)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force tokei
+                ;;
+            tree)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force rust_tree
+                ;;
+            xls2txt)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force xls2txt
+                ;;
+            xsv)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force xsv
+                ;;
+            zeitfetch)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force zeitfetch
+                ;;
+            zet)
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force zet
+                ;;
+            *)
+                printf "Unknown app: %s (skipping)\n" "$app"
+                ;;
+            esac
+        done <<<"$apps_to_update"
+
+        printf "\n==> All Rust app versions after update\n\n"
+        ~/bin/getRustAppVersions
+    }
+
+    if [[ $FORCE == true ]]; then
+        printf "==> Forcing apps to be updated!\n"
+        install_apps "$appsNeedingUpdate"
+    else
+        # If SSH session, exit rather than prompt
+        # shellcheck disable=SC2059
+        if [[ -n ${SSH_TTY:-} || -n ${SSH_CONNECTION:-} ]]; then
+            printf "${ERROR} Unable to prompt over SSH\n"
+            printf "${INFO}  Use '--force' to avoid prompting\n"
+            exit 1
+        fi
+        printf "Update/install these Rust apps? [y/N] "
+        read -r -n 1 reply
+        printf "\n"
+        if [[ $reply =~ ^[Yy]$ ]]; then
+            install_apps "$appsNeedingUpdate"
+        else
+            printf "==> Updates skipped\n"
+        fi
+    fi
 fi
