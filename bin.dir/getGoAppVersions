@@ -78,6 +78,9 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Ensure go is in PATH if installed
+[[ -d /usr/local/go/bin ]] && export PATH="/usr/local/go/bin:$PATH"
+
 # Get latest version from Go proxy
 get_latest_version() {
     local module_path="$1"
