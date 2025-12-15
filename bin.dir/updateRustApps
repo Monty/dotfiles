@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Update known Rust apps from ~/.cargo/bin
-# If you install new ones, add them to the install section below
+# If you install new ones, add them to the install_apps() function below
 
 # Prevent cascading or pipe failures
 set -euo pipefail
@@ -157,42 +157,52 @@ EOF
                 bat cache --build
                 ;;
             broot)
+                # Tree view and navigation for directories
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force broot
                 ;;
             czkawka_cli)
+                # Find and remove duplicates, empty files, & junk
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force czkawka_cli
                 ;;
             delta)
+                # Syntax-highlighting pager for git
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force git-delta
                 ;;
             diffr)
+                # Word-level diff on top of unified diffs
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force diffr
                 ;;
             difft)
+                # Syntax-aware structural diff
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force difftastic
                 ;;
             eza)
+                # Modern ls clone with colors, icons, git status
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force eza
                 ;;
             fclones)
+                # Efficiently find and remove duplicate files
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force fclones
                 ;;
             fd)
+                # Simple, fast alternative to find
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force fd-find
                 ;;
             hexyl)
+                # Command-line hex viewer with colors
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force hexyl
                 ;;
             hx)
+                # Modal text editor in terminal; build locally
                 printf "Installing %s...\n" "$app"
                 if [[ -d ~/Projects/helix ]]; then
                     cd ~/Projects/helix || exit 1
@@ -213,14 +223,17 @@ EOF
                 fi
                 ;;
             hyperfine)
+                # Command-line benchmarking tool
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force hyperfine
                 ;;
             lsd)
+                # Modern ls clone with icons and colors
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force lsd
                 ;;
             lychee)
+                # Fast async link checker for Markdown/HTML
                 printf "Installing %s...\n" "$app"
                 # Get the latest release download URL
                 download_url=$(curl -s "https://api.github.com/repos/lycheeverse/lychee/releases/latest" |
@@ -231,26 +244,32 @@ EOF
                 rm -f lychee-arm64-macos.tar.gz
                 ;;
             mdbook)
+                # Create online books from Markdown files
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force mdbook
                 ;;
             miniserve)
+                # Simple tool to serve files/dirs over HTTP
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force --locked miniserve
                 ;;
             nu)
+                # Modern shell with structured data support
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force --locked nu
                 ;;
             prettydiff)
+                # Side-by-side diff with formatting
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force prettydiff --version 0.6.4
                 ;;
             rg)
+                # Extremely fast and better alternative to grep
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force ripgrep
                 ;;
             rip)
+                # Safer rm command with recovery
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force rm-improved
                 ;;
@@ -259,43 +278,53 @@ EOF
                 printf "Skipping %s (updated via rustup)...\n" "$app"
                 ;;
             sd)
+                # Change all occurences of a string in a file
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force sd
                 ;;
             stdrename)
+                # Batch rename files using patterns
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force stdrename
                 ;;
             stylua)
+                # Lua code formatter
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force stylua
                 ;;
             tldr)
+                # Fast tldr client, i.e., simplified man pages
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force tealdeer
                 tldr --update
                 ;;
             tokei)
+                # Count code lines by language
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force tokei
                 ;;
             tree)
+                # Rust implementation of Linux tree
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force rust_tree
                 ;;
             xls2txt)
+                # Convert .ods or .xls files to .tsv or .csv filesd
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force xls2txt
                 ;;
             xsv)
+                # Fast CSV command line toolkit
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force xsv
                 ;;
             zeitfetch)
+                # Neofetch clone written in rust
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force zeitfetch
                 ;;
             zet)
+                # Set operations on files: union/intersection/difference
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force zet
                 ;;
