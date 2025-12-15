@@ -55,6 +55,7 @@ for each in \
     $HOME/.cargo/bin \
     $HOME/Projects/nvim-macos/bin \
     /Applications/kitty.app/Contents/MacOS \
+    /Applications/CotEditor.app/Contents/SharedSupport/bin \
     $HOME/.local/bin \
     $HOME/Library/Python/3.9/bin \
     $HOME/.gem/ruby/2.7.0/bin \
