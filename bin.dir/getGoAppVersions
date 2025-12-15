@@ -88,6 +88,12 @@ if ! command -v go &>/dev/null; then
     exit 0
 fi
 
+if [[ ! -d ~/go/bin ]]; then
+    # shellcheck disable=SC2059
+    printf "${WARNING} ~/go/bin does not exist, skipping\n"
+    exit 0
+fi
+
 # Get latest version from Go proxy
 get_latest_version() {
     local module_path="$1"
