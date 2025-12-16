@@ -37,6 +37,11 @@ shopt -s checkwinsize
 GPG_TTY=$(tty)
 export GPG_TTY
 
+# So we can retrieve version info from any public repo
+if [[ -f ~/.tokens ]]; then
+    source ~/.tokens
+fi
+
 # Make a sensible PATH and save it
 # set PATH so it includes private bin if it exists
 if [[ -d "$HOME/bin" ]]; then

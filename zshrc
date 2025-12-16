@@ -33,6 +33,11 @@ setopt interactivecomments
 GPG_TTY=$(tty)
 export GPG_TTY
 
+# So we can retrieve version info from any public repo
+if [[ -f ~/.tokens ]]; then
+    source ~/.tokens
+fi
+
 # For IMDb_xref
 export FULLCAST=50
 # export NO_MENUS="yes"
