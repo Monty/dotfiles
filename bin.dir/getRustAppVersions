@@ -151,10 +151,6 @@ process_rustc() {
     # Only process if rustup exists
     [[ ! -x $rustup_path ]] && return
 
-    if $verbose; then
-        echo "=> rustc (via rustup)"
-    fi
-
     # Get rustc version from rustup
     version_output=$("$rustup_path" --version 2>&1)
 
@@ -162,35 +158,42 @@ process_rustc() {
     version=$(echo "$version_output" | grep "currently active.*rustc" |
         grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true)
 
+    if [[ -z $version ]]; then
+        return
+    fi
+
+    has_update=false
+    latest=""
+
+    if ! $quiet; then
+        latest=$(get_latest_rustc_version)
+
+        if [[ -n $latest && $latest != "$version" ]]; then
+            has_update=true
+        fi
+    fi
+
+    # Skip if updates_only and no update available
+    if $updates_only && ! $has_update; then
+        return
+    fi
+
+    # NOW show verbose output (after determining if we should show this entry)
     if $verbose; then
+        echo "=> rustc (via rustup)"
         echo "$version_output" | grep "currently active"
         echo ">>> Semantic version"
     fi
 
-    if [[ -n $version ]]; then
-        has_update=false
-        latest=""
-
-        if ! $quiet; then
-            latest=$(get_latest_rustc_version)
-
-            if [[ -n $latest && $latest != "$version" ]]; then
-                has_update=true
-            fi
+    # Show output based on mode
+    if $updates_only; then
+        printf "%-20s %s → %s\n" "rustc" "$version" "$latest"
+    else
+        printf "%-20s %s" "rustc" "$version"
+        if $has_update; then
+            printf " → %s available" "$latest"
         fi
-
-        # Show output based on mode
-        if $updates_only; then
-            if $has_update; then
-                printf "%-20s %s → %s\n" "rustc" "$version" "$latest"
-            fi
-        else
-            printf "%-20s %s" "rustc" "$version"
-            if $has_update; then
-                printf " → %s available" "$latest"
-            fi
-            echo
-        fi
+        echo
     fi
 
     if $verbose; then
@@ -212,56 +215,59 @@ for app in ~/.cargo/bin/*; do
         process_rustc
     fi
 
-    if $verbose; then
-        echo "=> $basename_app --version"
-    fi
-
     # Get version output (capture both stdout and stderr)
     version_output=$("$app" --version 2>&1)
 
+    # Parse version
+    version=$(parse_version "$version_output")
+    if [[ -z $version ]]; then
+        continue
+    fi
+
+    # Check for updates unless in quiet mode
+    has_update=false
+    latest=""
+
+    if ! $quiet; then
+        crate_name=$(get_crate_name "$basename_app")
+        latest=$(get_latest_version "$basename_app" "$crate_name")
+
+        if [[ -n $latest && $latest != "$version" ]]; then
+            # Remove 'v' prefix for comparison if present
+            current_ver="${version#v}"
+            latest_ver="${latest#v}"
+
+            if [[ $current_ver != "$latest_ver" ]]; then
+                has_update=true
+                # prettydiff binaries no longer included, pin version
+                [[ $basename_app == "prettydiff" ]] && has_update=false
+            fi
+        fi
+    fi
+
+    # Skip if updates_only and no update available
+    if $updates_only && ! $has_update; then
+        continue
+    fi
+
+    # NOW show verbose output (after determining if we should show this app)
     if $verbose; then
+        echo "=> $basename_app --version"
         echo "$version_output"
         echo ">>> Semantic version"
     fi
 
-    # Parse and display version
-    version=$(parse_version "$version_output")
-    if [[ -n $version ]]; then
-        # Check for updates unless in quiet mode
-        has_update=false
-        latest=""
-
-        if ! $quiet; then
-            crate_name=$(get_crate_name "$basename_app")
-            latest=$(get_latest_version "$basename_app" "$crate_name")
-
-            if [[ -n $latest && $latest != "$version" ]]; then
-                # Remove 'v' prefix for comparison if present
-                current_ver="${version#v}"
-                latest_ver="${latest#v}"
-
-                if [[ $current_ver != "$latest_ver" ]]; then
-                    has_update=true
-                    # prettydiff binaries no longer included, pin version
-                    [[ $basename_app == "prettydiff" ]] && has_update=false
-                fi
-            fi
+    # Show output based on mode
+    if $updates_only; then
+        # Only show apps with updates available
+        printf "%-20s %s → %s\n" "$basename_app" "$version" "$latest"
+    else
+        # Show all apps, mark updates
+        printf "%-20s %s" "$basename_app" "$version"
+        if $has_update; then
+            printf " → %s available" "$latest"
         fi
-
-        # Show output based on mode
-        if $updates_only; then
-            # Only show apps with updates available
-            if $has_update; then
-                printf "%-20s %s → %s\n" "$basename_app" "$version" "$latest"
-            fi
-        else
-            # Show all apps, mark updates
-            printf "%-20s %s" "$basename_app" "$version"
-            if $has_update; then
-                printf " → %s available" "$latest"
-            fi
-            echo
-        fi
+        echo
     fi
 
     if $verbose; then

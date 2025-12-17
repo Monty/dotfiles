@@ -126,19 +126,10 @@ for app in ~/go/bin/*; do
     [[ -x $app ]] || continue
     basename_app=$(basename "$app")
 
-    # Always show header in verbose mode
-    if $verbose; then
-        echo "==> $basename_app"
-    fi
-
     # Get module info from binary
     version_output=$(get_module_info "$app")
 
     if [[ -z $version_output ]]; then
-        if $verbose; then
-            echo "Unable to read module info"
-            echo
-        fi
         continue
     fi
 
@@ -147,20 +138,7 @@ for app in ~/go/bin/*; do
         "$version_output")"
 
     if [[ -z $module || -z $version ]]; then
-        if $verbose; then
-            echo "Could not parse module info"
-            echo
-        fi
         continue
-    fi
-
-    # Now show detailed info in verbose mode
-    if $verbose; then
-        echo "$version_output" |
-            awk '/^[[:space:]]+(path|mod)[[:space:]]+/ {print "    " $1, $2, $3}'
-        echo ">>> Parsed version"
-        echo "Module: $module"
-        echo "Version: $version"
     fi
 
     # Check for updates unless in quiet mode
@@ -181,12 +159,25 @@ for app in ~/go/bin/*; do
         fi
     fi
 
+    # Skip if updates_only and no update available
+    if $updates_only && ! $has_update; then
+        continue
+    fi
+
+    # NOW show verbose output (after determining if we should show this app)
+    if $verbose; then
+        echo "==> $basename_app"
+        echo "$version_output" |
+            awk '/^[[:space:]]+(path|mod)[[:space:]]+/ {print "    " $1, $2, $3}'
+        echo ">>> Parsed version"
+        echo "Module: $module"
+        echo "Version: $version"
+    fi
+
     # Show output based on mode
     if $updates_only; then
         # Only show apps with updates available
-        if $has_update; then
-            printf "%-20s %s → %s\n" "$basename_app" "$version" "$latest"
-        fi
+        printf "%-20s %s → %s\n" "$basename_app" "$version" "$latest"
     else
         # Show all apps, mark updates
         printf "%-20s %s" "$basename_app" "$version"
