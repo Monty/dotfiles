@@ -7,4 +7,4 @@ OUTDIR=$(dirname "$1")
 
 nohup /Applications/LibreOffice.app/Contents/MacOS/soffice --headless --convert-to \
     csv:"Text - txt - csv (StarCalc)":9,34,UTF8,1,,0,false,true,false,false,-1 \
-    "$TARGET" --outdir "$OUTDIR" > /dev/null 2>&1 </dev/null
+    "$TARGET" --outdir "$OUTDIR" >/dev/null 2>&1 </dev/null
