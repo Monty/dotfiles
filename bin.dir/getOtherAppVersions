@@ -81,6 +81,7 @@ done
 for each in \
     /Applications/CotEditor.app/Contents/SharedSupport/bin \
     /Applications/kitty.app/Contents/MacOS \
+    $HOME/.local/bin \
     $HOME/.volta/bin \
     $HOME/Library/Python/3.9/bin \
     $HOME/Projects/dart-sass \
@@ -103,6 +104,8 @@ repos=(
     "prettier/prettier"
     "eslint/eslint"
     "tree-sitter/tree-sitter"
+    "yarnpkg/berry"
+    "pnpm/pnpm"
     "astral-sh/ruff"
     "psf/black"
     "sass/dart-sass"
@@ -118,6 +121,9 @@ get_display_name() {
         ;;
     sass/dart-sass)
         echo "sass"
+        ;;
+    yarnpkg/berry)
+        echo "yarn"
         ;;
     *)
         basename "$repo"
@@ -225,6 +231,20 @@ for repo in "${repos[@]}"; do
     tree-sitter/tree-sitter)
         if command -v tree-sitter &>/dev/null; then
             current_output=$(tree-sitter --version 2>&1)
+        else
+            continue
+        fi
+        ;;
+    yarnpkg/berry)
+        if command -v yarn &>/dev/null; then
+            current_output=$(yarn --version 2>&1)
+        else
+            continue
+        fi
+        ;;
+    pnpm/pnpm)
+        if command -v pnpm &>/dev/null; then
+            current_output=$(pnpm --version 2>&1)
         else
             continue
         fi
