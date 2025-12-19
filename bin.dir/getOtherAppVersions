@@ -130,6 +130,10 @@ get_github_latest() {
     local repo="$1"
 
     # Use GITHUB_TOKEN environment variable if available
+    if [[ -f "$HOME/.tokens" ]]; then
+        # shellcheck source=/dev/null
+        source "$HOME/.tokens"
+    fi
     if [[ -n ${GITHUB_TOKEN:-} ]]; then
         curl -s -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$repo/releases/latest" |
             jq -r --arg r "$repo" '"\($r) \(.tag_name) \(.published_at // "unknown" | split("T")[0])"' 2>/dev/null
@@ -175,7 +179,7 @@ for repo in "${repos[@]}"; do
     microsoft/playwright)
         if [[ -d "${HOME}/Projects/WhatsStreamingToday" ]]; then
             cd "${HOME}/Projects/WhatsStreamingToday" || continue
-            if [[ -d "${HOME}/Library/Caches/ms-playwright/" ]]; then
+            if [[ -d "${HOME}/Library/Caches/ms-playwright" ]]; then
                 if command -v npx &>/dev/null; then
                     current_output=$(npx playwright --version 2>&1)
                 fi
