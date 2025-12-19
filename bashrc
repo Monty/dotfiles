@@ -39,6 +39,7 @@ export GPG_TTY
 
 # So we can retrieve version info from any public repo
 if [[ -f ~/.tokens ]]; then
+    # shellcheck source=/dev/null
     source ~/.tokens
 fi
 
