@@ -173,8 +173,8 @@ for repo in "${repos[@]}"; do
         fi
         ;;
     microsoft/playwright)
-        if [[ -n ${WS:-} ]] && [[ -d $WS ]]; then
-            cd "$WS" || continue
+        if [[ -d "${HOME}/Projects/WhatsStreamingToday" ]]; then
+            cd "${HOME}/Projects/WhatsStreamingToday" || continue
             if [[ -d "${HOME}/Library/Caches/ms-playwright/" ]]; then
                 if command -v npx &>/dev/null; then
                     current_output=$(npx playwright --version 2>&1)
