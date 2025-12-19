@@ -170,9 +170,6 @@ for repo in "${repos[@]}"; do
         if command -v kitty &>/dev/null; then
             current_output=$(kitty --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -187,9 +184,6 @@ for repo in "${repos[@]}"; do
             cd - >/dev/null || true
         fi
         if [[ -z $current_output ]]; then
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -197,9 +191,6 @@ for repo in "${repos[@]}"; do
         if command -v volta &>/dev/null; then
             current_output=$(volta --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -207,9 +198,6 @@ for repo in "${repos[@]}"; do
         if command -v node &>/dev/null; then
             current_output=$(node --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -217,9 +205,6 @@ for repo in "${repos[@]}"; do
         if command -v npm &>/dev/null; then
             current_output=$(npm --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "npm" "not installed"
-            fi
             continue
         fi
         ;;
@@ -227,9 +212,6 @@ for repo in "${repos[@]}"; do
         if command -v prettier &>/dev/null; then
             current_output=$(prettier --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -237,9 +219,6 @@ for repo in "${repos[@]}"; do
         if command -v eslint &>/dev/null; then
             current_output=$(eslint --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -247,9 +226,6 @@ for repo in "${repos[@]}"; do
         if command -v tree-sitter &>/dev/null; then
             current_output=$(tree-sitter --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -257,9 +233,6 @@ for repo in "${repos[@]}"; do
         if command -v ruff &>/dev/null; then
             current_output=$(ruff --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -267,9 +240,6 @@ for repo in "${repos[@]}"; do
         if command -v black &>/dev/null; then
             current_output=$(black --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -277,9 +247,6 @@ for repo in "${repos[@]}"; do
         if command -v sass &>/dev/null; then
             current_output=$(sass --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
@@ -287,9 +254,6 @@ for repo in "${repos[@]}"; do
         if command -v cot &>/dev/null; then
             current_output=$(cot --version 2>&1)
         else
-            if ! $quiet && ! $updates_only; then
-                printf "%-25s %s\n" "$app_name" "not installed"
-            fi
             continue
         fi
         ;;
