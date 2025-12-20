@@ -1,0 +1,196 @@
+#!/usr/bin/env bash
+
+# Fix up downloads from ChatGPT Exporter
+# 1. Remove spaces from file names
+# 2. Prepend the file's date to its extension,
+#    IFF it's not already been done
+
+# Prevent cascading or pipe failures
+set -euo pipefail
+
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+
+function cleanup() {
+    stty sane
+    printf "\n"
+}
+
+ERROR="\e[0;31m[Error]\e[0m"
+INFO="\e[0;34m[Info]\e[0m"
+
+help() {
+    cat <<EOF
+fixupChatDownloads
+
+Fix filenames of chat sessions exported by ChatGPT Exporter.
+
+Normal mode:
+  - Replace spaces with underscores
+  - Append file modification date (YYMMDD format) before extension
+  - If file already has a date that differs from the current date,
+    append a new date
+  - Preserve existing dates when adding new ones
+
+Undo mode (-u):
+  - Remove the last date suffix from filename
+
+If no files are specified, processes all *.md files in current directory.
+
+USAGE:
+    fixupChatDownloads [OPTIONS] [FILES]
+
+OPTIONS:
+    -h, --help   Show this message and exit
+    -u, --undo   Remove the last date suffix from filenames
+
+EXAMPLES:
+    Normal mode:
+      Claude Refactoring code.md -> Claude_Refactoring_code-251219.md
+      file-251213.md -> file-251213-251219.md (if dates differ)
+
+    Undo mode:
+      Claude_Refactoring_code-251219.md -> Claude_Refactoring_code.md
+      file-251213-251219.md -> file-251213.md
+EOF
+}
+
+# Check for options
+undo=false
+files=()
+
+# shellcheck disable=SC2059
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        help
+        exit 0
+        ;;
+    -u | --undo)
+        undo=true
+        shift
+        ;;
+    -*)
+        printf "${ERROR} Unknown option: %s\n" "$1"
+        printf "${INFO}  Run with --help to see available options\n"
+        exit 1
+        ;;
+    *)
+        files+=("$1")
+        shift
+        ;;
+    esac
+done
+
+# If no files provided, use *.md
+if [[ ${#files[@]} -eq 0 ]]; then
+    files=(*.md)
+fi
+
+# First pass: collect and display all planned changes
+declare -a changes=()
+echo "Planned changes:"
+echo "==============="
+
+if [[ $undo == true ]]; then
+    # Undo mode: remove last date suffix
+    for name in "${files[@]}"; do
+        # Skip if file doesn't exist
+        [[ -e $name ]] || continue
+
+        base="${name%.md}"
+
+        # Check if filename ends with a date pattern
+        if [[ $base =~ (.*)-[0-9]{6}$ ]]; then
+            # Remove the last date suffix
+            undatedName="${BASH_REMATCH[1]}.md"
+
+            if [[ $name != "$undatedName" ]]; then
+                echo "  $name -> $undatedName"
+                changes+=("$name|$undatedName")
+            fi
+        fi
+    done
+else
+    # Normal mode: add dates
+    for name in "${files[@]}"; do
+        # Skip if file doesn't exist
+        [[ -e $name ]] || continue
+
+        noSpaceName="${name// /_}"
+        fileDate=$(stat -f "%Sm" -t "%y%m%d" "$name")
+        base="${noSpaceName%.md}"
+
+        # Check if date already in filename
+        if [[ $base =~ -[0-9]{6}$ ]]; then
+            # Extract the existing date
+            existingDate="${base##*-}"
+            # If the existing date is different from current date,
+            # append new date
+            if [[ $existingDate != "$fileDate" ]]; then
+                datedName="${base}-${fileDate}.md"
+            else
+                datedName="$noSpaceName"
+            fi
+        else
+            datedName="${base}-${fileDate}.md"
+        fi
+
+        # Only show change if filename will actually change
+        if [[ $name != "$datedName" ]]; then
+            echo "  $name -> $datedName"
+            changes+=("$name|$noSpaceName|$datedName")
+        fi
+    done
+fi
+
+# If no changes needed, exit
+if [[ ${#changes[@]} -eq 0 ]]; then
+    echo "No changes needed."
+    exit 0
+fi
+
+echo
+echo "${#changes[@]} file(s) will be renamed."
+echo
+
+# Prompt for confirmation
+read -p "Proceed with these changes? (y/N): " -n 1 -r
+echo
+
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Cancelled."
+    exit 1
+fi
+
+# Second pass: perform the renames
+echo
+echo "Applying changes..."
+
+if [[ $undo == true ]]; then
+    # Undo mode: simple rename
+    for change in "${changes[@]}"; do
+        IFS='|' read -r name undatedName <<<"$change"
+        mv "$name" "$undatedName"
+        echo "  Renamed: $name -> $undatedName"
+    done
+else
+    # Normal mode: potentially two-step rename
+    for change in "${changes[@]}"; do
+        IFS='|' read -r name noSpaceName datedName <<<"$change"
+
+        # Two-step rename to handle both space removal and date addition
+        if [[ $name != "$noSpaceName" && $noSpaceName != "$datedName" ]]; then
+            mv "$name" "$noSpaceName"
+            mv "$noSpaceName" "$datedName"
+            echo "  Renamed: $name -> $datedName"
+        elif [[ $name != "$datedName" ]]; then
+            mv "$name" "$datedName"
+            echo "  Renamed: $name -> $datedName"
+        fi
+    done
+fi
+
+echo
+echo "Done!"
