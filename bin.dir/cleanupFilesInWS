@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Delete relevant files newer than 5 days from $WS
+# Delete relevant files older than 90 days from $WS
+
+# Make sure we are in the correct directory
+# shellcheck disable=SC2154
+cd "$WS" || exit
+source waitUntil.function
+
+printf "==> Looking for files newer than 5 days to delete from \$WS:\n"
+
+# Store the list of newer files in a variable
+newerFiles=$(fd -I -t f -d 1 --newer 5days "[0-9]{6}.csv|[0-9]{6}.txt")
+
+# Check if any newer files were found
+if [[ -z "$newerFiles" ]]; then
+    printf "==> No newer files to delete\n"
+else
+    # Display the newer files
+    printf "\n%s\n\n" "$newerFiles"
+
+    printf "Permanently delete the above newer files from \$WS"
+    if waitUntil -N "?"; then
+        fd -I -t f -d 1 --newer 5days "[0-9]{6}.csv|[0-9]{6}.txt" -x rm
+        printf "==> Newer files have been deleted\n"
+    else
+        printf "==> Newer files were not deleted\n"
+    fi
+fi
+
+printf "\n==> Looking for files older than 90 days to delete from \$WS:\n"
+
+# Store the list of files in a variable
+olderFiles=$(fd -I -t f -d 1 --older 90days "[0-9]{6}.csv|[0-9]{6}.txt")
+
+# Check if any older files were found
+if [[ -z "$olderFiles" ]]; then
+    printf "==> No older files to delete\n"
+else
+    # Display the older files
+    printf "\n%s\n\n" "$olderFiles"
+
+    printf "Permanently delete the above old files from \$WS"
+    if waitUntil -N "?"; then
+        fd -I -t f -d 1 --older 90days "[0-9]{6}.csv|[0-9]{6}.txt" -x rm
+        printf "==> Older files have been deleted\n"
+    else
+        printf "==> Older files were not deleted\n"
+    fi
+fi
