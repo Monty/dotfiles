@@ -157,6 +157,13 @@ get_github_latest() {
 # Extract version from command output
 extract_local_version() {
     local output="$1"
+    # Special handling for Swift
+    if [[ $output == *"Apple Swift version"* ]]; then
+        echo "$output" |
+            grep -oE 'Apple Swift version [0-9]+\.[0-9]+\.[0-9]+' |
+            grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+        return
+    fi
     # Strip optional 'v' prefix and extract first semantic version
     echo "$output" | sed 's/^v//' |
         grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
@@ -188,6 +195,7 @@ for repo in "${repos[@]}"; do
     fi
 
     # Handle missing apps or empty output
+    # shellcheck disable=SC2059
     if [[ -z $current_output ]]; then
         if ! $quiet && ! $updates_only && $verbose; then
             printf "==> %s\n" "$app_name"
