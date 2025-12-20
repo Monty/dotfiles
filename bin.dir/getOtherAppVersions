@@ -112,29 +112,33 @@ repos=(
     "coteditor/CotEditor"
 )
 
-# Get display name for app (override when basename isn't right)
-get_display_name() {
+# Helper to map repo names to their local binary commands
+get_binary_name() {
     local repo="$1"
     case "$repo" in
-    npm/cli)
-        echo "npm"
-        ;;
-    sass/dart-sass)
-        echo "sass"
-        ;;
-    yarnpkg/berry)
-        echo "yarn"
-        ;;
-    *)
-        basename "$repo"
-        ;;
+    npm/cli) echo "npm" ;;
+    sass/dart-sass) echo "sass" ;;
+    yarnpkg/berry) echo "yarn" ;;
+    coteditor/CotEditor) echo "cot" ;;
+    *) basename "$repo" ;;
     esac
+}
+
+# Helper to isolate the complex Playwright logic
+get_playwright_version() {
+    local project_dir="${HOME}/Projects/WhatsStreamingToday"
+    # Check all prerequisites
+    if [[ -d $project_dir ]] &&
+        [[ -d "${HOME}/Library/Caches/ms-playwright" ]] &&
+        command -v npx &>/dev/null; then
+        # Run in a subshell to avoid changing the main script's directory
+        (cd "$project_dir" && npx playwright --version 2>&1)
+    fi
 }
 
 # Get latest version from GitHub
 get_github_latest() {
     local repo="$1"
-
     # Use GITHUB_TOKEN environment variable if available
     if [[ -f "$HOME/.tokens" ]]; then
         # shellcheck source=/dev/null
@@ -167,124 +171,32 @@ extract_github_version() {
 
 # Main processing loop
 for repo in "${repos[@]}"; do
-    # Get current version
     current_output=""
-    app_name=$(get_display_name "$repo")
+    app_name=$(get_binary_name "$repo")
 
-    case "$repo" in
-    kovidgoyal/kitty)
-        if command -v kitty &>/dev/null; then
-            current_output=$(kitty --version 2>&1)
-        else
-            continue
+    # Handle Playwright (Special Case)
+    if [[ $repo == "microsoft/playwright" ]]; then
+        current_output=$(get_playwright_version)
+
+    # Handle Standard CLIs (Generic Logic)
+    else
+        # Check if command exists
+        if command -v "$app_name" &>/dev/null; then
+            current_output=$("$app_name" --version 2>&1 || true)
         fi
-        ;;
-    microsoft/playwright)
-        if [[ -d "${HOME}/Projects/WhatsStreamingToday" ]]; then
-            cd "${HOME}/Projects/WhatsStreamingToday" || continue
-            if [[ -d "${HOME}/Library/Caches/ms-playwright" ]]; then
-                if command -v npx &>/dev/null; then
-                    current_output=$(npx playwright --version 2>&1)
-                fi
-            fi
-            cd - >/dev/null || true
+    fi
+
+    # Handle missing apps or empty output
+    if [[ -z $current_output ]]; then
+        if ! $quiet && ! $updates_only && $verbose; then
+            printf "==> %s\n" "$app_name"
+            printf "${INFO} Not installed\n\n"
         fi
-        if [[ -z $current_output ]]; then
-            continue
-        fi
-        ;;
-    volta-cli/volta)
-        if command -v volta &>/dev/null; then
-            current_output=$(volta --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    nodejs/node)
-        if command -v node &>/dev/null; then
-            current_output=$(node --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    npm/cli)
-        if command -v npm &>/dev/null; then
-            current_output=$(npm --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    prettier/prettier)
-        if command -v prettier &>/dev/null; then
-            current_output=$(prettier --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    eslint/eslint)
-        if command -v eslint &>/dev/null; then
-            current_output=$(eslint --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    tree-sitter/tree-sitter)
-        if command -v tree-sitter &>/dev/null; then
-            current_output=$(tree-sitter --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    yarnpkg/berry)
-        if command -v yarn &>/dev/null; then
-            current_output=$(yarn --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    pnpm/pnpm)
-        if command -v pnpm &>/dev/null; then
-            current_output=$(pnpm --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    astral-sh/ruff)
-        if command -v ruff &>/dev/null; then
-            current_output=$(ruff --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    psf/black)
-        if command -v black &>/dev/null; then
-            current_output=$(black --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    sass/dart-sass)
-        if command -v sass &>/dev/null; then
-            current_output=$(sass --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    coteditor/CotEditor)
-        if command -v cot &>/dev/null; then
-            current_output=$(cot --version 2>&1)
-        else
-            continue
-        fi
-        ;;
-    *)
         continue
-        ;;
-    esac
+    fi
 
     # Extract clean version
-    current_version=$(extract_local_version "$current_output" "$repo")
-
+    current_version=$(extract_local_version "$current_output")
     if [[ -z $current_version ]]; then
         if ! $quiet && ! $updates_only; then
             printf "%-25s %s\n" "$app_name" "version unknown"
