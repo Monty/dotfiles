@@ -110,6 +110,7 @@ repos=(
     "psf/black"
     "sass/dart-sass"
     "coteditor/CotEditor"
+    "swiftlang/swift"
 )
 
 # Helper to map repo names to their local binary commands
