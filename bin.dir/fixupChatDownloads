@@ -99,12 +99,14 @@ if [[ $undo == true ]]; then
         # Skip if file doesn't exist
         [[ -e $name ]] || continue
 
-        base="${name%.md}"
+        # Extract extension
+        ext="${name##*.}"
+        base="${name%.*}"
 
         # Check if filename ends with a date pattern
         if [[ $base =~ (.*)-[0-9]{6}$ ]]; then
             # Remove the last date suffix
-            undatedName="${BASH_REMATCH[1]}.md"
+            undatedName="${BASH_REMATCH[1]}.${ext}"
 
             if [[ $name != "$undatedName" ]]; then
                 echo "  $name -> $undatedName"
@@ -118,9 +120,11 @@ else
         # Skip if file doesn't exist
         [[ -e $name ]] || continue
 
+        # Extract extension
+        ext="${name##*.}"
         noSpaceName="${name// /_}"
         fileDate=$(stat -f "%Sm" -t "%y%m%d" "$name")
-        base="${noSpaceName%.md}"
+        base="${noSpaceName%.*}"
 
         # Check if date already in filename
         if [[ $base =~ -[0-9]{6}$ ]]; then
@@ -129,12 +133,12 @@ else
             # If the existing date is different from current date,
             # append new date
             if [[ $existingDate != "$fileDate" ]]; then
-                datedName="${base}-${fileDate}.md"
+                datedName="${base}-${fileDate}.${ext}"
             else
                 datedName="$noSpaceName"
             fi
         else
-            datedName="${base}-${fileDate}.md"
+            datedName="${base}-${fileDate}.${ext}"
         fi
 
         # Only show change if filename will actually change
