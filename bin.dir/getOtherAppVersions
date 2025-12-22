@@ -186,6 +186,13 @@ for repo in "${repos[@]}"; do
     if [[ $repo == "microsoft/playwright" ]]; then
         current_output=$(get_playwright_version)
 
+    # Handle Swift (Special Case - only check if in Swiftly directory)
+    elif [[ $repo == "swiftlang/swift" ]]; then
+        # Only check Swift if it's installed via Swiftly
+        if [[ -x "$HOME/.swiftly/bin/swift" ]]; then
+            current_output=$("$HOME/.swiftly/bin/swift" --version 2>&1 || true)
+        fi
+
     # Handle Standard CLIs (Generic Logic)
     else
         # Check if command exists
