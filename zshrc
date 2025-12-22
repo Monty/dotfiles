@@ -52,6 +52,10 @@ if [[ -d "$HOME/.volta" ]]; then
     export VOLTA_HOME="$HOME/.volta"
     export PATH="$VOLTA_HOME/bin:$PATH"
 fi
+# Ensure swiftly is first in PATH (after path_helper)
+if [[ -d "$HOME/.swiftly/bin" ]]; then
+    PATH="$HOME/.swiftly/bin:$PATH"
+fi
 # Set PATH so it appends other useful directories if they exist
 for each in \
     /usr/local/bin \
