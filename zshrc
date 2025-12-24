@@ -42,14 +42,11 @@ if type -p broot >/dev/null; then
     source "$HOME"/.config/broot/launcher/bash/br
 fi
 
-# Make eza colors match ls colors as much as possible
-LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41"
-LS_COLORS+=":sg=30;46:tw=30;42:ow=30;43"
-export LS_COLORS
-#
-EZA_COLORS="su=30;41:sf=30;41:xa=33:uu=39:un=31:gu=39:gn=31:ur=39:uw=39:ux=39:ue=39"
-EZA_COLORS+=":gr=39:gw=39:gx=39:tr=39:tw=31:tx=39:sn=34:sb=36:da=34"
-export EZA_COLORS
+# Generate colors using vivid (if installed)
+if (( $+commands[vivid] )); then
+    export LS_COLORS="$(vivid generate zenburn)"
+    export EZA_COLORS="$LS_COLORS"
+fi
 
 # The remainder is mostly about customizing my prompt and window titles
 setopt prompt_subst
