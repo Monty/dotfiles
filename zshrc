@@ -14,14 +14,18 @@
 # non-interactive code has been moved to .zshenv/.zprofile
 [[ $- != *i* ]] && return
 
+# --- Input & Keyboard ---
+# Force Emacs mode to ensure Ctrl-R (incremental search) works
+bindkey -e
 # Allow # comments on command line
 setopt interactivecomments
 
-# Setup history
+# --- Advanced History Setup ---
 # Don't put duplicate lines or lines starting with spaces in the history
-setopt hist_ignore_dups hist_ignore_space appendhistory
+# share_history: Share history between all sessions immediately
+setopt hist_ignore_dups hist_ignore_space share_history
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=6000
+HISTSIZE=10000
 # shellcheck disable=SC2034
 SAVEHIST=10000
 
