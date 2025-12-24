@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+echo "--- Zsh Script PATH Report ---"
+printf "%s " "$(hostname)"
+date
+echo "zsh $ZSH_VERSION"
+echo ""
+echo "Full PATH (as a list):"
+# In Zsh, the lowercase $path is an array of the uppercase $PATH
+printf "%s\n" $path
+echo ""
+
+echo "Checking for tools:"
+which rg || echo "rg not found"
+which swift || echo "swift not found"
+
+echo ""
+echo "Is this an interactive shell? [[ -o interactive ]] ->" $([[ -o interactive ]] && echo "Yes" || echo "No")
+echo "Is this a login shell? [[ -o login ]] ->" $([[ -o login ]] && echo "Yes" || echo "No")

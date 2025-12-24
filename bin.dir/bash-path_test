@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+echo "--- Bash Script PATH Report ---"
+printf "%s " "$(hostname)"
+date
+echo "GNU bash $BASH_VERSION"
+echo ""
+echo "Full PATH:"
+echo $PATH | tr ':' '\n'
+echo ""
+echo "Checking for tools:"
+which rg || echo "rg not found"
+which swift || echo "swift not found"
