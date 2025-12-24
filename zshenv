@@ -25,9 +25,6 @@ export PAGER=$(command -v moor || echo "less")
 export EDITOR=/usr/bin/vim
 export CLICOLOR=1
 
-# golang setup
-export GOPATH="$HOME/Projects/go"
-
 # Override defaults provided in IMDb_xref
 export FULLCAST=50
 # export NO_MENUS="yes"
@@ -36,6 +33,17 @@ export FULLCAST=50
 if /usr/libexec/java_home >/dev/null 2>/dev/null; then
     JAVA_HOME=$(/usr/libexec/java_home)
     export JAVA_HOME
+fi
+
+# pip and system local setup
+# shellcheck disable=SC2206
+[[ -d "/usr/local/bin" ]] && path=("/usr/local/bin" $path)
+
+# golang setup
+export GOPATH="$HOME/Projects/go"
+# shellcheck disable=SC2206,SC2128
+if [[ -d "/usr/local/go/bin" ]]; then
+    path=("/usr/local/go/bin" $path)
 fi
 
 # Make sure rust utilities are in $PATH
