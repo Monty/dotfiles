@@ -18,6 +18,7 @@ echo ""
 
 echo "Checking for directory shortcuts:"
 echo "\$XR = $XR"
+echo ""
 
 echo "Is this an interactive shell? [[ -o interactive ]] ->" $([[ -o interactive ]] && echo "Yes" || echo "No")
 echo "Is this a login shell? [[ -o login ]] ->" $([[ -o login ]] && echo "Yes" || echo "No")
