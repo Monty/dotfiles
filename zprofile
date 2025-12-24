@@ -10,9 +10,16 @@
 #
 # echo "### .zprofile at `date`"
 
-[[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
-[[ -d "$HOME/.volta/bin" ]] && export PATH="$HOME/.volta/bin:$PATH"
-[[ -d "$HOME/.swiftly/bin" ]] && export PATH="$HOME/.swiftly/bin:$PATH"
-[[ -d "$HOME/bin" ]] && export PATH="$HOME/bin:$PATH"
+# "Double Tap" to restore elevated path order
+for each in \
+    $HOME/.cargo/bin \
+    $HOME/.volta/bin \
+    $HOME/.swiftly/bin \
+    $HOME/bin; do
+    # shellcheck disable=SC2206
+    if [[ -d $each ]]; then
+        path=("$each" $path)
+    fi
+done
 
 # Others from .zshenv can remain at the end of $PATH
