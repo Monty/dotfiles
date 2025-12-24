@@ -17,9 +17,6 @@ function cleanup() {
 
 WARNING="\e[0;33m[Warning]\e[0m"
 
-# Ensure Rust bin directory is in PATH if installed
-[[ -d ~/.cargo/bin ]] && export PATH="$HOME/.cargo/bin:$PATH"
-
 # shellcheck disable=SC2059
 if ! command -v rustup &>/dev/null; then
     printf "${WARNING} Rust is not installed\n"

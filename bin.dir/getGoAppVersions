@@ -79,9 +79,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Ensure go is in PATH if installed
-[[ -d /usr/local/go/bin ]] && export PATH="/usr/local/go/bin:$PATH"
-
 if ! command -v go &>/dev/null; then
     # shellcheck disable=SC2059
     printf "${WARNING} Go is not installed, skipping\n"
