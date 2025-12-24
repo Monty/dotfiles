@@ -10,29 +10,9 @@
 #
 # echo "### .zprofile at `date`"
 
-# Make sure rust utilities are in $PATH
-if [[ -r "$HOME/.cargo/env" ]]; then
-    # shellcheck source=/dev/null
-    . "$HOME/.cargo/env"
-    export PATH="$HOME/.cargo/bin:$PATH"
-fi
-
-# Make sure ~/.volta/bin is in $PATH
-if [[ -d "$HOME/.volta" ]]; then
-    export VOLTA_HOME="$HOME/.volta"
-    export PATH="$VOLTA_HOME/bin:$PATH"
-fi
-
-# Make sure swift utilities are in $PATH
-if [[ -r "$HOME/.swiftly/env.sh" ]]; then
-    # shellcheck source=/dev/null
-    . "$HOME/.swiftly/env.sh"
-    export PATH="$HOME/.swiftly/bin:$PATH"
-fi
-
-# Make sure private bin is in $PATH
-if [[ -d "$HOME/bin" ]]; then
-    export PATH="$HOME/bin:$PATH"
-fi
+[[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
+[[ -d "$HOME/.volta/bin" ]] && export PATH="$HOME/.volta/bin:$PATH"
+[[ -d "$HOME/.swiftly/bin" ]] && export PATH="$HOME/.swiftly/bin:$PATH"
+[[ -d "$HOME/bin" ]] && export PATH="$HOME/bin:$PATH"
 
 # Others from .zshenv can remain at the end of $PATH
