@@ -11,8 +11,8 @@ echo $PATH | tr ':' '\n'
 echo ""
 
 echo "Checking for tools:"
-which rg || echo "rg not found"
-which swift || echo "swift not found"
+which -a rg || echo "rg not found"
+which -a swift || echo "swift not found"
 echo ""
 
 echo "Checking for directory shortcuts:"
