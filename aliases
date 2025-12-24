@@ -1,26 +1,10 @@
 # ~/dotfiles/aliases sourced by ~/.zshrc and ~/.bashrc
 
 # Shortcut commands
-alias bata="bat -A"  # All invisible characters
-alias batd="bat -d"  # Diffs only
-alias batp="bat -pP" # Plain, i.e. no numbers, no pager
-# Use bat to format man pages
-bman() {
-    man "$@" | sed -u -e 's/\x1B\[[0-9;]*m//g; s/.\x08//g' |
-        bat -p -lman
-}
-# Use bat to format help pages
-# alias -g only works in zsh
-if [[ $(ps -p $$ -o comm=) == "-zsh" ]]; then
-    # Use bat to format -h and --help (also uses 'less')
-    alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
-    alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
-fi
-#
 alias catc='rg -IN "^[[:space:]]*#|^[[:space:]]*//"'
 alias catn='rg -INv "^[[:space:]]*#|^[[:space:]]*//"'
 alias cls='clear'
-alias decolor='sed -e "s/\x1B\[[0-9;]*m//g" -e "s/.\x08//g"'
+alias decolor='sed -E "s/\\x1B\\[[0-9;]*[mK]//g; s/\\x1B\\][0-9;]*//g; s/\\x7F//g; s/\\x08//g"'
 alias cpr='cp -Rp'
 alias scpr='scp -rp'
 alias df='df -Hl'
@@ -40,10 +24,29 @@ hgrz() {
     fc -lLn 1 -1 | rg "$@" | sort -u
 }
 alias ht='fc -l' # Tail history
+alias lychee='DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks" lychee'
 alias more='less'
 alias nv='nvim'
 alias psx='ps -ef | rg -v ":\d{2}\.\d{2} rg " | rg'
+alias showpath='printf "%s\n" $path'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
+
+# shortcuts for bat
+alias bata="bat -A"  # All invisible characters
+alias batd="bat -d"  # Diffs only
+alias batp="bat -pP" # Plain, i.e. no numbers, no pager
+# Use bat to format man pages
+bman() {
+    man "$@" | sed -u -e 's/\x1B\[[0-9;]*m//g; s/.\x08//g' |
+        bat -p -lman
+}
+# Use bat to format help pages
+# alias -g only works in zsh
+if [[ $(ps -p $$ -o comm=) == "-zsh" ]]; then
+    # Use bat to format -h and --help (also uses 'less')
+    alias -g -- -h='-h 2>&1 | bat --language=help --style=plain'
+    alias -g -- --help='--help 2>&1 | bat --language=help --style=plain'
+fi
 
 # shortcuts for shfmt
 alias shf='shfmt -i 4 -s'     # Default shell format
@@ -123,7 +126,7 @@ ps1-0() { # No host
     PS1='%B${prompt_color}%n: $%f %b'
 }
 ps1-g() { # Reset to standard git prompt
-    PS1='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
+    PS1='%B${prompt_color}%* %n@%m:%1~%f ${vcs_info_msg_0_}${prompt_color}$%f %b'
 }
 
 # Kitty commands
@@ -136,11 +139,11 @@ alias xt-256='export TERM=xterm-256color'
 
 # Directory listings
 # Short form
-alias ls='ls --color=auto'
-alias lsa='ls -A'
+alias ls='eza --color=auto'
+alias lsa='eza --color=auto -a'
 # with special chars to indicate file type
-alias l='ls -CF'
-alias la='ls -AF'
+alias l='eza --color=auto -F'
+alias la='eza --color=auto -aF'
 # Long form
 alias ll='eza --git -s Name --colour=always -l'
 alias lla='eza --git -s Name --colour=always -la'
