@@ -77,23 +77,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# make sure all apps are available in PATH
-for each in \
-    /Applications/CotEditor.app/Contents/SharedSupport/bin \
-    /Applications/kitty.app/Contents/MacOS \
-    $HOME/.local/bin \
-    $HOME/.volta/bin \
-    $HOME/Library/Python/3.9/bin \
-    $HOME/Projects/dart-sass \
-    $HOME/Projects/nvim-macos/bin; do
-    if [[ -d $each ]]; then
-        # echo "### Found $each"
-        if ! echo ":$PATH:" | grep -s ":$each:" >/dev/null; then
-            PATH=${PATH}:$each
-        fi
-    fi
-done
-
 # GitHub repositories (owner/repo)
 repos=(
     "kovidgoyal/kitty"
