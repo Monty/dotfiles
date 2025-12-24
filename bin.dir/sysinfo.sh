@@ -54,6 +54,7 @@ Darwin-*)
     13.*) OS_NAME="macOS Ventura" ;;
     14.*) OS_NAME="macOS Sonoma" ;;
     15.*) OS_NAME="macOS Sequoia" ;;
+    26.*) OS_NAME="macOS Tahoe" ;;
     *) OS_NAME="macOS" ;;
     esac
 
