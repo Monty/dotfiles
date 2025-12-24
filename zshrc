@@ -1,137 +1,71 @@
 #!/usr/bin/env zsh
 #
-# ~/.zshrc: executed by zsh(1) for non-login shells.
+# ~/.zshrc
+#
+# New Terminal tab/window: Loaded 3rd
+# SSH session: Loaded 3rd
+# Console login: Loaded 3rd
+# Running a shell script: Skipped
+# Remote SSH command (ssh host 'ls'): Skipped (due to guard)
+#
 # echo "### .zshrc at `date`"
 
-# Directory shortcuts
-if [[ -f ~/.directory_shortcuts ]]; then
-    # shellcheck source=/dev/null
-    . ~/.directory_shortcuts
-fi
-
-# Define the OS we're running on
-PLATFORM="$(uname -sm | tr ' ' '-')"
-
-# If not running interactively, skip most stuff
+# If not running interactively, skip everything as all the
+# non-interactive code has been moved to .zshenv/.zprofile
 [[ $- != *i* ]] && return
 
-# echo "### .zshrc after interactive check"
-# start of "skip if not interactive"
-
-# Setup history
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=6000
-# Don't put duplicate lines or lines starting with spaces in the history
-setopt hist_ignore_dups
-setopt hist_ignore_space
-setopt appendhistory
-
-# Ignore lines prefixed with '#'.
+# Allow # comments on command line
 setopt interactivecomments
 
-# So we can edit .gpg files directly in Vim
-GPG_TTY=$(tty)
-export GPG_TTY
+# Setup history
+# Don't put duplicate lines or lines starting with spaces in the history
+setopt hist_ignore_dups hist_ignore_space appendhistory
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=6000
+# shellcheck disable=SC2034
+SAVEHIST=10000
 
-# So we can retrieve version info from any public repo
-if [[ -f ~/.tokens ]]; then
-    source ~/.tokens
-fi
-
-# For IMDb_xref
-export FULLCAST=50
-# export NO_MENUS="yes"
-
-# Make a sensible PATH and save it
-# set PATH so it includes private bin if it exists
-if [[ -d "$HOME/bin" ]]; then
-    PATH="$HOME/bin:$PATH"
-fi
-# set PATH so it includes ~/.volta/bin if it exists
-if [[ -d "$HOME/.volta" ]]; then
-    export VOLTA_HOME="$HOME/.volta"
-    export PATH="$VOLTA_HOME/bin:$PATH"
-fi
-# Ensure swiftly is first in PATH (after path_helper)
-if [[ -d "$HOME/.swiftly/bin" ]]; then
-    PATH="$HOME/.swiftly/bin:$PATH"
-fi
-# Set PATH so it appends other useful directories if they exist
-for each in \
-    /usr/local/bin \
-    /usr/local/go/bin \
-    $HOME/go/bin \
-    $HOME/.cargo/bin \
-    $HOME/Projects/nvim-macos/bin \
-    /Applications/kitty.app/Contents/MacOS \
-    /Applications/CotEditor.app/Contents/SharedSupport/bin \
-    $HOME/.local/bin \
-    $HOME/Library/Python/3.9/bin \
-    $HOME/.gem/ruby/2.7.0/bin \
-    $HOME/Projects/dart-sass \
-    /usr/local/git/bin \
-    /usr/X11/bin; do
-    if [[ -d $each ]]; then
-        # echo "### Found $each"
-        if ! echo ":$PATH:" | grep -s ":$each:" >/dev/null; then
-            PATH=${PATH}:$each
-        fi
-    fi
-done
-
-# It is sometimes useful to be able to "reset" your path to a clean state.
-export SAVED_PATH=${PATH}
-
-# Setup other HOMES
-case "$PLATFORM" in
-Darwin-arm64 | Darwin-x86_64 | Darwin-i386)
-    if /usr/libexec/java_home >/dev/null 2>/dev/null; then
-        JAVA_HOME=$(/usr/libexec/java_home)
-        export JAVA_HOME
-    fi
-    ;;
-Linux-x86_64)
-    JAVA_HOME=/usr/lib/jvm/default-java
-    export JAVA_HOME
-    ;;
-*)
-    echo "Don't know where JAVA_HOME should be"
-    ;;
-esac
-
-# Kludge for lychee or other commands needing openssl-3 dylibs
-# uses dylibs from /Applications/kitty.app/Contents/Frameworks/
-if [[ -z $DYLD_LIBRARY_PATH ]]; then
-    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks"
-else
-    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks:$DYLD_LIBRARY_PATH"
-fi
-
-# Some useful environment variables
-if type -p moor >/dev/null; then
-    export PAGER=moor
-else
-    export PAGER=less
-fi
+# Some other useful environment variables
+# shellcheck disable=SC2155
+export PAGER=$(command -v moor || echo "less")
 export LESS=seMi
 export EDITOR=/usr/bin/vim
 export CLICOLOR=1
-# Make eza colors match ls colors as much as possible
-LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41"
-LS_COLORS+=":sg=30;46:tw=30;42:ow=30;43"
-export LS_COLORS
-EZA_COLORS="su=30;41:sf=30;41:xa=33:uu=39:un=31:gu=39:gn=31:ur=39:uw=39:ux=39:ue=39"
-EZA_COLORS+=":gr=39:gw=39:gx=39:tr=39:tw=31:tx=39:sn=34:sb=36:da=34"
-export EZA_COLORS
-
-# golang setup
-export GOPATH=$HOME/Projects/go
 
 # broot setup
 if type -p broot >/dev/null; then
     # shellcheck source=/dev/null
     source "$HOME"/.config/broot/launcher/bash/br
 fi
+
+# Make eza colors match ls colors as much as possible
+LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41"
+LS_COLORS+=":sg=30;46:tw=30;42:ow=30;43"
+export LS_COLORS
+#
+EZA_COLORS="su=30;41:sf=30;41:xa=33:uu=39:un=31:gu=39:gn=31:ur=39:uw=39:ux=39:ue=39"
+EZA_COLORS+=":gr=39:gw=39:gx=39:tr=39:tw=31:tx=39:sn=34:sb=36:da=34"
+export EZA_COLORS
+
+# The remainder is mostly about customizing my prompt and window titles
+setopt prompt_subst
+
+# Pick prompt colors - normally blue, but yellow if SSH,
+# red if root or privileged
+# shellcheck disable=SC2034
+if [[ -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
+    prompt_color='%F{%(#.red.yellow)}'
+else
+    prompt_color='%F{%(#.red.blue)}'
+fi
+
+# Load the version control system module
+autoload -Uz vcs_info
+# Enable only git
+zstyle ':vcs_info:*' enable git
+# Format: red color, (branch name), reset color, trailing space
+# %b is the branch name, %u/%c are for unstaged/staged changes
+zstyle ':vcs_info:git:*' formats '%F{red}(%b)%f '
 
 # Functions to set iTerm2 window and tab titles
 # $1 = type: 0 - both, 1 - tab, 2 - title
@@ -144,37 +78,20 @@ setTermTitle() {
 stt_both() { setTermTitle 0 "$@"; }
 stt_tab() { setTermTitle 1 "$@"; }
 stt_title() { setTermTitle 2 "$@"; }
-#
-# Set iTerm window and tab titles
+
+# This runs before every prompt to refresh the git status
+# shellcheck disable=SC2154
 precmd() {
-    # shellcheck disable=SC2154
+    vcs_info
     stt_title "$USER"@"${HOST%.Local}" "${PWD/#$HOME/~}"
     local TILDE_HOME=${PWD/#$HOME/~}
     stt_tab "$USER"@"${HOST%.Local}" "${TILDE_HOME##*/}"
 }
 
-# Setup prompt
-setopt prompt_subst
-#
-# Pick prompt colors - normally blue, but yellow if SSH,
-# red if root or privileged
-# shellcheck disable=SC2034
-if [[ -n $SSH_TTY || -n $SSH_CONNECTION ]]; then
-    prompt_color='%F{%(#.red.yellow)}'
-else
-    prompt_color='%F{%(#.red.blue)}'
-fi
-#
-# If in git repository, print git branch in red with trailing space
-parse_git_branch() {
-    branch_name=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return
-    echo "%F{red}($branch_name)%f "
-}
-#
 # Default prompt
 # Allow not expanding this expression in single quotes
 # shellcheck disable=SC2016,SC2034
-PROMPT='%B${prompt_color}%* %n@%m:%1~%f $(parse_git_branch)${prompt_color}$%f %b'
+PROMPT='%B${prompt_color}%* %n@%m:%1~%f ${vcs_info_msg_0_}${prompt_color}$%f %b'
 
 # Define aliases
 if [[ -f ~/.zsh_aliases ]]; then
