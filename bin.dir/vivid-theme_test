@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+source "$WS/waitUntil.function"
+
+# Display all Vivid themes
+for theme in $(vivid themes); do
+    if waitUntil -Y "\nDisplay $theme?"; then
+        LS_COLORS=$(vivid generate $theme)
+        "$@"
+    fi
+done
