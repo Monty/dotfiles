@@ -9,6 +9,9 @@
 # Remote SSH command (ssh host 'ls'): Skipped (due to guard)
 #
 # echo "### .zshrc at `date`"
+#
+# Handle zsh arrays and known variables
+# shellcheck disable=SC1087,SC2154
 
 # If not running interactively, skip everything as all the
 # non-interactive code has been moved to .zshenv/.zprofile
@@ -73,6 +76,15 @@ zstyle ':vcs_info:*' enable git
 # %b is the branch name, %u/%c are for unstaged/staged changes
 zstyle ':vcs_info:git:*' formats '%F{red}(%b)%f '
 
+# Load the specific Zsh modules for searching
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+#
+# Bind the Up and Down arrows to the search function
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+
 # Functions to set iTerm2 window and tab titles
 # $1 = type: 0 - both, 1 - tab, 2 - title
 setTermTitle() {
@@ -86,7 +98,6 @@ stt_tab() { setTermTitle 1 "$@"; }
 stt_title() { setTermTitle 2 "$@"; }
 
 # This runs before every prompt to refresh the git status
-# shellcheck disable=SC2154
 precmd() {
     vcs_info
     stt_title "$USER"@"${HOST%.Local}" "${PWD/#$HOME/~}"
