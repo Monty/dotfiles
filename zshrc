@@ -48,7 +48,7 @@ fi
 # Generate colors using vivid (if installed)
 # shellcheck disable=SC2155
 if command -v vivid &>/dev/null; then
-    export LS_COLORS="$(vivid generate zenburn)"
+    export LS_COLORS="$(vivid generate ~/.config/vivid/themes/custom_theme.yml)"
 else
     # Fallback standard LS_COLORS
     export LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
