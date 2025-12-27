@@ -1,0 +1,39 @@
+# eza Theme Configuration
+# Target: ~/.config/eza/theme.yml
+# Used to color eza -l metadata only, not filenames
+
+colourful: true
+
+# Special file types
+filekinds:
+  setuid: { foreground: Black, background: Red }
+  setgid: { foreground: Black, background: Red }
+
+# Color definitions for permissions
+perms:
+  user_read: { foreground: default }
+  user_write: { foreground: default }
+  user_execute_file: { foreground: default }
+  user_execute_other: { foreground: default }
+  group_read: { foreground: default }
+  group_write: { foreground: default }
+  group_execute: { foreground: default }
+  other_read: { foreground: default }
+  other_write: { foreground: Red }
+  other_execute: { foreground: default }
+  attribute: { foreground: Yellow }
+
+# Color definitions for users and groups
+users:
+  user_you: { foreground: default }
+  user_root: { foreground: Red }
+  user_other: { foreground: Red }
+  group_yours: { foreground: default }
+  group_root: { foreground: Red }
+  group_other: { foreground: Red }
+
+# Color definitions for dates/timestamps
+date: { foreground: Blue }
+
+# Note: Filename colors are still handled by LS_COLORS (Vivid)
+# eza will merge these styles with Vivid output.
