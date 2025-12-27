@@ -167,7 +167,7 @@ ll2d() {
         rg --color=never "($today|$yesterday) \d{2}:\d{2}"
 }
 alias llr='eza --git -s Name --colour=always -lR'   # Recurse
-alias lls='eza --git -s size -r --colour=always -l' # size
+alias lls='eza --git -s size -r --colour=always -l --total-size' # size
 # Dirs first, then by extension - both without & with gitignored files
 alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -l'
 alias lwg='eza --git --group-directories-first -s ext --colour=always -l'
