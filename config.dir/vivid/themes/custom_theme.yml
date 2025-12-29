@@ -1,6 +1,11 @@
 colors:
   # Original "catppuccin" theme
   # https://github.com/catppuccin/catppuccin
+  # modified to my preferred colors
+
+  alt_cyan: '70b433'
+  alt_red: 'ed4a46'
+  alt_yellow: "fabd2f"
 
   rosewater: 'dc8a78'
   flamingo: 'dd7878'
@@ -85,13 +90,12 @@ core:
   sticky: {}
 
   executable_file: # Files with exec permissions
-    foreground: red
-    font-style: bold
+    foreground: alt_red
 
 text:
   special:
-    foreground: base
-    background: yellow
+    foreground: alt_yellow
+    font-style: underline
 
   todo:
     font-style: bold
@@ -122,7 +126,7 @@ media:
   foreground: flamingo
 
 office:
-  foreground: red
+  foreground: alt_cyan
 
 archives:
   foreground: sapphire
