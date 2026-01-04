@@ -4,7 +4,7 @@ source "$WS/waitUntil.function"
 
 # Display all Vivid themes
 for theme in $(vivid themes); do
-    if waitUntil -Y "\nDisplay $theme?"; then
+    if waitUntil -Y "\n==> Display $theme?"; then
         LS_COLORS=$(vivid generate $theme)
         "$@"
     fi
