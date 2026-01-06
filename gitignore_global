@@ -35,6 +35,8 @@ notgit
 *-[0-9][0-9].rgx
 *-[0-9][0-9].rs
 *-[0-9][0-9].sh
+*-[0-9][0-9].swift
+*-[0-9][0-9].yml
 
 # Save temp outputs as two lower case chars
 # i.e.:
