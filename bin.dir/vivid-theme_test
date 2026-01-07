@@ -1,16 +1,26 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC2154
 source "$WS/waitUntil.function"
 
 # Default to eza if no arguments provided
-if [ $# -eq 0 ]; then
+if [[ $# -eq 0 ]]; then
     set -- eza
 fi
+
+unset LS_COLORS
+echo "==> After unset LS_COLORS"
+"$@"
+
+export LS_COLORS="or=38;5;196:di=34:ln=35:so=32:pi=38;5;216:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+echo
+echo "==> After LS_COLORS=old_LS_COLORS"
+"$@"
 
 # Display all Vivid themes
 for theme in $(vivid themes); do
     if waitUntil -Y "\nDisplay $theme?"; then
-        LS_COLORS=$(vivid generate $theme)
+        LS_COLORS=$(vivid generate "$theme")
         "$@"
     fi
 done
