@@ -19,7 +19,7 @@ echo "==> After LS_COLORS=old_LS_COLORS"
 
 # Display all Vivid themes
 for theme in $(vivid themes); do
-    if waitUntil -Y "\nDisplay $theme?"; then
+    if waitUntil -Y "\n==> Display $theme?"; then
         LS_COLORS=$(vivid generate "$theme")
         "$@"
     fi
