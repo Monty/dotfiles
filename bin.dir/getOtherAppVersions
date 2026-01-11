@@ -94,6 +94,7 @@ repos=(
     "sass/dart-sass"
     "coteditor/CotEditor"
     "swiftlang/swift"
+    "nicklockwood/SwiftFormat"
 )
 
 # Helper to map repo names to their local binary commands
@@ -104,6 +105,7 @@ get_binary_name() {
     sass/dart-sass) echo "sass" ;;
     yarnpkg/berry) echo "yarn" ;;
     coteditor/CotEditor) echo "cot" ;;
+    nicklockwood/SwiftFormat) echo "swiftformat" ;;
     *) basename "$repo" ;;
     esac
 }
