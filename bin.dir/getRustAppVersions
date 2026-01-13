@@ -92,6 +92,7 @@ get_crate_name() {
     case "$1" in
     delta) echo "git-delta" ;;
     difft) echo "difftastic" ;;
+    fresh) echo "fresh-editor" ;;
     fd) echo "fd-find" ;;
     hx) echo "" ;; # Helix releases on GitHub, not crates.io
     rg) echo "ripgrep" ;;
