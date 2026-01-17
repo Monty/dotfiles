@@ -175,23 +175,21 @@ alias lwg='eza --git --group-directories-first -s ext --colour=always -l'
 # ssh shortcuts to various systems
 # For ssh allow quote "$@" so it expands on the client side.
 # shellcheck disable=SC2029
-if [[ "$(uname -n)" == *[Ll]ocal ]]; then
-    ssh-ho() {
-        ssh monty@holmes.local "$@"
-    }
-    ssh-ir() {
-        ssh monty@irene.local "$@"
-    }
-    ssh-ma() {
-        ssh junew@marleau.local "$@"
-    }
-    ssh-moj() {
-        ssh junew@monarch.local "$@"
-    }
-    ssh-mom() {
-        ssh monty@monarch.local "$@"
-    }
-fi
+ssh-ho() {
+    ssh monty@holmes.local "$@"
+}
+ssh-ir() {
+    ssh monty@irene.local "$@"
+}
+ssh-ma() {
+    ssh junew@marleau.local "$@"
+}
+ssh-moj() {
+    ssh junew@monarch.local "$@"
+}
+ssh-mom() {
+    ssh monty@monarch.local "$@"
+}
 
 # From various distros
 colors() {
