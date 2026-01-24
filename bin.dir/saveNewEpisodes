@@ -1,11 +1,30 @@
 #!/usr/bin/env bash
 # Save newEpisodes output without manual generation
+# shellcheck disable=SC2154
 
-# shellcheck disable=SC2059,2154
+# trap ctrl-c and call cleanup
+trap cleanup INT
+#
+function cleanup() {
+    printf "\n"
+    exit 130
+}
+
+cd "$NE" || exit
 
 DATE_ID="-$(date +%y%m%d)"
 OUTFILE="newEpisodes$DATE_ID.txt"
+EXCLUDE_FILE="rg_newEpisodes.rgx"
 
-printf "==> File written to $OUTFILE\n"
-"$WS"/newEpisodes.sh >"$NE/$OUTFILE"
-"$WS"/newEpisodes.sh | "$WS"/compress_newEpisodes.py >~/Desktop/"$OUTFILE"
+printf "==> File written to %s\n\n" "$OUTFILE"
+
+# Make sure the permanent EXCLUDE_FILE is the most current file
+touch "$EXCLUDE_FILE"
+printf "==> Applying exclusions from %s\n\n" "$EXCLUDE_FILE"
+"$WS"/newEpisodes.sh | rg -v -f "$EXCLUDE_FILE" >"$OUTFILE"
+
+# Deduplicate and update metadata (no prompts!)
+python3 tv_dedup.py "$OUTFILE"
+
+# Compress the cleaned version
+"$WS"/compress_newEpisodes.py "$OUTFILE" >~/Desktop/"$OUTFILE"
