@@ -1,141 +1,176 @@
 colors:
-  # Original "catppuccin" theme
-  # https://github.com/catppuccin/catppuccin
-  # modified to my preferred colors
+  # Selenized Black palette - sRGB values
+  # Background shades
+  bg_0:        "#181818"
+  bg_1:        "#252525"
+  bg_2:        "#3b3b3b"
 
-  alt_blue:   '#83a598'
-  alt_cyan:   '#70b433'
-  alt_red:    '#ed4a46'
-  alt_yellow: '#fabd2f'
-  float:      '#1e2030'
+  # Foreground shades
+  dim_0:       "#777777"
+  fg_0:        "#b9b9b9"
+  fg_1:        "#dedede"
 
-  rosewater:  '#dc8a78'
-  flamingo:   '#dd7878'
-  pink:       '#ea76cb'
-  mauve:      '#8839ef'
-  red:        '#d20f39'
-  maroon:     '#e64553'
-  peach:      '#fe640b'
-  yellow:     '#df8e1d'
-  green:      '#40a02b'
-  teal:       '#179299'
-  sky:        '#04a5e5'
-  sapphire:   '#209fb5'
-  blue:       '#1e66f5'
-  lavender:   '#7287fd'
+  # Standard colors
+  red:         "#ed4a46"
+  green:       "#70b433"
+  yellow:      "#dbb32d"
+  blue:        "#368aeb"
+  magenta:     "#eb6eb7"
+  cyan:        "#3fc5b7"
+  orange:      "#e67f43"
+  violet:      "#a580e2"
 
-  text:       '#4c4f69'
-  subtext1:   '#5c5f77'
-  subtext0:   '#6c6f85'
-  overlay2:   '#7c7f93'
-  overlay1:   '#8c8fa1'
-  overlay0:   '#9ca0b0'
-  surface2:   '#acb0be'
-  surface1:   '#bcc0cc'
-  surface0:   '#ccd0da'
-
-  crust:      '#dce0e8'
-  mantle:     '#e6e9ef'
-  base:       '#eff1f5'
+  # Bright colors
+  br_red:      "#ff5e56"
+  br_green:    "#83c746"
+  br_yellow:   "#efc541"
+  br_blue:     "#4f9cfe"
+  br_magenta:  "#ff81ca"
+  br_cyan:     "#56d8c9"
+  br_orange:   "#fa9153"
+  br_violet:   "#b891f5"
 
 core:
   normal_text: {}
+
   regular_file: {}
+
   reset_to_normal: {}
 
   directory:
-    foreground: blue
+    foreground: br_blue
 
   symlink:
-    foreground: pink
+    foreground: br_magenta
     font-style: italic
 
   multi_hard_link: {}
 
   fifo:
-    foreground: crust
+    foreground: fg_1
     background: blue
 
   socket:
-    foreground: crust
-    background: pink
+    foreground: magenta
 
   door:
-    foreground: crust
-    background: pink
+    foreground: violet
 
   block_device:
     foreground: yellow
+    font-style: bold
 
   character_device:
-    foreground: alt_yellow
+    foreground: br_yellow
 
   broken_symlink:
-    foreground: crust
+    foreground: fg_1
     background: red
+    font-style: bold
 
   missing_symlink_target:
-    foreground: crust
+    foreground: fg_1
     background: red
 
-  setuid: {}
+  setuid:
+    foreground: fg_1
+    background: red
+    font-style: bold
 
-  setgid: {}
+  setgid:
+    foreground: bg_0
+    background: orange
+    font-style: bold
 
-  file_with_capability: {}
+  file_with_capability:
+    foreground: bg_0
+    background: orange
+    font-style: bold
 
-  sticky_other_writable: {} # Should be a directory
+  sticky_other_writable:
+    foreground: yellow
+    font-style: underline
 
-  other_writable: {} # Should be a directory
+  other_writable:
+    foreground: br_green
 
-  sticky: {}
+  sticky:
+    foreground: blue
+    font-style: underline
 
   executable_file: # Files with exec permissions
-    foreground: alt_red
+    foreground: red
 
 text:
+  foreground: fg_0
+
   special: # README
-    foreground: alt_yellow
+    foreground: yellow
     font-style: underline
 
   todo:
-    font-style: bold
+    foreground: br_green
 
   licenses:
-    foreground: overlay2
+    foreground: fg_1
 
   configuration: # .json, .plist, .rgx
-    foreground: yellow
-
-  other: # .txt
-    foreground: yellow
-
-markup: # web: .html, other: .markdown
-  foreground: yellow
-
-programming:
-  source: # .awk, .go, .js, .lua, .pl, .py, .rs, .sh, .swift
     foreground: green
 
-  tooling: # .gitignore, .ignore, Makefile, go.mod, setup.py
-    foreground: teal
+    dockerfile:
+      foreground: orange
 
-    continuous-integration:
-      foreground: green
+  other: # .txt
+    foreground: fg_0
+
+markup: # web: .html, other: .markdown
+  foreground: orange
+
+programming:
+  foreground: green
+
+  source: # .awk, .go, .js, .lua, .pl, .py, .rs, .sh, .swift
+    foreground: br_green
+
+    css:
+      foreground: orange
+
+  tooling: # .gitignore, .ignore, Makefile, go.mod, setup.py
+    foreground: yellow
 
 media: # bitmap: bmp, .ico, .jpg, .png, .tiff, raw: .raw
-  foreground: sky
+  foreground: magenta
+
+  audio: # .m4a. .mp3, .wav
+    foreground: br_cyan
+
+  video: # .avi, .mp4, .mpg
+    foreground: cyan
+
+  fonts: # .ttf, .woff
+    foreground: yellow
 
 office: # .doc, .pages, .numbers, .ods, .key, .ics
-  foreground: alt_cyan
+  foreground: br_violet
+
+  other: # .csv, .tsv
+    foreground: fg_0
 
 archives: # .gz, .jar, .tar, .tgz
-  foreground: sapphire
+  foreground: red
   font-style: underline
 
+  images: # .dmg, .iso
+    foreground: br_red
+    font-style: underline
+
 executable: # .bat, .exe, .so, .dylib (without exec permissions)
-  foreground: red
-  font-style: bold
+  foreground: yellow
+
+  windows:
+    foreground: red
+    font-style: underline
 
 unimportant: # .DS_Store, .localized, .bak, .orig, package-lock.json
-  foreground: surface2
+  foreground: dim_0
+  font-style: italic
