@@ -94,7 +94,7 @@ core:
     foreground: alt_red
 
 text:
-  special:
+  special: # README
     foreground: alt_yellow
     font-style: underline
 
@@ -104,38 +104,38 @@ text:
   licenses:
     foreground: overlay2
 
-  configuration:
+  configuration: # .json, .plist, .rgx
     foreground: yellow
 
-  other:
+  other: # .txt
     foreground: yellow
 
-markup:
+markup: # web: .html, other: .markdown
   foreground: yellow
 
 programming:
-  source:
+  source: # .awk, .go, .js, .lua, .pl, .py, .rs, .sh, .swift
     foreground: green
 
-  tooling:
+  tooling: # .gitignore, .ignore, Makefile, go.mod, setup.py
     foreground: teal
 
     continuous-integration:
       foreground: green
 
-media:
+media: # bitmap: bmp, .ico, .jpg, .png, .tiff, raw: .raw
   foreground: sky
 
-office:
+office: # .doc, .pages, .numbers, .ods, .key, .ics
   foreground: alt_cyan
 
-archives:
+archives: # .gz, .jar, .tar, .tgz
   foreground: sapphire
   font-style: underline
 
-executable: # Libs and exec binaries (without exec permissions)
+executable: # .bat, .exe, .so, .dylib (without exec permissions)
   foreground: red
   font-style: bold
 
-unimportant:
+unimportant: # .DS_Store, .localized, .bak, .orig, package-lock.json
   foreground: surface2
