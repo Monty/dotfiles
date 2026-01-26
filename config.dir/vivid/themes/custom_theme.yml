@@ -115,7 +115,7 @@ text:
     foreground: fg_1
 
   configuration: # .json, .plist, .rgx
-    foreground: green
+    foreground: yellow
 
     dockerfile:
       foreground: orange
@@ -130,7 +130,7 @@ programming:
   foreground: green
 
   source: # .awk, .go, .js, .lua, .pl, .py, .rs, .sh, .swift
-    foreground: br_green
+    foreground: br_yellow
 
     css:
       foreground: orange
@@ -151,7 +151,7 @@ media: # bitmap: bmp, .ico, .jpg, .png, .tiff, raw: .raw
     foreground: yellow
 
 office: # .doc, .pages, .numbers, .ods, .key, .ics
-  foreground: br_violet
+  foreground: green
 
   other: # .csv, .tsv
     foreground: fg_0
