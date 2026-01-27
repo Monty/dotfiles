@@ -193,6 +193,12 @@ EOF
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force fd-find
                 ;;
+            fresh)
+                # Text editor with multi-cursor support
+                printf "Installing %s...\n" "$app"
+                printf "Can take 10 minutes. Be patient!\n"
+                cargo install -q --force fresh-editor
+                ;;
             hexyl)
                 # Command-line hex viewer with colors
                 printf "Installing %s...\n" "$app"
