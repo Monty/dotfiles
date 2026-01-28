@@ -79,13 +79,13 @@ fi
 
 if [[ ! -x ~/bin/getRustAppVersions ]]; then
     # shellcheck disable=SC2059
-    printf "${WARNING} ~/bin/getRustAppVersions does not exist, skipping\n"
+    printf "${WARNING} ~/bin/getRustAppVersions does not exist, skipping...\n"
     exit 0
 fi
 
 if [[ ! -d ~/.cargo/bin ]]; then
     # shellcheck disable=SC2059
-    printf "${WARNING} ~/.cargo/bin does not exist, skipping\n"
+    printf "${WARNING} ~/.cargo/bin does not exist, skipping...\n"
     exit 0
 fi
 
@@ -209,6 +209,7 @@ EOF
                 printf "Installing %s...\n" "$app"
                 if [[ -d ~/Projects/helix ]]; then
                     cd ~/Projects/helix || exit 1
+                    printf "Building local version...\n"
                     git pull
                     # Build optimized version
                     cargo install -q --force \
@@ -221,8 +222,10 @@ EOF
                         ln -s "$PWD/runtime" ~/.config/helix/runtime
                     cd - >/dev/null
                 else
+                    # No local helix directory, show website instructions
                     # shellcheck disable=SC2059
-                    printf "${WARNING} ~/Projects/helix does not exist, skipping\n"
+                    printf "${WARNING} ~/Projects/helix does not exist, skipping...\n"
+                    printf "          (See https://docs.helix-editor.com/install.html)\n"
                 fi
                 ;;
             hyperfine)
@@ -310,6 +313,28 @@ EOF
                 # Rust implementation of Linux tree
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force rust_tree
+                ;;
+            uv)
+                # Extremely fast Python package and project manager
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force --locked uv
+                ;;
+            vivid)
+                # Generator for the LS_COLORS environment variable
+                printf "Installing %s...\n" "$app"
+                if [[ -d ~/Projects/vivid ]]; then
+                    cd ~/Projects/vivid || exit 1
+                    printf "Building local version...\n"
+                    git pull
+                    # Build customized version
+                    cargo build --release
+                    # Copy to local Rust directory
+                    cp -p target/release/vivid ~/.cargo/bin/vivid
+                    cd - >/dev/null
+                else
+                    # No local vivid directory, use cargo install
+                    cargo install -q --force vivid
+                fi
                 ;;
             xls2txt)
                 # Convert .ods or .xls files to .tsv or .csv filesd
