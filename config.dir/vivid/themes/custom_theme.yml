@@ -150,11 +150,14 @@ media: # bitmap: bmp, .ico, .jpg, .png, .tiff, raw: .raw
   fonts: # .ttf, .woff
     foreground: yellow
 
-office: # .doc, .pages, .numbers, .ods, .key, .ics
+office: # .doc, .pages, .key, .ics
   foreground: green
 
-  other: # .csv, .tsv
-    foreground: fg_0
+  spreadsheet: # .numbers, .ods
+    foreground: green
+
+    text: # .csv, .tsv
+      foreground: fg_0
 
 archives: # .gz, .jar, .tar, .tgz
   foreground: red
