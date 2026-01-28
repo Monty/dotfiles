@@ -210,6 +210,7 @@ for app in ~/.cargo/bin/*; do
 
     # Skip apps managed by other crates
     [[ $basename_app == "xls2csv" ]] && continue # Managed by xls2txt
+    [[ $basename_app == "uvx" ]] && continue # Managed by uv
 
     # Special handling: process rustc before rustup
     if [[ $basename_app == "rustup" ]]; then
