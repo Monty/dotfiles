@@ -176,4 +176,3 @@ executable: # .bat, .exe, .so, .dylib (without exec permissions)
 
 unimportant: # .DS_Store, .localized, .bak, .orig, package-lock.json
   foreground: dim_0
-  font-style: italic
