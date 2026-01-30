@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # List all apps of Kind: Intel
 
-system_profiler SPApplicationsDataType -detailLevel mini | rg -B 5 -A 1 'Intel'
+system_profiler SPApplicationsDataType -detailLevel mini | rg -B 5 -A 2 'Intel'
