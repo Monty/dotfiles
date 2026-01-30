@@ -295,6 +295,10 @@ EOF
                 # rustc is updated via rustup, skip individual install
                 printf "Skipping %s (updated via rustup)...\n" "$app"
                 ;;
+            rustup)
+                # rustup, has already run, skip individual install
+                printf "Skipping %s (already updated)...\n" "$app"
+                ;;
             sd)
                 # Change all occurences of a string in a file
                 printf "Installing %s...\n" "$app"
