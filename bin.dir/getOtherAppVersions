@@ -110,18 +110,6 @@ get_binary_name() {
     esac
 }
 
-# Helper to isolate the complex Playwright logic
-get_playwright_version() {
-    local project_dir="${HOME}/Projects/WhatsStreamingToday"
-    # Check all prerequisites
-    if [[ -d $project_dir ]] &&
-        [[ -d "${HOME}/Library/Caches/ms-playwright" ]] &&
-        command -v npx &>/dev/null; then
-        # Run in a subshell to avoid changing the main script's directory
-        (cd "$project_dir" && npx playwright --version 2>&1)
-    fi
-}
-
 # Get latest version from GitHub
 get_github_latest() {
     local repo="$1"
@@ -167,12 +155,8 @@ for repo in "${repos[@]}"; do
     current_output=""
     app_name=$(get_binary_name "$repo")
 
-    # Handle Playwright (Special Case)
-    if [[ $repo == "microsoft/playwright" ]]; then
-        current_output=$(get_playwright_version)
-
     # Handle Swift (Special Case - only check if in Swiftly directory)
-    elif [[ $repo == "swiftlang/swift" ]]; then
+    if [[ $repo == "swiftlang/swift" ]]; then
         # Only check Swift if it's installed via Swiftly
         if [[ -x "$HOME/.swiftly/bin/swift" ]]; then
             current_output=$("$HOME/.swiftly/bin/swift" --version 2>&1 || true)
