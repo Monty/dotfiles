@@ -87,7 +87,6 @@ repos=(
     "prettier/prettier"
     "eslint/eslint"
     "tree-sitter/tree-sitter"
-    "yarnpkg/berry"
     "pnpm/pnpm"
     "astral-sh/ruff"
     "psf/black"
@@ -134,20 +133,20 @@ extract_local_version() {
     if [[ $output == *"Apple Swift version"* ]]; then
         echo "$output" |
             grep -oE 'Apple Swift version [0-9]+\.[0-9]+\.[0-9]+' |
-            grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+            grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true
         return
     fi
     # Strip optional 'v' prefix and extract first semantic version
-    echo "$output" | sed 's/^v//' |
-        grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+    { echo "$output" | sed 's/^v//' |
+        grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1; } || true
 }
 
 # Extract version from GitHub tag
 extract_github_version() {
     local tag="$1"
     # Remove 'v' prefix and extract version number
-    echo "$tag" | sed 's/^v//' |
-        grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+    { echo "$tag" | sed 's/^v//' |
+        grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1; } || true
 }
 
 # Main processing loop
@@ -184,7 +183,13 @@ for repo in "${repos[@]}"; do
     current_version=$(extract_local_version "$current_output")
     if [[ -z $current_version ]]; then
         if ! $quiet && ! $updates_only; then
-            printf "%-25s %s\n" "$app_name" "version unknown"
+            if $verbose; then
+                printf "==> %s\n" "$app_name"
+                printf "%s\n" "$current_output"
+                echo
+            else
+                printf "%-25s %s\n" "$app_name" "version unknown"
+            fi
         fi
         continue
     fi
