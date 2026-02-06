@@ -100,7 +100,7 @@ read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
 echo ""
 
 # Directories to skip entirely (will show one message per directory)
-skip_dirs=("nvim-local-shares")
+skip_dirs=("nvim-local-shares" "helix/runtime/grammars")
 
 # Track which skip directories we've already reported (as a string)
 reported_skips=""
@@ -114,7 +114,8 @@ for i in $(fd -HI --glob ${FD_ARGS[@]+"${FD_ARGS[@]}"} -td -p '**/.git' -X ls -1
     for skip_dir in "${skip_dirs[@]}"; do
         if [[ ${i} == *"/${skip_dir}/"* ]]; then
             if [[ ! $reported_skips =~ :$skip_dir: ]]; then
-                printf "==> Skipping all repos in %s/\n" "${skip_dir}"
+                printf "==> $INFO Skipping all repos in %s/\n" \
+                    "${skip_dir}"
                 reported_skips="${reported_skips}:${skip_dir}:"
             fi
             skip_this=true
