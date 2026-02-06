@@ -6,6 +6,8 @@ set -euo pipefail
 
 # trap ctrl-c -- call cleanup and exit
 trap 'cleanup; exit 130' INT
+trap 'printf "${ERROR} at or near line %s:\n\t%s\n" \
+    "$LINENO" "$BASH_COMMAND" >&2' ERR
 
 function cleanup() {
     stty sane
