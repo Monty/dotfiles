@@ -224,6 +224,7 @@ EOF
                     # Ensure runtime symlink exists
                     [[ ! -L ~/.config/helix/runtime ]] &&
                         ln -s "$PWD/runtime" ~/.config/helix/runtime
+                    hx --grammar fetch
                     cd - >/dev/null
                 else
                     # No local helix directory, show website instructions
