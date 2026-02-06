@@ -47,6 +47,12 @@ OPTIONS:
 EOF
 }
 
+# So we can retrieve version info from any public repo
+if [[ -f ~/.tokens ]]; then
+    # shellcheck source=/dev/null
+    source ~/.tokens
+fi
+
 # Check for options
 DRY_RUN=false
 VERBOSE=false
@@ -129,6 +135,24 @@ for i in $(fd -HI --glob ${FD_ARGS[@]+"${FD_ARGS[@]}"} -td -p '**/.git' -X ls -1
             continue
         fi
         [[ $VERBOSE == true ]] && printf "==> Checking %s\n" "${i}"
+
+        # Update the URL temporarily for my repos
+        remote_url=$(git remote get-url origin 2>/dev/null || echo "")
+        using_token=false
+
+        if [[ -n $GITHUB_TOKEN ]] &&
+            [[ $remote_url =~ github\.com[:/]Monty/ ]]; then
+            # Extract the repo path from various URL formats
+            if [[ $remote_url =~ github\.com[:/](.+)(\.git)?$ ]]; then
+                # Remove .git ifpresent
+                repo_path="${BASH_REMATCH[1]%.git}"
+                # Temporarily set the URL to use the token
+                git remote set-url origin \
+                    "https://${GITHUB_TOKEN}@github.com/${repo_path}.git"
+                using_token=true
+            fi
+        fi
+
         # Fetch updates silently to check if there are changes
         git fetch --quiet 2>/dev/null || true
 
@@ -143,6 +167,11 @@ for i in $(fd -HI --glob ${FD_ARGS[@]+"${FD_ARGS[@]}"} -td -p '**/.git' -X ls -1
             [[ $LOCAL == "$BASE" ]]; then
             printf "==> Pulling %s\n" "${i}"
             maybe_run git pull
+        fi
+
+        # Restore original URL if we changed it
+        if [[ $using_token == true ]]; then
+            git remote set-url origin "$remote_url"
         fi
     fi
     cd "$savedDirectory" || exit
