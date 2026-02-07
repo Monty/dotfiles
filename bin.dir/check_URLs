@@ -1,8 +1,37 @@
 #!/usr/bin/env bash
 
+# Prevent cascading or pipe failures
+set -euo pipefail
+
+# trap and locate errors that might arise from pipefail
+trap 'printf "${ERROR} at or near line %s:\n\t%s\n" \
+    "$LINENO" "$BASH_COMMAND" >&2' ERR
+
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+#
+function cleanup() {
+    stty sane
+    printf "\n"
+}
+
+# Use GITHUB_TOKEN environment variable if available
+if [[ -f "$HOME/.tokens" ]]; then
+    # shellcheck source=/dev/null
+    source "$HOME/.tokens"
+fi
+
 SECONDS=0
 while read -r line; do
-    http_status=$(curl -o /dev/null -s -w "%{response_code}" "$line")
+    # Add auth header if checking GitHub URLs and token is available
+    if [[ -n $GITHUB_TOKEN ]] &&
+        [[ $line =~ github\.com|githubusercontent\.com ]]; then
+        http_status=$(curl -o /dev/null -s -w "%{response_code}" \
+            -H "Authorization: token $GITHUB_TOKEN" "$line")
+    else
+        http_status=$(curl -o /dev/null -s -w "%{response_code}" "$line")
+    fi
     printf "%s %s\n" "$line" "$http_status"
 done <"$1"
 echo "Elapsed time: $SECONDS seconds" >/dev/stderr
