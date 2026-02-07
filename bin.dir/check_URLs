@@ -16,6 +16,8 @@ function cleanup() {
     printf "\n"
 }
 
+ERROR="\e[0;31m[Error]\e[0m"
+
 # Use GITHUB_TOKEN environment variable if available
 if [[ -f "$HOME/.tokens" ]]; then
     # shellcheck source=/dev/null
