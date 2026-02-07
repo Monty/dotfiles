@@ -13,13 +13,13 @@ printf "==> Looking for files newer than 5 days to delete from \$WS:\n"
 newerFiles=$(fd -I -t f -d 1 --newer 5days "[0-9]{6}.csv|[0-9]{6}.txt")
 
 # Check if any newer files were found
-if [[ -z "$newerFiles" ]]; then
+if [[ -z $newerFiles ]]; then
     printf "==> No newer files to delete\n"
 else
     # Display the newer files
     printf "\n%s\n\n" "$newerFiles"
 
-    printf "Permanently delete the above newer files from \$WS"
+    printf 'Permanently delete the above newer files from $WS'
     if waitUntil -N "?"; then
         fd -I -t f -d 1 --newer 5days "[0-9]{6}.csv|[0-9]{6}.txt" -x rm
         printf "==> Newer files have been deleted\n"
@@ -34,13 +34,13 @@ printf "\n==> Looking for files older than 90 days to delete from \$WS:\n"
 olderFiles=$(fd -I -t f -d 1 --older 90days "[0-9]{6}.csv|[0-9]{6}.txt")
 
 # Check if any older files were found
-if [[ -z "$olderFiles" ]]; then
+if [[ -z $olderFiles ]]; then
     printf "==> No older files to delete\n"
 else
     # Display the older files
     printf "\n%s\n\n" "$olderFiles"
 
-    printf "Permanently delete the above old files from \$WS"
+    printf 'Permanently delete the above old files from $WS'
     if waitUntil -N "?"; then
         fd -I -t f -d 1 --older 90days "[0-9]{6}.csv|[0-9]{6}.txt" -x rm
         printf "==> Older files have been deleted\n"
