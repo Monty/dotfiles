@@ -67,6 +67,7 @@ if [[ -d ~/Projects/helix ]]; then
     # Ensure runtime symlink exists
     [[ ! -L ~/.config/helix/runtime ]] &&
         ln -s "$PWD/runtime" ~/.config/helix/runtime
+    hx --grammar fetch
     cd - >/dev/null
 else
     # shellcheck disable=SC2059
@@ -85,6 +86,7 @@ mv lychee ~/.cargo/bin
 rm -f lychee-arm64-macos.tar.gz
 
 cargo install prettydiff --version 0.6.4
+qsv -U
 cargo install ripgrep
 cargo install rm-improved
 cargo install sd

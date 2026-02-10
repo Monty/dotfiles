@@ -274,6 +274,11 @@ EOF
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force prettydiff --version 0.6.4
                 ;;
+            qsv)
+                # Fast CSV command line toolkit (replaces xsv)
+                printf "Installing %s...\n" "$app"
+                qsv -U
+                ;;
             rg)
                 # Extremely fast and better alternative to grep
                 printf "Installing %s...\n" "$app"
