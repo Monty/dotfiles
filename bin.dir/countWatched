@@ -34,11 +34,11 @@ ALL_WATCHED=$(mktemp)
 
 printf "Title\tEp\tSeen\tLeft\tService\n" >"$ALL_WATCHED"
 {
-    xls2txt "$ACORN_WATCHED" | cut -f 1,3-6 | rg -S "$*" || true
-    xls2txt "$BBOX_WATCHED" | cut -f 1,3-6 | rg -S "$*" || true
-    xls2txt "$MHZ_WATCHED" | cut -f 1,3-6 | rg -S "$*" || true
-    xls2txt "$OPB_WATCHED" | cut -f 1,3-6 | rg -S "$*" || true
-} >>"$ALL_WATCHED"
+    xls2txt "$ACORN_WATCHED" | cut -f 1,3-6 | rg -S "$*"
+    xls2txt "$BBOX_WATCHED" | cut -f 1,3-6 | rg -S "$*"
+    xls2txt "$MHZ_WATCHED" | cut -f 1,3-6 | rg -S "$*"
+    xls2txt "$OPB_WATCHED" | cut -f 1,3-6 | rg -S "$*"
+} >>"$ALL_WATCHED" || true
 column -s $'\t' -t "$ALL_WATCHED" | head -1
 column -s $'\t' -t "$ALL_WATCHED" | rg --color=ansi -S "$*" || true
 #
