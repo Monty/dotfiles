@@ -162,6 +162,11 @@ EOF
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force broot
                 ;;
+            choose)
+                # Human-friendly alternative to cut and (sometimes) awk
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force choose
+                ;;
             czkawka_cli)
                 # Find and remove duplicates, empty files, & junk
                 printf "Installing %s...\n" "$app"
