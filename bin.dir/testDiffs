@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# Run tests on various diff utilities
+
+# shellcheck disable=SC2154 # "$WS" is defined externally
+source "$WS"/waitUntil.function
+
+if waitUntil -sY "Run diff $1 $2?"; then
+    printf "==> Running diff %s %s.\n" "$1" "$2"
+    diff "$1" "$2"
+else
+    printf "Skipping...\n"
+fi
+
+if waitUntil -sY "\nRun zet diff $1 $2?"; then
+    printf "==> Running zet diff %s %s.\n" "$1" "$2"
+    zet diff "$1" "$2"
+else
+    printf "Skipping...\n"
+fi
+if waitUntil -sY "\nRun zet diff $2 $1?"; then
+    printf "==> Running zet diff %s %s.\n" "$2" "$1"
+    zet diff "$2" "$1"
+else
+    printf "Skipping...\n"
+fi
+
+if waitUntil -sY "\nRun diff -u $1 $2 | diffr?"; then
+    printf "==> Running diff -u %s %s | diffr.\n" "$1" "$2"
+    diff -u "$1" "$2" | diffr
+else
+    printf "Skipping...\n"
+fi
+
+if waitUntil -sY "\nRun difft $1 $2?"; then
+    printf "==> Running difft %s %s.\n" "$1" "$2"
+    difft "$1" "$2"
+else
+    printf "Skipping...\n"
+fi
+
+if waitUntil -sY "\nRun delta -s $1 $2?"; then
+    printf "==> Running delta -s %s %s.\n" "$1" "$2"
+    delta -s "$1" "$2"
+else
+    printf "Skipping...\n"
+fi
+
+if waitUntil -sY "\nRun riff $1 $2?"; then
+    printf "==> Running riff %s %s.\n" "$1" "$2"
+    riff "$1" "$2"
+else
+    printf "Skipping...\n"
+fi
+
+if waitUntil -sY "\nRun prettydiff $1 $2?"; then
+    printf "==> Running prettydiff %s %s.\n" "$1" "$2"
+    prettydiff "$1" "$2"
+else
+    printf "Skipping...\n"
+fi
+
+if waitUntil -sY "\nRun kitten diff $1 $2?"; then
+    printf "==> Running kitten diff %s %s.\n" "$1" "$2"
+    kitten diff "$1" "$2"
+else
+    printf "Skipping...\n"
+fi
