@@ -101,6 +101,7 @@ get_crate_name() {
     fd) echo "fd-find" ;;
     hx) echo "" ;; # Helix releases on GitHub, not crates.io
     rg) echo "ripgrep" ;;
+    riff) echo "riffdiff" ;;
     rip) echo "rm-improved" ;;
     tree) echo "rust_tree" ;;
     tldr) echo "tealdeer" ;;

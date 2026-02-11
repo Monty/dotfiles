@@ -289,6 +289,11 @@ EOF
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force ripgrep
                 ;;
+            riff)
+                # diff that highlights which parts of lines changed
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force riffdiff
+                ;;
             rip)
                 # Safer rm command with recovery
                 printf "Installing %s...\n" "$app"
