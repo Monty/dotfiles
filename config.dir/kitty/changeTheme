@@ -10,9 +10,14 @@ function tryTheme {
     fi
 }
 
+tryTheme "Arthur"
+tryTheme "Catppuccin-Macchiato"
+tryTheme "Catppuccin-Mocha"
+tryTheme "Selenized Black"
+tryTheme "Selenized Dark"
+
 tryTheme "1984 Dark"
 tryTheme "Afterglow"
-tryTheme "Catppuccin-Mocha"
 tryTheme "Corvine"
 tryTheme "GitHub Dark Colorblind"
 tryTheme "GitHub Dark High Contrast"
