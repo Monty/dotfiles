@@ -37,7 +37,7 @@ LINKING RULES:
 
     Directories in ~/dotfiles/config.dir:
         Linked into ~/.config
-        Example: ~/dotfiles/config.dir/nvim -> ~/.config/nvim
+        Example: ~/dotfiles/config.dir/kitty -> ~/.config/kitty
 
     Fastfetch configuration:
         ~/dotfiles/config.dir/fastfetch -> ~/.local/share/fastfetch

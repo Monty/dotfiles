@@ -26,7 +26,6 @@ hgrz() {
 alias ht='fc -l' # Tail history
 alias lychee='DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks" lychee'
 alias more='less'
-alias nv='nvim'
 alias psx='ps -ef | rg -v ":\d{2}\.\d{2} rg " | rg'
 alias showpath='printf "%s\n" $path'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'

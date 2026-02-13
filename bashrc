@@ -59,7 +59,6 @@ for each in \
     /usr/local/go/bin \
     $HOME/go/bin \
     $HOME/.cargo/bin \
-    $HOME/Projects/nvim-macos/bin \
     /Applications/kitty.app/Contents/MacOS \
     /Applications/CotEditor.app/Contents/SharedSupport/bin \
     $HOME/.local/bin \

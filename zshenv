@@ -74,7 +74,6 @@ fi
 # These are unique so shouldn't need to be elevated
 for each in \
     $HOME/go/bin \
-    $HOME/Projects/nvim-macos/bin \
     /Applications/kitty.app/Contents/MacOS \
     /Applications/CotEditor.app/Contents/SharedSupport/bin \
     $HOME/.local/bin \
