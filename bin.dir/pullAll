@@ -100,7 +100,8 @@ read -r -n 1 -s -p "Hit any key to continue, '^C' to quit. "
 echo ""
 
 # Directories to skip entirely (will show one message per directory)
-skip_dirs=("helix/runtime/grammars")
+skip_dirs=("helix/runtime/grammars"
+    "dotfile-branches/limited-branch")
 
 # Track which skip directories we've already reported (as a string)
 reported_skips=""
