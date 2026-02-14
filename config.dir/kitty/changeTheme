@@ -13,6 +13,7 @@ function tryTheme {
 tryTheme "Arthur"
 tryTheme "Catppuccin-Macchiato"
 tryTheme "Catppuccin-Mocha"
+tryTheme "Modified-mocha"
 tryTheme "Selenized Black"
 tryTheme "Selenized Dark"
 
