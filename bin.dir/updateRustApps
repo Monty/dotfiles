@@ -274,6 +274,11 @@ EOF
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force --locked nu
                 ;;
+            pastel)
+                # Generate, analyze, convert and manipulate colors
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force pastel
+                ;;
             prettydiff)
                 # Side-by-side diff with formatting
                 printf "Installing %s...\n" "$app"
