@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Check for updates of command line utilities
+# Check for updates of command line utilities that have GitHub repos
 
 # Prevent cascading or pipe failures
 set -euo pipefail
@@ -85,18 +85,18 @@ done
 # GitHub repositories (owner/repo)
 repos=(
     "kovidgoyal/kitty"
-    "microsoft/playwright"
     "volta-cli/volta"
     "nodejs/node"
     "npm/cli"
-    "prettier/prettier"
     "eslint/eslint"
-    "tree-sitter/tree-sitter"
+    "microsoft/playwright"
     "pnpm/pnpm"
-    "astral-sh/ruff"
+    "prettier/prettier"
+    "tree-sitter/tree-sitter"
     "psf/black"
-    "sass/dart-sass"
+    "astral-sh/ruff"
     "coteditor/CotEditor"
+    "sass/dart-sass"
     "swiftlang/swift"
     "nicklockwood/SwiftFormat"
 )
