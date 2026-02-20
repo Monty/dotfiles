@@ -1,0 +1,219 @@
+#!/usr/bin/env bash
+# Update command line utilities that have GitHub repos
+# If you install new ones, add them to the install section below
+
+# Prevent cascading or pipe failures
+set -euo pipefail
+
+# trap and locate errors that might arise from pipefail
+trap 'printf "${ERROR} at or near line %s:\n\t%s\n" \
+    "$LINENO" "$BASH_COMMAND" >&2' ERR
+
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+#
+function cleanup() {
+    stty sane
+    printf "\n"
+}
+
+ERROR="\e[0;31m[Error]\e[0m"
+INFO="\e[0;34m[Info]\e[0m"
+
+help() {
+    cat <<EOF
+updateOtherApps
+
+Install or update the following apps:
+    kitty volta node npm eslint playwright pnpm prettier
+    tree-sitter black ruff cot sass swift swiftformat
+
+USAGE:
+    updateOtherApps [OPTIONS]
+
+OPTIONS:
+    -h | --help     Show this message and exit
+    -f | --force    Force an update without asking
+
+EOF
+}
+
+# Check for options
+FORCE=false
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        help
+        exit 0
+        ;;
+    -f | --force)
+        FORCE=true
+        shift
+        ;;
+    *)
+        # shellcheck disable=SC2059
+        if [[ $1 == -* ]]; then
+            printf "${ERROR} Unknown option: %s\n" "$1"
+            printf "${INFO}  Run with --help to see available options\n"
+        else
+            printf "${ERROR} Invalid argument: %s\n" "$1"
+            printf "${INFO}  This script does not accept positional arguments\n"
+        fi
+        exit 1
+        ;;
+    esac
+done
+
+printf "==> Checking GitHub repos for apps to update:\n"
+
+appsNeedingUpdate=$(~/bin/getOtherAppVersions -u)
+allApps=$(~/bin/getOtherAppVersions)
+
+# Check if any newer files were found
+printf "\n%s\n\n" "$allApps"
+if [[ -z $appsNeedingUpdate ]]; then
+    printf "==> None of the above apps need updating\n"
+    exit 0
+else
+    cat <<EOF
+==> Some of the above apps need updating
+    Doing so will update or install these apps:
+
+$appsNeedingUpdate
+
+EOF
+
+    install_apps() {
+        local apps_to_update="$1"
+
+        # Install each app that needs updating
+        while IFS= read -r line; do
+            # Skip empty lines
+            [[ -z $line ]] && continue
+
+            # Extract just the app name (first word before whitespace)
+            app=$(echo "$line" | awk '{print $1}')
+
+            case "$app" in
+            kitty)
+                # Fast, feature-rich, GPU-accelerated terminal emulator
+                printf "Installing %s...\n" "$app"
+                curl -L https://sw.kovidgoyal.net/kitty/installer.sh |
+                    sh /dev/stdin launch=n
+                ;;
+            volta)
+                # JavaScript toolchain manager for Node, npm, and yarn
+                printf "Installing %s...\n" "$app"
+                curl https://get.volta.sh | bash -s -- --skip-setup
+                ;;
+            node)
+                # JavaScript runtime built on Chrome's V8 engine
+                printf "Installing %s...\n" "$app"
+                printf "${INFO} Volta only installs the latest LTS version\n"
+                volta install node
+                ;;
+            npm)
+                # Package manager for Node and JavaScript
+                printf "Installing %s...\n" "$app"
+                printf "${INFO} Use the version of npm bundled with node\n"
+                ;;
+            eslint)
+                # Pluggable linter and static analyzer for JavaScript
+                printf "Installing %s...\n" "$app"
+                volta install eslint
+                ;;
+            playwright)
+                # Browser automation and end-to-end testing framework
+                printf "Installing %s...\n" "$app"
+                volta install playwright
+                ;;
+            pnpm)
+                # Fast, efficient package manager for Node and JavaScript
+                printf "Installing %s...\n" "$app"
+                volta install pnpm
+                ;;
+            prettier)
+                # Opinionated code formatter for JS, CSS, HTML, and more
+                printf "Installing %s...\n" "$app"
+                volta install prettier
+                ;;
+            tree-sitter)
+                # Parser generator and incremental parsing library
+                printf "Installing %s...\n" "$app"
+                volta install tree-sitter-cli
+                ;;
+            black)
+                # Uncompromising Python code formatter
+                printf "Installing %s...\n" "$app"
+                uv tool upgrade black
+                ;;
+            ruff)
+                # Extremely fast Python linter and code formatter
+                printf "Installing %s...\n" "$app"
+                uv tool upgrade ruff
+                ;;
+            sass)
+                # CSS preprocessor and stylesheet language compiler
+                printf "Installing %s...\n" "$app"
+                # Extract the latest version from the update info
+                latest_version=$(echo "$line" |
+                    grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1)
+                asset="dart-sass-${latest_version}-macos-arm64.tar.gz"
+                download_url="https://github.com/sass/dart-sass/releases/download/${latest_version}/${asset}"
+                curl -sL "$download_url" -o "$asset"
+                tar -xzf "$asset" --strip-components=1 \
+                    -C ~/Projects/dart-sass
+                rm -f "$asset"
+                ;;
+            cot)
+                # Minimal, keyboard-driven text editor for macOS
+                printf "Installing %s...\n" "$app"
+                printf "${INFO} CotEditor auto-updates when opened.\n"
+                ;;
+            swift)
+                # Apple's compiled programming language for Apple platforms
+                printf "Installing %s...\n" "$app"
+                ;;
+            swiftformat)
+                # Code formatter and style linter for Swift
+                printf "Installing %s...\n" "$app"
+                latest_version=$(echo "$line" |
+                    grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1)
+                asset="swiftformat.zip"
+                download_url="https://github.com/nicklockwood/SwiftFormat/releases/download/${latest_version}/${asset}"
+                curl -sL "$download_url" -o "$asset"
+                unzip -o "$asset" swiftformat -d ~/.swiftly/bin
+                rm -f "$asset"
+                ;;
+            *)
+                printf "Unknown app: %s (skipping)\n" "$app"
+                ;;
+            esac
+        done <<<"$apps_to_update"
+
+        printf "\n==> All app versions after update\n"
+        ~/bin/getOtherAppVersions
+    }
+
+    if [[ $FORCE == true ]]; then
+        printf "==> Forcing apps to be updated!\n"
+        install_apps "$appsNeedingUpdate"
+    else
+        # If SSH session, exit rather than prompt
+        # shellcheck disable=SC2059
+        if [[ -n ${SSH_TTY:-} || -n ${SSH_CONNECTION:-} ]]; then
+            printf "${ERROR} Unable to prompt over SSH\n"
+            printf "${INFO}  Use '--force' to avoid prompting\n"
+            exit 1
+        fi
+        printf "Update/install these apps? [y/N] "
+        read -r -n 1 reply
+        printf "\n"
+        if [[ $reply =~ ^[Yy]$ ]]; then
+            install_apps "$appsNeedingUpdate"
+        else
+            printf "==> Updates skipped\n"
+        fi
+    fi
+fi
