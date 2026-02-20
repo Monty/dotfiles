@@ -183,7 +183,7 @@ EOF
                 rm -rf rclone-*-osx-arm64 rclone-current-osx-arm64.zip
                 ;;
             *)
-                printf "Unknown app: %s (skipping)\n" "$app"
+                printf "${WARNING} Unknown app: %s (skipping)\n" "$app"
                 ;;
             esac
         done <<<"$apps_to_update"

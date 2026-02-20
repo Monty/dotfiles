@@ -386,7 +386,7 @@ EOF
                 cargo install -q --force zet
                 ;;
             *)
-                printf "Unknown app: %s (skipping)\n" "$app"
+                printf "${WARNING} Unknown app: %s (skipping)\n" "$app"
                 ;;
             esac
         done <<<"$apps_to_update"
