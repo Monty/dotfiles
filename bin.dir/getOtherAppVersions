@@ -97,6 +97,7 @@ repos=(
     "astral-sh/ruff"
     "coteditor/CotEditor"
     "sass/dart-sass"
+    "koalaman/shellcheck"
     "swiftlang/swift"
     "nicklockwood/SwiftFormat"
 )
