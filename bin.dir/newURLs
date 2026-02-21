@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-#
-#  zet diff the most recent URLs
-
-"$WS"/newURLs.sh "$@"
