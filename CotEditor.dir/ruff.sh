@@ -1,7 +1,7 @@
 #!/bin/sh
-# %%%{CotEditorXInput=AllText}%%%
-# %%%{CotEditorXOutput=ReplaceAllText}%%%
+# %%%{CotEditorXInput=None}%%%
+# %%%{CotEditorXOutput=Discard}%%%
 
 echo "" >/dev/stderr
 
-"$HOME"/.local/bin/ruff format --stdin-filename=script.py -
+"$HOME"/.local/bin/ruff format "$1"

@@ -1,7 +1,7 @@
 #!/bin/sh
-# %%%{CotEditorXInput=AllText}%%%
-# %%%{CotEditorXOutput=ReplaceAllText}%%%
+# %%%{CotEditorXInput=None}%%%
+# %%%{CotEditorXOutput=Discard}%%%
 
 echo "" >/dev/stderr
 
-"$HOME"/.cargo/bin/rustfmt
+"$HOME"/.cargo/bin/rustfmt "$1"
