@@ -2,4 +2,6 @@
 # %%%{CotEditorXInput=AllText}%%%
 # %%%{CotEditorXOutput=ReplaceAllText}%%%
 
-/Users/monty/.cargo/bin/rustfmt
+echo "" >/dev/stderr
+
+"$HOME"/.cargo/bin/rustfmt

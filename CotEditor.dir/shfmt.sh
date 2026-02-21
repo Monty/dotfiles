@@ -1,5 +1,7 @@
 #!/bin/sh
-# %%%{CotEditorXInput=AllText}%%%
+# %%%{CotEditorXInput=None}%%%
 # %%%{CotEditorXOutput=ReplaceAllText}%%%
 
-/Users/monty/go/bin/shfmt -i 4 -s -
+echo "" >/dev/stderr
+
+"$HOME"/go/bin/shfmt -i 4 -s "$1"

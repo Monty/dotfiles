@@ -2,4 +2,6 @@
 # %%%{CotEditorXInput=AllText}%%%
 # %%%{CotEditorXOutput=ReplaceAllText}%%%
 
-/Users/monty/.local/bin/ruff format --stdin-filename=script.py -
+echo "" >/dev/stderr
+
+"$HOME"/.local/bin/ruff format --stdin-filename=script.py -
