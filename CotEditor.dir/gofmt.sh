@@ -2,6 +2,6 @@
 # %%%{CotEditorXInput=None}%%%
 # %%%{CotEditorXOutput=Discard}%%%
 
-echo "" >/dev/stderr
+echo "$1" >/dev/stderr
 
 /usr/local/go/bin/gofmt -w "$1"

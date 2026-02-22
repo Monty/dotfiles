@@ -2,6 +2,6 @@
 # %%%{CotEditorXInput=None}%%%
 # %%%{CotEditorXOutput=NewDocument}%%%
 
-echo "" >/dev/stderr
+echo "$1" >/dev/stderr
 
 "$HOME"/bin/shellcheck -s bash "$1" || true
