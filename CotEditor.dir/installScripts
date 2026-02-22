@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+SCRIPTDIR="$HOME/Library/Application Scripts/com.coteditor.CotEditor"
+
+echo "The script directory is:"
+echo "\"$SCRIPTDIR"\" | sd "$HOME" '~'
+echo ""
+
+if [[ -d $SCRIPTDIR ]]; then
+    for file in *.sh; do
+        cp -p "$file" "$SCRIPTDIR" && touch "$SCRIPTDIR/$file"
+    done
+    echo "These scripts were copied:"
+    # shellcheck disable=SC2035
+    eza *sh
+    echo ""
+    echo "Check for any old files or other discrepancies:"
+    eza -l "$SCRIPTDIR"
+else
+    echo "The script directory does not exist, no scripts were copied."
+fi
