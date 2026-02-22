@@ -1,0 +1,10 @@
+#!/bin/sh
+# %%%{CotEditorXInput=None}%%%
+# %%%{CotEditorXOutput=Discard}%%%
+
+echo "$1" >/dev/stderr
+
+"$HOME"/.volta/bin/eslint --fix "$1"
+if [ $? -ne 1 ]; then
+    "$HOME"/.volta/bin/prettier --write "$1"
+fi
