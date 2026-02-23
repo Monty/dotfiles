@@ -1,21 +1,31 @@
 #!/usr/bin/env bash
+# Install scripts in CotEditor directory
 
 SCRIPTDIR="$HOME/Library/Application Scripts/com.coteditor.CotEditor"
+LIBDIR="$SCRIPTDIR/_lib"
 
 echo "The script directory is:"
 echo "\"$SCRIPTDIR"\" | sd "$HOME" '~'
 echo ""
 
 if [[ -d $SCRIPTDIR ]]; then
-    for file in *.sh; do
+    for file in Format.@~F.sh printenv.sh shellcheck.sh; do
         cp -p "$file" "$SCRIPTDIR" && touch "$SCRIPTDIR/$file"
     done
+
+    mkdir -p "$LIBDIR"
+    for file in gofmt.sh prettier-awk.sh prettier-eslint.sh \
+        prettier.sh ruff.sh rustfmt.sh shfmt.sh swiftformat.sh; do
+        cp -p "$file" "$LIBDIR" && touch "$LIBDIR/$file"
+    done
+
     echo "These scripts were copied:"
     # shellcheck disable=SC2035
     eza *sh
     echo ""
+
     echo "Check for any old files or other discrepancies:"
-    eza -l "$SCRIPTDIR"
+    eza -lT "$SCRIPTDIR"
 else
     echo "The script directory does not exist, no scripts were copied."
 fi
