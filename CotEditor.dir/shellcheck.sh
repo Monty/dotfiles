@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Used to shellcheck Shell Scripts in CotEditor
 # %%%{CotEditorXInput=None}%%%
 # %%%{CotEditorXOutput=NewDocument}%%%
 

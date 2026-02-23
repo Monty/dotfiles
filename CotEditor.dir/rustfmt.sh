@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# %%%{CotEditorXInput=None}%%%
-# %%%{CotEditorXOutput=Discard}%%%
+# Used to format Rust files in CotEditor
 
 echo "$1" >/dev/stderr
 

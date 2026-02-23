@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Used to print $PATH and $env in CotEditor for debugging
 # %%%{CotEditorXInput=None}%%%
 # %%%{CotEditorXOutput=NewDocument}%%%
 

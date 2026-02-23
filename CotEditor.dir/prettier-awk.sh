@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# %%%{CotEditorXInput=None}%%%
-# %%%{CotEditorXOutput=Discard}%%%
+# Used to format AWK files in CotEditor
 
 echo "$1" >/dev/stderr
 
