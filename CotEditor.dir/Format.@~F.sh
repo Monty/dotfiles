@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Map CotEditor syntax types to formatting scripts
+# Map CotEditor syntax types to formatting scripts in _lib
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -17,12 +17,12 @@ FILEPATH=$(osascript -e '
 
 # shellcheck disable=SC2154
 case "$SYNTAX" in
-"AWK") "$SCRIPT_DIR/_lib/awkfmt.sh" "$FILEPATH" ;;
+"AWK") "$SCRIPT_DIR/_lib/prettier-awk.sh" "$FILEPATH" ;;
 "CSS" | "HTML" | "JSON" | "YAML")
     "$SCRIPT_DIR/_lib/prettier.sh" "$FILEPATH"
     ;;
 "Go") "$SCRIPT_DIR/_lib/gofmt.sh" "$FILEPATH" ;;
-"JavaScript") "$SCRIPT_DIR/_lib/jsfmt.sh" "$FILEPATH" ;;
+"JavaScript") "$SCRIPT_DIR/_lib/prettier-eslint.sh" "$FILEPATH" ;;
 "Python") "$SCRIPT_DIR/_lib/ruff.sh" "$FILEPATH" ;;
 "Rust") "$SCRIPT_DIR/_lib/rustfmt.sh" "$FILEPATH" ;;
 "Shell Script") "$SCRIPT_DIR/_lib/shfmt.sh" "$FILEPATH" ;;
