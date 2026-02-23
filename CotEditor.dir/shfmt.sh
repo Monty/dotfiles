@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # %%%{CotEditorXInput=None}%%%
-# %%%{CotEditorXOutput=ReplaceAllText}%%%
+# %%%{CotEditorXOutput=Discard}%%%
 
 echo "$1" >/dev/stderr
 
-"$HOME"/go/bin/shfmt -i 4 -s "$1"
+"$HOME"/go/bin/shfmt -i 4 -s -w "$1"
