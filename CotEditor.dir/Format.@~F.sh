@@ -18,7 +18,7 @@ FILEPATH=$(osascript -e '
 # shellcheck disable=SC2154
 case "$SYNTAX" in
 "AWK") "$SCRIPT_DIR/_lib/prettier-awk.sh" "$FILEPATH" ;;
-"CSS" | "HTML" | "JSON" | "YAML")
+"CSS" | "HTML" | "JSON" | "Markdown" | "YAML")
     "$SCRIPT_DIR/_lib/prettier.sh" "$FILEPATH"
     ;;
 "Go") "$SCRIPT_DIR/_lib/gofmt.sh" "$FILEPATH" ;;
