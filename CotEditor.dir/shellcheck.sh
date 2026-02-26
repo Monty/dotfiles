@@ -1,8 +1,25 @@
 #!/usr/bin/env bash
 # Used to shellcheck Shell Scripts in CotEditor
 # %%%{CotEditorXInput=None}%%%
-# %%%{CotEditorXOutput=NewDocument}%%%
+# %%%{CotEditorXOutput=Discard}%%%
 
-echo "$1" >/dev/stderr
+SYNTAX=$(osascript -e '
+  tell application "CotEditor"
+    get coloring style of front document
+  end tell
+')
 
-"$HOME"/bin/shellcheck -s bash "$1" || true
+if [[ $SYNTAX != "Shell Script" ]]; then
+    osascript -e 'tell application "CotEditor" to display alert "shellcheck not available for '"$SYNTAX"' documents"' >/dev/null
+    exit 0
+fi
+
+ERRORS=$("$HOME"/bin/shellcheck -s bash "$1")
+if [[ -n $ERRORS ]]; then
+    osascript -e 'tell application "CotEditor"
+        make new document
+        set contents of front document to "'"$ERRORS"'"
+    end tell' >/dev/null
+else
+    osascript -e 'tell application "CotEditor" to display alert "No shellcheck errors found." as informational' >/dev/null
+fi
