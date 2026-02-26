@@ -3,10 +3,11 @@
 # %%%{CotEditorXInput=None}%%%
 # %%%{CotEditorXOutput=NewDocument}%%%
 
-echo "==> \$PATH is:"
-# shellcheck disable=SC2059
+# shellcheck disable=SC2016,SC2059
+
+echo '==> $PATH is:'
 printf "$PATH" | tr ':' '\n'
 echo ""
 echo ""
-echo "==> \$env is:"
-echo "$(env)"
+echo '==> $env is:'
+env
