@@ -28,5 +28,5 @@ case "$SYNTAX" in
 "Shell Script") "$SCRIPT_DIR/_lib/shfmt.sh" "$FILEPATH" ;;
 "Swift") "$SCRIPT_DIR/_lib/swiftformat.sh" "$FILEPATH" ;;
 *) osascript -e "tell app \"CotEditor\" to display alert \
-     \"No formatter for '$SYNTAX'\"" ;;
+     \"Format not available for '$SYNTAX'\"" ;;
 esac
