@@ -20,6 +20,4 @@ if [[ -n $ERRORS ]]; then
         make new document
         set contents of front document to "'"$ERRORS"'"
     end tell' >/dev/null
-else
-    osascript -e 'tell application "CotEditor" to display alert "No shellcheck errors found." as informational' >/dev/null
 fi
