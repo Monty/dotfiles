@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # Used to format JavaScript files in CotEditor
 
-echo "$1" >/dev/stderr
-
 "$HOME"/.volta/bin/eslint --fix --config \
     "$HOME"/Projects/WhatsStreamingToday/eslint.config.mjs "$1"
 
