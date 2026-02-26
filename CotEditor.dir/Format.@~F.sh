@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Map CotEditor syntax types to formatting scripts in _lib
+# %%%{CotEditorXInput=None}%%%
+# %%%{CotEditorXOutput=Discard}%%%
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -27,6 +29,5 @@ case "$SYNTAX" in
 "Rust") "$SCRIPT_DIR/_lib/rustfmt.sh" "$FILEPATH" ;;
 "Shell Script") "$SCRIPT_DIR/_lib/shfmt.sh" "$FILEPATH" ;;
 "Swift") "$SCRIPT_DIR/_lib/swiftformat.sh" "$FILEPATH" ;;
-*) osascript -e "tell app \"CotEditor\" to display alert \
-     \"Format not available for '$SYNTAX'\"" ;;
+*) osascript -e 'tell application "CotEditor" to display alert "Format not available for '"$SYNTAX"' documents"' >/dev/null ;;
 esac
