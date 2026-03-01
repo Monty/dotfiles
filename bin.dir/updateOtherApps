@@ -188,7 +188,7 @@ EOF
             swift)
                 # Apple's compiled programming language for Apple platforms
                 printf "Installing %s...\n" "$app"
-                swiftly update latest
+                swiftly --quiet update latest
                 ;;
             swiftformat)
                 # Code formatter and style linter for Swift
