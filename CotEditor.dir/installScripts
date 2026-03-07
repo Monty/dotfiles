@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Install scripts in CotEditor directory
+#
+# IMPORTANT: Depends on only top level scripts containing '%%%'
 
 SCRIPTDIR="$HOME/Library/Application Scripts/com.coteditor.CotEditor"
 LIBDIR="$SCRIPTDIR/_lib"
@@ -9,15 +11,12 @@ echo "\"$SCRIPTDIR"\" | sd "$HOME" '~'
 echo ""
 
 if [[ -d $SCRIPTDIR ]]; then
-    for file in Format.@~F.sh LineWrap.@~L.sh printenv.sh \
-        shellcheck.sh; do
+    for file in $(rg -l '%%%' -t sh); do
         cp -p "$file" "$SCRIPTDIR" && touch "$SCRIPTDIR/$file"
     done
 
     mkdir -p "$LIBDIR"
-    for file in gofmt.sh prettier-awk.sh prettier-eslint.sh \
-        prettier.sh ruff.sh rustfmt.sh shfmt.sh swiftformat.sh \
-        fmt-wrap_70.sh  prettier-wrap_70.sh; do
+    for file in $(rg --files-without-match '%%%' --type sh); do
         cp -p "$file" "$LIBDIR" && touch "$LIBDIR/$file"
     done
 
