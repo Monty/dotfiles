@@ -5,4 +5,4 @@
 
 printf '```\n'
 cat
-printf '```\n'
+printf '\n```\n'
