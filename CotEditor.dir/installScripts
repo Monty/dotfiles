@@ -11,13 +11,13 @@ echo "\"$SCRIPTDIR"\" | sd "$HOME" '~'
 echo ""
 
 if [[ -d $SCRIPTDIR ]]; then
-    for file in $(rg -l '%%%' -t sh); do
-        cp -p "$file" "$SCRIPTDIR" && touch "$SCRIPTDIR/$file"
+    for file in $(rg -l -d 1 '%%%' -t sh); do
+        cp -p "$file" "$SCRIPTDIR"
     done
 
     mkdir -p "$LIBDIR"
-    for file in $(rg --files-without-match '%%%' --type sh); do
-        cp -p "$file" "$LIBDIR" && touch "$LIBDIR/$file"
+    for file in $(rg --files-without-match -d 1 '%%%' --type sh); do
+        cp -p "$file" "$LIBDIR"
     done
 
     echo "These scripts were copied:"
