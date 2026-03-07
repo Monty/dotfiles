@@ -17,7 +17,6 @@ FILEPATH=$(osascript -e '
   end tell
 ')
 
-# shellcheck disable=SC2154
 case "$SYNTAX" in
 "AWK") "$SCRIPT_DIR/_lib/prettier-awk.sh" "$FILEPATH" ;;
 "CSS" | "HTML" | "JSON" | "Markdown" | "YAML")
@@ -29,5 +28,7 @@ case "$SYNTAX" in
 "Rust") "$SCRIPT_DIR/_lib/rustfmt.sh" "$FILEPATH" ;;
 "Shell Script") "$SCRIPT_DIR/_lib/shfmt.sh" "$FILEPATH" ;;
 "Swift") "$SCRIPT_DIR/_lib/swiftformat.sh" "$FILEPATH" ;;
-*) osascript -e 'tell application "CotEditor" to display alert "Format not available for '"$SYNTAX"' documents"' >/dev/null ;;
+*) osascript -e 'tell application "CotEditor"
+  display alert "Format not available for '"$SYNTAX"' documents"
+end tell' >/dev/null ;;
 esac

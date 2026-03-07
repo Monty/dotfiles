@@ -17,9 +17,10 @@ FILEPATH=$(osascript -e '
   end tell
 ')
 
-# shellcheck disable=SC2154
 case "$SYNTAX" in
 "Markdown") "$SCRIPT_DIR/_lib/prettier-wrap_70.sh" "$FILEPATH" ;;
 "Plain Text") "$SCRIPT_DIR/_lib/fmt-wrap_70.sh" "$FILEPATH" ;;
-*) osascript -e 'tell application "CotEditor" to display alert "LineWrap not available for '"$SYNTAX"' documents"' >/dev/null ;;
+*) osascript -e 'tell application "CotEditor"
+  display alert "LineWrap not available for '"$SYNTAX"' documents"
+end tell' >/dev/null ;;
 esac
