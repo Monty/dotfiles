@@ -6,15 +6,15 @@
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 SYNTAX=$(osascript -e '
-  tell application "CotEditor"
-    get coloring style of front document
-  end tell
+    tell application "CotEditor"
+        get coloring style of front document
+    end tell
 ')
 
 FILEPATH=$(osascript -e '
-  tell application "CotEditor"
-    POSIX path of (get file of front document)
-  end tell
+    tell application "CotEditor"
+        POSIX path of (get file of front document)
+    end tell
 ')
 
 case "$SYNTAX" in
@@ -28,7 +28,8 @@ case "$SYNTAX" in
 "Rust") "$SCRIPT_DIR/_lib/rustfmt.sh" "$FILEPATH" ;;
 "Shell Script") "$SCRIPT_DIR/_lib/shfmt.sh" "$FILEPATH" ;;
 "Swift") "$SCRIPT_DIR/_lib/swiftformat.sh" "$FILEPATH" ;;
-*) osascript -e 'tell application "CotEditor"
-  display alert "Format not available for '"$SYNTAX"' documents"
-end tell' >/dev/null ;;
+*) osascript -e '
+    tell application "CotEditor"
+        display alert "Format not available for '"$SYNTAX"' documents"
+    end tell' >/dev/null ;;
 esac

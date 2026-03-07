@@ -6,11 +6,12 @@ eslint_output=$("$HOME"/.volta/bin/eslint --fix --config \
 eslint_exit=$?
 
 if [[ $eslint_exit -eq 1 || $eslint_exit -eq 2 ]]; then
-    echo "ESLint error (exit $eslint_exit):" >&2
-    echo "$eslint_output" >&2
-    osascript -e 'tell application "CotEditor"
-  display alert "ESLint error (exit '"$eslint_exit"')" message "'"$eslint_output"'"
-end tell'
+    printf "ESLint error (exit $eslint_exit):\n" >&2
+    printf "$eslint_output\n" >&2
+    osascript -e '
+    tell application "CotEditor"
+        display alert "ESLint error (exit '"$eslint_exit"')" message "'"$eslint_output"'"
+    end tell'
     exit 0
 fi
 

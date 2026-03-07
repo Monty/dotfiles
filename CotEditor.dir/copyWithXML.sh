@@ -4,9 +4,9 @@
 # %%%{CotEditorXOutput=Pasteboard}%%%
 
 SYNTAX=$(osascript -e '
-  tell application "CotEditor"
-    get coloring style of front document
-  end tell
+    tell application "CotEditor"
+        get coloring style of front document
+    end tell
 ')
 
 case "$SYNTAX" in
