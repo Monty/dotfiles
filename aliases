@@ -31,9 +31,10 @@ alias showpath='printf "%s\n" $path'
 alias sttysane='stty sane; stty iexten erase "^?" kill ^U intr ^C susp ^Z'
 
 # shortcuts for bat
-alias bata="bat -A"  # All invisible characters
-alias batd="bat -d"  # Diffs only
-alias batp="bat -pP" # Plain, i.e. no numbers, no pager
+alias bata="bat -A"              # All invisible characters
+alias batd="bat -d"              # Diffs only
+alias batf="bat --style full -P" # Full, no pager
+alias batp="bat -pP"             # Plain, i.e. no numbers, no pager
 # Use bat to format man pages
 bman() {
     man "$@" | sed -u -e 's/\x1B\[[0-9;]*m//g; s/.\x08//g' |
@@ -165,7 +166,7 @@ ll2d() {
     eza --git -s old --color=always -l "$@" |
         rg --color=never "($today|$yesterday) \d{2}:\d{2}"
 }
-alias llr='eza --git -s Name --colour=always -lR'   # Recurse
+alias llr='eza --git -s Name --colour=always -lR'                # Recurse
 alias lls='eza --git -s size -r --colour=always -l --total-size' # size
 # Dirs first, then by extension - both without & with gitignored files
 alias lw='eza --git --git-ignore --group-directories-first -s ext --colour=always -l'
