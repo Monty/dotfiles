@@ -5,9 +5,7 @@
 
 # shellcheck disable=SC2016,SC2059
 
-echo '==> $PATH is:'
+printf '==> $PATH is:\n'
 printf "$PATH" | tr ':' '\n'
-echo ""
-echo ""
-echo '==> $env is:'
+printf '\n\n==> $env is:\n'
 env
