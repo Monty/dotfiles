@@ -7,22 +7,24 @@ SCRIPTDIR="$HOME/Library/Application Scripts/com.coteditor.CotEditor"
 LIBDIR="$SCRIPTDIR/_lib"
 
 echo "The script directory is:"
-echo "\"$SCRIPTDIR"\" | sd "$HOME" '~'
+echo "\"$SCRIPTDIR\"" | sd "$HOME" '~'
 echo ""
 
 if [[ -d $SCRIPTDIR ]]; then
-    for file in $(rg -l -d 1 '%%%' -t sh); do
+    # Identify top level scripts (those with '%%%')
+    rg -l -d 1 '%%%' -t sh | while read -r file; do
         cp -p "$file" "$SCRIPTDIR"
     done
 
     mkdir -p "$LIBDIR"
-    for file in $(rg --files-without-match -d 1 '%%%' --type sh); do
+
+    # Identify library scripts (those without '%%%')
+    rg --files-without-match -d 1 '%%%' --type sh | while read -r file; do
         cp -p "$file" "$LIBDIR"
     done
 
     echo "These scripts were copied:"
-    # shellcheck disable=SC2035
-    eza *sh
+    eza *.sh
     echo ""
 
     echo "Check for any old files or other discrepancies:"
