@@ -3,9 +3,9 @@
 # %%%{CotEditorXInput=None}%%%
 # %%%{CotEditorXOutput=NewDocument}%%%
 
-# shellcheck disable=SC2016,SC2059
+# shellcheck disable=SC2016
 
 printf '==> $PATH is:\n'
-printf "$PATH" | tr ':' '\n'
+printf '%s' "$PATH" | tr ':' '\n'
 printf '\n\n==> $env is:\n'
 env
