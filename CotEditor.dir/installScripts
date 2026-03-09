@@ -11,15 +11,15 @@ printf '"%s"\n' "${SCRIPTDIR/$HOME/\$HOME}"
 printf "\n"
 
 if [[ -d $SCRIPTDIR ]]; then
-    # Identify top level scripts (those with '%%%')
-    rg -l -d 1 '%%%' -t sh | while read -r file; do
+    # Top-level scripts (start with a digit)
+    fd -d 1 -t f '^[0-9]' | while read -r file; do
         cp -p "$file" "$SCRIPTDIR"
     done
 
     mkdir -p "$LIBDIR"
 
-    # Identify library scripts (those without '%%%')
-    rg --files-without-match -d 1 '%%%' --type sh | while read -r file; do
+    # Library scripts (don't start with a digit)
+    fd -d 1 -t f '^[^0-9]' | while read -r file; do
         cp -p "$file" "$LIBDIR"
     done
 
