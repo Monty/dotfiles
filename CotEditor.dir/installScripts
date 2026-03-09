@@ -6,9 +6,9 @@
 SCRIPTDIR="$HOME/Library/Application Scripts/com.coteditor.CotEditor"
 LIBDIR="$SCRIPTDIR/_lib"
 
-echo "The script directory is:"
-echo "\"$SCRIPTDIR\"" | sd "$HOME" '~'
-echo ""
+printf "The script directory is:\n"
+printf '"%s"\n' "${SCRIPTDIR/$HOME/\$HOME}"
+printf "\n"
 
 if [[ -d $SCRIPTDIR ]]; then
     # Identify top level scripts (those with '%%%')
@@ -23,12 +23,13 @@ if [[ -d $SCRIPTDIR ]]; then
         cp -p "$file" "$LIBDIR"
     done
 
-    echo "These scripts were copied:"
+    printf "These scripts were copied:\n"
+    # shellcheck disable=SC2035
     eza *.sh
-    echo ""
+    printf "\n"
 
-    echo "Check for any old files or other discrepancies:"
+    printf "Check for any old files or other discrepancies:\n"
     eza -lT "$SCRIPTDIR"
 else
-    echo "The script directory does not exist, no scripts were copied."
+    printf "The script directory does not exist, no scripts were copied.\n"
 fi
