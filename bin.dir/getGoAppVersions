@@ -8,7 +8,7 @@ set -euo pipefail
 trap 'printf "${ERROR} at or near line %s:\n\t%s\n" \
     "$LINENO" "$BASH_COMMAND" >&2' ERR
 
-# trap ctrl-c -- call cleanup and exit
+# trap ctrl-c and SIGTERM -- call cleanup and exit
 trap 'cleanup; exit 130' INT
 trap 'cleanup; exit 143' TERM
 #
