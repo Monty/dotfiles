@@ -52,8 +52,8 @@ fi
 
 # Interactive, needs q, problems with tabs vs. spaces
 if waitUntil -sY "\nRun riff $1 $2?"; then
-    printf "==> Running riff %s %s\n" "$1" "$2"
-    riff "$1" "$2"
+    printf "==> Running riff -b %s %s\n" "$1" "$2"
+    riff -b "$1" "$2"
 else
     printf "Skipping...\n"
 fi
