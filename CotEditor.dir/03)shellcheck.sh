@@ -14,7 +14,6 @@ if [[ $SYNTAX != "Shell Script" ]]; then
     tell application "CotEditor"
         display alert "shellcheck not available for '"$SYNTAX"' documents"
     end tell' >/dev/null
-    printf "==> Error: shellcheck not available for %s documents\n" "$SYNTAX"
     exit 0
 fi
 
