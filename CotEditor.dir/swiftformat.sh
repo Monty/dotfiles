@@ -2,7 +2,7 @@
 # Used to format Swift files in CotEditor
 
 swiftformat_output=$("$HOME"/.swiftly/bin/swiftformat \
-    --swiftversion 6.2.3 "$1" 2>&1)
+    --swiftversion 6.2.4 "$1" 2>&1)
 swiftformat_exit=$?
 
 if [[ $swiftformat_exit -ne 0 ]]; then
