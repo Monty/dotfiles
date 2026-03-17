@@ -19,8 +19,8 @@ FILEPATH=$(osascript -e '
 case "$SYNTAX" in
 "Markdown" | "Plain Text")
     "$HOME"/.cargo/bin/sd '^<div>$' '<div> ' "$FILEPATH"
-    "$HOME"/.cargo/bin/sd '^<([a-z_][a-z_ ]+)>$' '```$1' "$FILEPATH"
-    "$HOME"/.cargo/bin/sd '^</[a-z_][a-z_ ]+>$' '```' "$FILEPATH"
+    "$HOME"/.cargo/bin/sd '^</[^<>]+>$' '```' "$FILEPATH"
+    "$HOME"/.cargo/bin/sd '^<([^<>]+)>$' '```$1' "$FILEPATH"
     ;;
 *) osascript -e '
     tell application "CotEditor"
