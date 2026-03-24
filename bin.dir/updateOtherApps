@@ -27,8 +27,8 @@ help() {
 updateOtherApps
 
 Install or update the following apps:
-    kitty volta node npm eslint playwright pnpm prettier
-    tree-sitter black ruff cot sass shellcheck swift swiftformat
+    kitty volta node npm eslint playwright pnpm prettier tree-sitter
+    black ruff cot sass shellcheck swift swiftformat fastfetch
 
 USAGE:
     updateOtherApps [OPTIONS]
@@ -199,6 +199,19 @@ EOF
                 download_url="https://github.com/nicklockwood/SwiftFormat/releases/download/${latest_version}/${asset}"
                 curl -sL "$download_url" -o "$asset"
                 unzip -o "$asset" swiftformat -d ~/.swiftly/bin
+                rm -f "$asset"
+                ;;
+            fastfetch)
+                # Neofetch-like system information tool
+                printf "Installing %s...\n" "$app"
+                latest_version=$(echo "$line" |
+                    grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1)
+                asset="fastfetch-macos-aarch64.tar.gz"
+                download_url="https://github.com/fastfetch-cli/fastfetch/releases/download/${latest_version}/${asset}"
+                curl -sL "$download_url" -o "$asset"
+                tar -xzf "$asset" --strip-components=3 \
+                    "fastfetch-macos-aarch64/usr/bin/fastfetch"
+                mv fastfetch "$(dirname "$(which fastfetch)")"
                 rm -f "$asset"
                 ;;
             *)
