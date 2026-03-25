@@ -1,0 +1,48 @@
+new_tab AI
+layout tall:bias=68;full_size=2
+launch zsh
+cd /Users/monty/Projects/AI_experiments/Projects/01-refactor
+launch zsh
+cd /Users/monty/Projects/AI_experiments
+
+new_tab CotEditor
+layout tall:bias=68;full_size=2
+launch zsh
+cd /Users/monty/Projects/CotEditor-Scripts/Scripts
+launch zsh
+cd /Users/monty/Projects/CotEditor-Scripts
+
+new_tab Tests
+layout tall:bias=68;full_size=2
+launch zsh
+cd /Users/monty/Projects/tests/updateTests
+launch zsh
+cd /Users/monty/Projects/tests/updateTests
+
+new_tab Chats
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/WhatsStreamingToday/sitemaps/Squishers/Chats
+launch zsh
+cd ~/Downloads
+
+new_tab Dotfiles
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/dotfiles
+launch zsh
+cd ~/.config
+
+new_tab Kitty
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/dotfiles/config.dir/kitty
+launch zsh
+cd ~/dotfiles/config.dir/kitty/notgit
+
+new_tab TV
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/WhatsStreamingToday
+launch zsh
+cd ~/Projects/CountEpisodes
