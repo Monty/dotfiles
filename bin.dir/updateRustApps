@@ -150,7 +150,13 @@ EOF
             # Extract just the app name (first word before whitespace)
             app=$(echo "$line" | awk '{print $1}')
 
+            # Intentionally kept to a single app per case
             case "$app" in
+            ast-grep)
+                # Search and rewrite code using precise AST pattern
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force ast-grep
+                ;;
             bat)
                 # Modern cat clone with syntax highlighting & git support
                 printf "Installing %s...\n" "$app"
@@ -191,6 +197,11 @@ EOF
                 # Modern ls clone with colors, icons, git status
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force eza
+                ;;
+            fastmod)
+                # Interactive regex based find and replace
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force fastmod
                 ;;
             fclones)
                 # Efficiently find and remove duplicate files
@@ -316,6 +327,11 @@ EOF
                 # Change all occurences of a string in a file
                 printf "Installing %s...\n" "$app"
                 cargo install -q --force sd
+                ;;
+            shellharden)
+                # Syntax-highlight and fix shellcheck quoting issues
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force shellharden
                 ;;
             stdrename)
                 # Batch rename files using patterns
