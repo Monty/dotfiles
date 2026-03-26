@@ -17,7 +17,7 @@ if [[ $SYNTAX != "Shell Script" ]]; then
     exit 0
 fi
 
-ERRORS=$("$HOME"/bin/shellcheck -s bash "$1")
+ERRORS=$("$HOME"/.local/bin/shellcheck -s bash "$1")
 if [[ -n $ERRORS ]]; then
     printf "shellcheck %s\n" "$1"
     printf "==> Found the following errors:\n"
