@@ -182,7 +182,7 @@ EOF
                 download_url="https://github.com/koalaman/shellcheck/releases/download/v${latest_version}/${asset}"
                 curl -sL "$download_url" -o "$asset"
                 tar -xzf "$asset" --strip-components=1 "shellcheck-v${latest_version}/shellcheck"
-                mv shellcheck ~/.cargo/bin
+                mv shellcheck "$(dirname "$(which shellcheck)")"
                 rm -f "$asset"
                 ;;
             swift)
