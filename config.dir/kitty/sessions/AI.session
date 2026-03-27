@@ -1,7 +1,7 @@
 new_tab AI
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/AI_experiments/Projects/01-refactor
+cd /Users/monty/Projects/AI_experiments/Systems
 launch zsh
 cd /Users/monty/Projects/AI_experiments
 
