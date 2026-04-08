@@ -1,0 +1,28 @@
+{
+  "name": "prettier-plugin-awk",
+  "version": "0.4.0",
+  "author": "Stanislav Chernov <ch-e-st@yandex.ru>",
+  "license": "MIT",
+  "keywords": [
+    "prettier",
+    "awk",
+    "gawk",
+    "plugin"
+  ],
+  "main": "./out/index.js",
+  "scripts": {
+    "compile": "tsc -b",
+    "compile:watch": "tsc -b -w",
+    "test": "npm run compile && mocha"
+  },
+  "dependencies": {
+    "prettier": "3.8.1",
+    "tree-sitter-awk": "0.7.2",
+    "web-tree-sitter": "0.26.8"
+  },
+  "devDependencies": {
+    "@types/node": "22.0.0",
+    "mocha": "10.7.3",
+    "typescript": "5.6.3"
+  }
+}

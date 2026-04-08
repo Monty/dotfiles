@@ -11,7 +11,7 @@ trap 'printf "${ERROR} at or near line %s:\n\t%s\n" \
 # trap ctrl-c and SIGTERM -- call cleanup and exit
 trap 'cleanup; exit 130' INT
 trap 'cleanup; exit 143' TERM
-#
+
 function cleanup() {
     stty sane
     printf "\n"
@@ -42,6 +42,10 @@ LINKING RULES:
     Fastfetch configuration:
         ~/dotfiles/config.dir/fastfetch -> ~/.local/share/fastfetch
 
+    prettier-plugin-awk:
+        ~/dotfiles/lib.dir/prettier-plugin-awk copied to ~/.local/lib/
+        (copied, not linked, so npm install stays outside dotfiles)
+
 USAGE:
     ./install.sh [OPTIONS]
 
@@ -58,7 +62,7 @@ DRY_RUN=false
 VERBOSE=false
 while [[ $# -gt 0 ]]; do
     case $1 in
-       -h | --help)
+    -h | --help)
         help
         exit
         ;;
@@ -150,3 +154,33 @@ maybe_run mkdir -p "${TARGETDIR}"
 printf "# Creating link to %s in %s\n" \
     "${LINKDIR#"$HOME"/}" "${TARGETDIR#"$HOME"/}"
 link_if_needed "${LINKDIR}" "${TARGETDIR}/fastfetch" "fastfetch"
+
+# Only do prettier setup on machines that have prettier installed
+command -v prettier &>/dev/null || {
+    printf "# Skipping prettier setup (prettier not installed)\n"
+    exit 0
+}
+
+# Special case for prettierrc.js
+printf "# Creating link to dotfiles/prettierrc.js in %s\n" "${HOME}"
+link_if_needed "${DOTDIR}/prettierrc.js" ".prettierrc.js" ".prettierrc.js"
+
+# prettier-plugin-awk: copy source from dotfiles to ~/.local/lib/
+# Copied rather than linked so npm install/npx tsc -b stay outside dotfiles.
+SRCDIR="${HOME}/dotfiles/lib.dir/prettier-plugin-awk"
+TARGETDIR="${HOME}/.local/lib/prettier-plugin-awk"
+printf "# Copying %s to %s\n" "${SRCDIR#"$HOME"/}" "${TARGETDIR#"$HOME"/}"
+maybe_run mkdir -p "${TARGETDIR}"
+maybe_run rsync -a --delete \
+    --exclude='node_modules/' \
+    --exclude='out/' \
+    --exclude='*.tsbuildinfo' \
+    "${SRCDIR}/" "${TARGETDIR}/"
+
+if [[ ! -f "${TARGETDIR}/out/index.js" ]]; then
+    # shellcheck disable=SC2059
+    printf "==> $INFO prettier-plugin-awk needs building. Use:\n"
+    printf "    cd ~/.local/lib/prettier-plugin-awk && npm install && npx tsc -b\n\n"
+    printf "    (npm install warnings about inflight/glob are in mocha test deps\n"
+    printf "     only and can be safely ignored)\n"
+fi
