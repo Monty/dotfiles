@@ -42,9 +42,14 @@ LINKING RULES:
     Fastfetch configuration:
         ~/dotfiles/config.dir/fastfetch -> ~/.local/share/fastfetch
 
-    prettier-plugin-awk:
-        ~/dotfiles/lib.dir/prettier-plugin-awk copied to ~/.local/lib/
-        (copied, not linked, so npm install stays outside dotfiles)
+    Only if prettier is installed:
+
+    Prettier plugin file (dotfiles/prettierrc.js)
+        Linked as ~/.prettierrc.js
+
+    Prettier-awk directory (dotfiles/lib.dir/prettier-plugin-awk)
+        Copied to ~/.local/lib/prettier-plugin-awk
+        (not linked, so npm install stays outside dotfiles)
 
 USAGE:
     ./install.sh [OPTIONS]
@@ -163,7 +168,8 @@ command -v prettier &>/dev/null || {
 
 # Special case for prettierrc.js
 printf "# Creating link to dotfiles/prettierrc.js in %s\n" "${HOME}"
-link_if_needed "${DOTDIR}/prettierrc.js" ".prettierrc.js" ".prettierrc.js"
+link_if_needed "${DOTDIR}/prettierrc.js" "${HOME}/.prettierrc.js" \
+    ".prettierrc.js"
 
 # prettier-plugin-awk: copy source from dotfiles to ~/.local/lib/
 # Copied rather than linked so npm install/npx tsc -b stay outside dotfiles.
