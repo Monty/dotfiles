@@ -17,6 +17,9 @@ __pycache__
 # npm
 update-notifier-npm.json
 
+# JotBird
+.jotbird
+
 # Keep vim bundles out of repo
 ~/.vim/bundle/*
 
