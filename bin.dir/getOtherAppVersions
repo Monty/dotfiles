@@ -93,6 +93,7 @@ repos=(
     "pnpm/pnpm"
     "prettier/prettier"
     "tree-sitter/tree-sitter"
+    "jotbirdhq/jotbird-cli"
     "psf/black"
     "astral-sh/ruff"
     "coteditor/CotEditor"
@@ -108,6 +109,7 @@ get_binary_name() {
     local repo="$1"
     case "$repo" in
     npm/cli) echo "npm" ;;
+    jotbirdhq/jotbird-cli) echo "jotbird" ;;
     sass/dart-sass) echo "sass" ;;
     yarnpkg/berry) echo "yarn" ;;
     coteditor/CotEditor) echo "cot" ;;

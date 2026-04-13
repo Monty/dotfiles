@@ -28,7 +28,7 @@ updateOtherApps
 
 Install or update the following apps:
     kitty volta node npm eslint playwright pnpm prettier tree-sitter
-    black ruff cot sass shellcheck swift swiftformat fastfetch
+    jotbird black ruff cot sass shellcheck swift swiftformat fastfetch
 
 USAGE:
     updateOtherApps [OPTIONS]
@@ -144,6 +144,11 @@ EOF
                 # Parser generator and incremental parsing library
                 printf "Installing %s...\n" "$app"
                 volta install tree-sitter-cli
+                ;;
+            jotbird)
+                # Publish Markdown from the command line
+                printf "Installing %s...\n" "$app"
+                volta install jotbird
                 ;;
             black)
                 # Uncompromising Python code formatter
