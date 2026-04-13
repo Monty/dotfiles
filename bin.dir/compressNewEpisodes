@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+# Compress existing newEpisodes txt files and generate markdown versions
+
+# shellcheck disable=SC2154     # References to $NE and $WS
+
+# Prevent cascading or pipe failures
+set -euo pipefail
+
+# trap and locate errors that might arise from pipefail
+trap 'printf "${ERROR} at or near line %s:\n\t%s\n" \
+    "$LINENO" "$BASH_COMMAND" >&2' ERR
+
+# trap ctrl-c and SIGTERM -- call cleanup and exit
+trap 'cleanup; exit 130' INT
+trap 'cleanup; exit 143' TERM
+#
+function cleanup() {
+    stty sane
+    printf "\n"
+}
+
+ERROR="\e[0;31m[Error]\e[0m"
+INFO="\e[0;34m[Info]\e[0m"
+
+# The "SINCE" date is derived from OFFSET after arg parsing
+# This default OFFSET may be overridden by --date
+OFFSET="-1w"
+
+help() {
+    cat <<EOF
+compressNewEpisodes
+
+Compress an existing newEpisodes txt file and generate a markdown version.
+Output files are derived from the input filename.
+
+USAGE:
+    compressNewEpisodes [OPTIONS] <newEpisodes-YYMMDD.txt>
+
+OPTIONS:
+    -h | --help     Print this message.
+    -d | --date     Date offset in date -v format (default: -1w)
+
+EXAMPLES:
+    compressNewEpisodes newEpisodes-260407.txt
+    compressNewEpisodes --date -4d newEpisodes-260407.txt
+EOF
+}
+
+# Check for options
+ARGS=()
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -h | --help)
+        help
+        exit
+        ;;
+    -d | --date)
+        shift
+        if [[ $# -eq 0 ]]; then
+            # shellcheck disable=SC2059
+            printf "${ERROR} --date requires an argument (e.g. -2w, -3d)\n" >&2
+            exit 1
+        fi
+        OFFSET="$1"
+        shift
+        ;;
+    -*)
+        # shellcheck disable=SC2059
+        printf "${ERROR} Unknown option: %s\n" "$1" >&2
+        # shellcheck disable=SC2059
+        printf "${INFO}  Run with --help to see available options\n" >&2
+        exit 1
+        ;;
+    *)
+        ARGS+=("$1")
+        shift
+        ;;
+    esac
+done
+
+if [[ ${#ARGS[@]} -ne 1 ]]; then
+    # shellcheck disable=SC2059
+    printf "${ERROR} Expected exactly one input file, got %d\n" "${#ARGS[@]}" >&2
+    # shellcheck disable=SC2059
+    printf "${INFO}  Run with --help to see usage\n" >&2
+    exit 1
+fi
+
+INFILE="${ARGS[0]}"
+if [[ ! -f $INFILE ]]; then
+    # shellcheck disable=SC2059
+    printf "${ERROR} File not found: %s\n" "$INFILE" >&2
+    exit 1
+fi
+
+# Derive output filenames from input filename
+BASE="${INFILE%.txt}"
+OUTFILE="${BASE}-compressed.txt"
+MD_FILE="${BASE}-compressed.md"
+
+cd "$NE" || exit
+
+# Derive date string from final OFFSET value
+SINCE="$(date -v "$OFFSET" +%d-%b-%y)"
+
+# Compress the input file
+"$WS"/compress_newEpisodes.py "$INFILE" >"$OUTFILE"
+printf "==> Text file written to %s\n" "$OUTFILE"
+
+# Generate markdown from compressed version
+awk -f convertEpisodesToMarkdown.awk -v SINCE="$SINCE" \
+    "$OUTFILE" >"$MD_FILE"
+printf "==> Markdown file written to %s\n" "$MD_FILE"
