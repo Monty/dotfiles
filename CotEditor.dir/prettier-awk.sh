@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Used to format AWK files in CotEditor
-
-cd "$HOME"/Projects/WhatsStreamingToday/hidden || exit
+# Requires prettier-plugin-awk: https://github.com/Beaglefoot/prettier-plugin-awk
 
 prettier_output=$("$HOME"/.volta/bin/prettier --write "$1" 2>&1)
 prettier_exit=$?
