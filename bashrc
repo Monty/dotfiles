@@ -63,6 +63,7 @@ for each in \
     /Applications/CotEditor.app/Contents/SharedSupport/bin \
     /Applications/CMake.app/Contents/bin \
     $HOME/.local/bin \
+    $HOME/.lmstudio/bin \
     $HOME/Library/Python/3.9/bin \
     $HOME/.gem/ruby/2.7.0/bin \
     $HOME/Projects/dart-sass \
