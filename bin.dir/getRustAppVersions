@@ -83,15 +83,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Kludge for lychee or other commands needing openssl-3 dylibs
-# uses dylibs from /Applications/kitty.app/Contents/Frameworks/
-if [[ -z ${DYLD_LIBRARY_PATH:-} ]]; then
-    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks"
-else
-    export DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks:$DYLD_LIBRARY_PATH"
-fi
-# printf "DYLD_LIBRARY_PATH = '%s'\n\n" "${DYLD_LIBRARY_PATH:-}"
-
 # Map binary names to crate names where they differ
 get_crate_name() {
     case "$1" in
