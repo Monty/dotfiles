@@ -75,6 +75,7 @@ fi
 for each in \
     $HOME/go/bin \
     /Applications/kitty.app/Contents/MacOS \
+    /Applications/CMake.app/Contents/bin \
     /Applications/CotEditor.app/Contents/SharedSupport/bin \
     $HOME/.local/bin \
     $HOME/.lmstudio/bin \

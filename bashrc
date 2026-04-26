@@ -61,6 +61,7 @@ for each in \
     $HOME/.cargo/bin \
     /Applications/kitty.app/Contents/MacOS \
     /Applications/CotEditor.app/Contents/SharedSupport/bin \
+    /Applications/CMake.app/Contents/bin \
     $HOME/.local/bin \
     $HOME/.lmstudio/bin \
     $HOME/Library/Python/3.9/bin \
