@@ -1,23 +1,37 @@
 new_tab AI
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/AI_experiments/Systems
-launch zsh
 cd /Users/monty/Projects/AI_experiments
+launch zsh
+cd /Users/monty/Projects/AI_experiments/Scaffolding
 
-new_tab CotEditor
+new_tab Claude
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/CotEditor-Scripts/Scripts
+cd /Users/monty/Projects/AI_experiments/Systems/Claude
 launch zsh
-cd /Users/monty/Projects/CotEditor-Scripts
+cd /Users/monty/Projects/AI_experiments/Systems/Claude
 
-new_tab Tests
+new_tab Gemma
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/tests/updateTests
+cd /Users/monty/Projects/AI_experiments/Systems/gemma_4_E4B
 launch zsh
-cd /Users/monty/Projects/tests/updateTests
+cd /Users/monty/Projects/AI_experiments/Systems/gemma_4_E4B
+
+new_tab Qwen
+layout tall:bias=68;full_size=2
+launch zsh
+cd /Users/monty/Projects/AI_experiments/Systems/Qwen2_5_Coder_14B
+launch zsh
+cd /Users/monty/Projects/AI_experiments/Systems/Qwen2_5_Coder_14B
+
+new_tab LMS
+layout tall:bias=68;full_size=2
+launch zsh
+cd /Users/monty/Projects/AI_experiments/Systems/LMS
+launch zsh
+cd /Users/monty/.lmstudio
 
 new_tab Chats
 layout tall:bias=68;full_size=2
