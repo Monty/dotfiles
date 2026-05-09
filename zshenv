@@ -71,13 +71,17 @@ if [[ -d "$HOME/bin" ]]; then
     export PATH="$HOME/bin:$PATH"
 fi
 
+# Make sure ~/.local/bin is in $PATH (UV executables)
+if [[ -d "$HOME/.local/bin" ]]; then
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # These are unique so shouldn't need to be elevated
 for each in \
     $HOME/go/bin \
     /Applications/kitty.app/Contents/MacOS \
     /Applications/CMake.app/Contents/bin \
     /Applications/CotEditor.app/Contents/SharedSupport/bin \
-    $HOME/.local/bin \
     $HOME/.lmstudio/bin \
     $HOME/Library/Python/3.9/bin \
     $HOME/Projects/dart-sass; do
