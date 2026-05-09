@@ -15,6 +15,7 @@ for each in \
     $HOME/.cargo/bin \
     $HOME/.volta/bin \
     $HOME/.swiftly/bin \
+    $HOME/.local/bin \
     $HOME/bin; do
     # shellcheck disable=SC2206
     if [[ -d $each ]]; then

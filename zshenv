@@ -66,14 +66,14 @@ if [[ -r "$HOME/.swiftly/env.sh" ]]; then
     export PATH="$HOME/.swiftly/bin:$PATH"
 fi
 
-# Make sure private bin is in $PATH
-if [[ -d "$HOME/bin" ]]; then
-    export PATH="$HOME/bin:$PATH"
-fi
-
 # Make sure ~/.local/bin is in $PATH (UV executables)
 if [[ -d "$HOME/.local/bin" ]]; then
     export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Make sure private bin is in $PATH
+if [[ -d "$HOME/bin" ]]; then
+    export PATH="$HOME/bin:$PATH"
 fi
 
 # These are unique so shouldn't need to be elevated

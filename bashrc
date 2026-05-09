@@ -44,23 +44,29 @@ if [[ -f ~/.tokens ]]; then
 fi
 
 # Make a sensible PATH and save it
-# set PATH so it includes private bin if it exists
-if [[ -d "$HOME/bin" ]]; then
-    PATH="$HOME/bin:$PATH"
-fi
-# set PATH so it includes ~/.local/bin if it exists
-if [[ -d "$HOME/.local/bin" ]]; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-# set PATH so it includes ~/.volta/bin if it exists
-if [[ -d "$HOME/.volta" ]]; then
-    export VOLTA_HOME="$HOME/.volta"
-    export PATH="$VOLTA_HOME/bin:$PATH"
-fi
+prepend_path() { [[ -d "$1" ]] && [[ ":$PATH:" != *":$1:"* ]] && export PATH="$1:$PATH"; }
+source_if() { [[ -r "$1" ]] && . "$1"; }
+
+# golang
+export GOPATH="$HOME/Projects/go"
+prepend_path "/usr/local/go/bin"
+# rust/cargo
+source_if "$HOME/.cargo/env"
+prepend_path "$HOME/.cargo/bin"
+# volta
+export VOLTA_HOME="$HOME/.volta"
+prepend_path "$VOLTA_HOME/bin"
+# swiftly
+source_if "$HOME/.swiftly/env.sh"
+prepend_path "$HOME/.swiftly/bin"
+# uv / local
+prepend_path "$HOME/.local/bin"
+# private bin
+prepend_path "$HOME/bin"
+
 # Set PATH so it appends other useful directories if they exist
 for each in \
     /usr/local/bin \
-    /usr/local/go/bin \
     $HOME/go/bin \
     $HOME/.cargo/bin \
     /Applications/kitty.app/Contents/MacOS \
@@ -124,9 +130,6 @@ export LS_COLORS
 EZA_COLORS="su=30;41:sf=30;41:xa=33:uu=39:un=31:gu=39:gn=31:ur=39:uw=39:ux=39:ue=39"
 EZA_COLORS+=":gr=39:gw=39:gx=39:tr=39:tw=31:tx=39:sn=34:sb=36:da=34"
 export EZA_COLORS
-
-# golang setup
-export GOPATH=$HOME/Projects/go
 
 # broot setup
 if type -p broot >/dev/null; then
