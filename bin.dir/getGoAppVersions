@@ -111,6 +111,16 @@ get_module_info() {
     go version -m "$app_path" 2>/dev/null || true
 }
 
+# Check if a version is a Go pseudo-version (e.g., v2.1.4-0.20260503211152-6135d061ec55)
+is_pseudo_version() {
+    [[ $1 =~ ^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]{14}-[0-9a-f]{12}$ ]]
+}
+
+# Extract the base tag from a pseudo-version (e.g., v2.1.4-0.20260503... → v2.1.4)
+pseudo_base_version() {
+    echo "${1%%-*}"
+}
+
 # Parse module path and version from go version output
 parse_module_version() {
     local version_output="$1"
@@ -151,12 +161,22 @@ for app in ~/go/bin/*; do
         latest=$(get_latest_version "$module")
 
         if [[ -n $latest && $latest != "$version" ]]; then
-            # Remove 'v' prefix for comparison if present
-            current_ver="${version#v}"
-            latest_ver="${latest#v}"
-
-            if [[ $current_ver != "$latest_ver" ]]; then
-                has_update=true
+            # shellcheck disable=SC2310
+            if is_pseudo_version "$version"; then
+                # Pseudo-version: compare its base tag against latest using sort -V.
+                # Only flag as update if latest is strictly newer than the base tag.
+                base=$(pseudo_base_version "$version")
+                higher=$(printf '%s\n' "$base" "$latest" | sort -V | tail -1)
+                if [[ $higher == "$latest" && $latest != "$base" ]]; then
+                    has_update=true
+                fi
+            else
+                # Normal version: plain string comparison (v-prefix stripped)
+                current_ver="${version#v}"
+                latest_ver="${latest#v}"
+                if [[ $current_ver != "$latest_ver" ]]; then
+                    has_update=true
+                fi
             fi
         fi
     fi
