@@ -29,7 +29,7 @@ help() {
 updateGoApps
 
 Install or update the following Go apps in ~/go/bin:
-    gocloc golangci-lint jqfmt moor rclone scc shfmt
+    gocloc golangci-lint jqfmt mactop moor rclone scc shfmt
 
 USAGE:
     updateGoApps [OPTIONS]
@@ -160,6 +160,10 @@ EOF
             jqfmt)
                 printf "Installing %s...\n" "$app"
                 go install github.com/noperator/jqfmt/cmd/jqfmt@latest
+                ;;
+            mactop)
+                printf "Installing %s...\n" "$app"
+                go install github.com/metaspartan/mactop/v2@latest
                 ;;
             moor)
                 printf "Installing %s...\n" "$app"
