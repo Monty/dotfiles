@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC1091,SC2154
+source "$WS/waitUntil.function"
+
+ERROR="\e[0;31m[Error]\e[0m"
+
+usage() {
+    cat <<EOF
+drqi -- Interactively diff changed file pairs found by 'diff -rq'
+
+USAGE:
+    drqi [-b] <oldfile> <newfile>
+    drqi [-b] <olddir> <newdir>
+    diff -rq <olddir> <newdir> | drqi [-b]
+
+OPTIONS:
+    -b    Ignore spacing changes (passed to both diff -rq and riff)
+    -h    Show this help message and exit
+
+NOTES:
+    Files are always diffed older-first so added lines show as + not -
+    Argument order is used as a tiebreaker when mtimes are equal.
+
+EXAMPLES:
+    drqi OPB-test ~/Documents/OPB-test
+    diff -rq oldCmds newCmds | drqi -b
+
+EOF
+}
+
+# Return the modification time of a file as a Unix timestamp
+mtime() {
+    stat -f "%m" "$1"
+}
+
+# Order two files older-first by modification time
+older_first() {
+    if [[ $(mtime "$1") -le $(mtime "$2") ]]; then
+        printf "%s\n%s\n" "$1" "$2"
+    else
+        printf "%s\n%s\n" "$2" "$1"
+    fi
+}
+
+ignore_spaces=
+
+while getopts ":hb" opt; do
+    case $opt in
+    h)
+        usage
+        exit 0
+        ;;
+    b)
+        ignore_spaces="-b"
+        ;;
+    *)
+        printf "==> Ignoring invalid option: -%s\n" "$OPTARG" >&2
+        ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+# Collect "Files X and Y differ" lines: either from stdin (piped) or by running diff -rq
+if [[ -p /dev/stdin ]]; then
+    # Input is being piped in — sort by mtime at diff time
+    while IFS= read -r line; do diff_lines+=("$line"); done < <(rg "^Files ")
+else
+    if [[ $# -eq 0 ]]; then
+        usage
+        exit 0
+    elif [[ $# -ne 2 ]]; then
+        printf "${ERROR} Expected 2 arguments, got %d\n" "$#"
+        exit 1
+    fi
+    arg1="$1"
+    arg2="$2"
+
+    # shellcheck disable=SC2059
+    if [[ -f $arg1 && -f $arg2 ]]; then
+        : # both files, ok
+    elif [[ -d $arg1 && -d $arg2 ]]; then
+        : # both directories, ok
+    elif [[ ! -e $arg1 ]]; then
+        printf "${ERROR} %s does not exist\n" "$arg1"
+        exit 1
+    elif [[ ! -e $arg2 ]]; then
+        printf "${ERROR} %s does not exist\n" "$arg2"
+        exit 1
+    else
+        printf "${ERROR} Both arguments must be the same type (file or directory)\n"
+        exit 1
+    fi
+    while IFS= read -r line; do
+        diff_lines+=("$line")
+    done < <(diff -rq $ignore_spaces "$arg1" "$arg2" 2>/dev/null | rg "^Files ")
+fi
+
+if [[ ${#diff_lines[@]} -eq 0 ]]; then
+    printf "==> No differing files found.\n"
+    exit 0
+fi
+
+printf "==> %d differing file(s) found.\n" "${#diff_lines[@]}"
+
+for line in "${diff_lines[@]}"; do
+    # Parse: Files <file1> and <file2> differ
+    # shellcheck disable=SC2016 # $1/$2 are sd backreferences, not bash variables
+    file1=$(printf "%s" "$line" | sd "^Files (.*) and (.*) differ$" '$1')
+    file2=$(printf "%s" "$line" | sd "^Files (.*) and (.*) differ$" '$2')
+
+    # Always diff older-first so added lines show as +
+    {
+        IFS= read -r old
+        IFS= read -r new
+    } < <(older_first "$file1" "$file2")
+
+    if waitUntil -Y "\n==> Diff $old\n    and $new?"; then
+        # shellcheck disable=SC2086
+        riff $ignore_spaces --no-pager "$old" "$new"
+    fi
+done
