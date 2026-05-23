@@ -77,6 +77,7 @@ alias ruffc='ruff check'
 alias rgn='rg -N'
 alias rgp='rg --sort path'
 alias rgpn='rg -N --sort path'
+alias rgpm='rg -N --sortr modified'
 alias rga="rg -N --sort path '^\/'"
 alias rgaf="rg -N --sort path '^\/|^function |\(\)'"
 
