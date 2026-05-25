@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# ---------------------------------------------------------------------------
+# gitStatusReport.sh — report file counts and git status for repos under a path
+# ---------------------------------------------------------------------------
+
+usage() {
+    cat <<EOF
+Usage: $(basename "$0") [OPTIONS] PATH
+
+Recursively finds git repositories under PATH and reports their file count,
+commit count, and working-tree status in a formatted table.
+
+OPTIONS:
+  -d, --depth DEPTH   Limit search depth for .git directories (e.g. -d 3
+                      finds repos up to 3 levels deep). Default: no limit.
+  -h, --help          Show this help message and exit.
+
+COLUMNS:
+  Path      Repo root directory
+  Files     File count (excluding .git and .DS_Store)
+  Commits   Total commits on HEAD (0 if not a git repo)
+  Status    clean | dirty | untracked | -
+
+EXAMPLES:
+  $(basename "$0") ~/Projects
+  $(basename "$0") -d 3 ~/Projects/AI_experiments/Systems
+EOF
+}
+
+# ---------------------------------------------------------------------------
+# Argument parsing
+# ---------------------------------------------------------------------------
+depth=""
+search_root=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+    -h | --help)
+        usage
+        exit 0
+        ;;
+    -d | --depth)
+        [[ -n ${2-} ]] || {
+            echo "Error: --depth requires a value" >&2
+            exit 1
+        }
+        depth="$2"
+        shift 2
+        ;;
+    -*)
+        echo "Error: Unknown option: $1" >&2
+        usage >&2
+        exit 1
+        ;;
+    *)
+        if [[ -z $search_root ]]; then
+            search_root="$1"
+        else
+            echo "Error: Unexpected argument: $1" >&2
+            usage >&2
+            exit 1
+        fi
+        shift
+        ;;
+    esac
+done
+
+# ---------------------------------------------------------------------------
+# Validation
+# ---------------------------------------------------------------------------
+if [[ -z $search_root ]]; then
+    echo "Error: PATH is required." >&2
+    usage >&2
+    exit 1
+fi
+
+# Expand tilde manually in case it wasn't shell-expanded
+search_root="${search_root/#\~/$HOME}"
+
+if [[ ! -d $search_root ]]; then
+    echo "Error: '$search_root' is not a directory or does not exist." >&2
+    exit 1
+fi
+
+# ---------------------------------------------------------------------------
+# Discovery and reporting
+# ---------------------------------------------------------------------------
+
+GIT_PATTERN='.git$'
+
+# Build fd command for .git directory discovery
+if [[ -n $depth ]]; then
+    fd_cmd=(fd -HI -d "$depth" -t d "$GIT_PATTERN" . "$search_root")
+else
+    fd_cmd=(fd -HI -t d "$GIT_PATTERN" . "$search_root")
+fi
+
+rows=""
+while IFS= read -r git_dir; do
+    # Strip trailing slash, then get the parent (repo root)
+    repo_root="${git_dir%/}"
+    repo_root="${repo_root%/.git}"
+
+    file_count=$(fd -t f -H -E .git -E .DS_Store . "$repo_root" | wc -l | tr -d ' ')
+
+    if [[ -d "$repo_root/.git" ]]; then
+        commit_count=$(git -C "$repo_root" rev-list --count HEAD 2>/dev/null || echo "0")
+
+        if ! git -C "$repo_root" diff --quiet 2>/dev/null ||
+            ! git -C "$repo_root" diff --cached --quiet 2>/dev/null; then
+            status="dirty"
+        elif [[ -n $(git -C "$repo_root" ls-files --others --exclude-standard 2>/dev/null) ]]; then
+            status="untracked"
+        else
+            status="clean"
+        fi
+    else
+        commit_count="0"
+        status="-"
+    fi
+
+    rows+=$(printf "%s %s %s %s\n" "${repo_root/#$HOME/~}" "$file_count" "$commit_count" "$status")
+    rows+=$'\n'
+done < <("${fd_cmd[@]}")
+
+if [[ -z $rows ]]; then
+    depth_msg=${depth:+ at depth $depth}
+    echo "No git repositories found under '${search_root/#$HOME/~}'${depth_msg}." >&2
+    exit 1
+fi
+
+{
+    printf "Path Files Commits Status\n"
+    printf "%s" "$rows"
+} | column -t
