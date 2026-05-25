@@ -1,7 +1,7 @@
 new_tab AI
 layout tall:bias=68;full_size=2
 launch zsh
-cd ~/Projects/AI_experiments
+cd ~/Projects/AI_experiments/Systems
 launch zsh
 cd ~/Projects/AI_experiments/Scaffolding
 
@@ -13,25 +13,26 @@ launch zsh
 cd ~/Projects/AI_experiments/Systems/Claude
 
 new_tab claude-code
-layout tall:bias=68;full_size=2
+layout fat:bias=75;full_size=1
+cd ~/Projects/AI_experiments/Systems/claude-code
 launch zsh
-cd ~/Projects/AI_experiments/Systems/claude_code
+cd ~/Projects/AI_experiments/Systems/claude-code
 launch zsh
-cd ~/Projects/AI_experiments/Systems/claude_code
+cd ~/Projects/AI_experiments/Logs
+launch zsh
+cd ~/Projects/AI_experiments/Systems/Claude/x3-convert_json
+launch zsh
 
-new_tab Jan
-layout tall:bias=68;full_size=2
+new_tab LM_Studio
+layout fat:bias=65;full_size=1
+cd ~/Projects/AI_experiments/Systems/LM_Studio
 launch zsh
-cd ~/Projects/AI_experiments/Systems/Jan
+cd ~/Projects/AI_experiments/Systems/LM_Studio
 launch zsh
-cd ~/Projects/AI_experiments/Systems/Jan
-
-new_tab LMS
-layout tall:bias=68;full_size=2
+cd ~/Projects/AI_experiments/Logs
 launch zsh
-cd ~/Projects/AI_experiments/Systems/LMS
+cd ~/Projects/AI_experiments/Systems/Claude/x3-convert_json
 launch zsh
-cd ~/.lmstudio
 
 new_tab Chats
 layout tall:bias=68;full_size=2
@@ -50,9 +51,9 @@ cd ~/.config
 new_tab Kitty
 layout tall:bias=68;full_size=2
 launch zsh
-cd ~/dotfiles/config.dir/kitty
+cd ~/dotfiles/config.dir/kitty/sessions
 launch zsh
-cd ~/dotfiles/config.dir/kitty/notgit
+cd ~/dotfiles/config.dir/kitty
 
 new_tab TV
 layout tall:bias=68;full_size=2
@@ -60,3 +61,4 @@ launch zsh
 cd ~/Projects/WhatsStreamingToday
 launch zsh
 cd ~/Projects/CountEpisodes
+
