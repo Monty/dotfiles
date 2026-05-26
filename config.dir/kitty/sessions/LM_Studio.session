@@ -12,7 +12,7 @@ cd ~/Projects/AI_experiments/Systems/Claude
 launch zsh
 cd ~/Projects/AI_experiments/Systems/Claude
 
-new_tab claude-code
+new_tab cl-code
 layout fat:bias=75;full_size=1
 cd ~/Projects/AI_experiments/Systems/claude-code
 launch zsh
@@ -30,7 +30,7 @@ cd ~/Projects/AI_experiments/Systems/Goose
 launch zsh
 cd ~/Projects/AI_experiments/Systems/Goose
 
-new_tab LM_Studio
+new_tab Studio
 layout fat:bias=65;full_size=1
 cd ~/Projects/AI_experiments/Systems/LM_Studio
 launch zsh
