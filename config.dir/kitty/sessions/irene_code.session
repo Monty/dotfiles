@@ -36,16 +36,16 @@ cd ~/Projects/WhatsStreamingToday/sitemaps/Squishers/sw_squisher
 new_tab CotEditor
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/tests/CotEditor
+cd ~/Projects/tests/CotEditor
 launch zsh
-cd /Users/monty/Projects/tests/CotEditor/tests
+cd ~/Projects/tests/CotEditor/tests
 
 new_tab Tests
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/tests/updateTests
+cd ~/Projects/tests/updateTests
 launch zsh
-cd /Users/monty/Projects/tests/updateTests
+cd ~/Projects/tests/updateTests
 
 new_tab Chats
 layout tall:bias=68;full_size=2

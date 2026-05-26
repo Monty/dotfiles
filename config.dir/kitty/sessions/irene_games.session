@@ -36,9 +36,9 @@ cd ~/Projects/quartile
 new_tab Pangram
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/pangram
+cd ~/Projects/pangram
 launch zsh
-cd /Users/monty/Projects/pangram
+cd ~/Projects/pangram
 
 new_tab Kitty
 layout tall:bias=68;full_size=2

@@ -50,23 +50,23 @@ cd ~/Projects/WhatsStreamingToday/sitemaps/Squishers/sw_squisher
 new_tab VI
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/tests/updateTests/Dotfiles/vivid
+cd ~/Projects/tests/updateTests/Dotfiles/vivid
 launch zsh
-cd /Users/monty/Projects/tests/updateTests/Dotfiles/vivid/test_colors
+cd ~/Projects/tests/updateTests/Dotfiles/vivid/test_colors
 
 new_tab MB
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/tests/mdbookTests
+cd ~/Projects/tests/mdbookTests
 launch zsh
-cd /Users/monty/Projects/tests/mdbookTests
+cd ~/Projects/tests/mdbookTests
 
 new_tab AI
 layout tall:bias=68;full_size=2
 launch zsh
-cd /Users/monty/Projects/AI_tech_chats
+cd ~/Projects/AI_tech_chats
 launch zsh
-cd /Users/monty/Projects/AI_tech_chats
+cd ~/Projects/AI_tech_chats
 
 new_tab Kitty
 layout tall:bias=68;full_size=2
