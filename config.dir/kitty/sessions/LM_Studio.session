@@ -23,6 +23,13 @@ launch zsh
 cd ~/Projects/AI_experiments/Systems/Claude/x3-convert_json
 launch zsh
 
+new_tab Goose
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/AI_experiments/Systems/Goose
+launch zsh
+cd ~/Projects/AI_experiments/Systems/Goose
+
 new_tab LM_Studio
 layout fat:bias=65;full_size=1
 cd ~/Projects/AI_experiments/Systems/LM_Studio
