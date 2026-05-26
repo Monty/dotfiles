@@ -89,13 +89,13 @@ fi
 # Discovery and reporting
 # ---------------------------------------------------------------------------
 
-GIT_PATTERN='.git$'
-
-# Build fd command for .git directory discovery
+# Build fd command for .git directory discovery.
+# Note: pass "$search_root" as the sole path — do NOT include "." or fd will
+# also search the current directory and produce duplicate/relative-path results.
 if [[ -n $depth ]]; then
-    fd_cmd=(fd -HI -d "$depth" -t d "$GIT_PATTERN" . "$search_root")
+    fd_cmd=(fd -HI -d "$depth" -t d '.git$' "$search_root")
 else
-    fd_cmd=(fd -HI -t d "$GIT_PATTERN" . "$search_root")
+    fd_cmd=(fd -HI -t d '.git$' "$search_root")
 fi
 
 rows=""
