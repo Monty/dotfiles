@@ -14,9 +14,9 @@ cd ~/Projects/AI_experiments/Systems/Claude
 
 new_tab cl-code
 layout fat:bias=75;full_size=1
-cd ~/Projects/AI_experiments/Systems/claude-code
+cd ~/Projects/AI_experiments/Systems/claude_code
 launch zsh
-cd ~/Projects/AI_experiments/Systems/claude-code
+cd ~/Projects/AI_experiments/Systems/claude_code
 launch zsh
 cd ~/Projects/AI_experiments/Logs
 launch zsh
