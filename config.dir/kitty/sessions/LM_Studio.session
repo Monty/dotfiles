@@ -30,6 +30,13 @@ cd ~/Projects/AI_experiments/Systems/Goose
 launch zsh
 cd ~/Projects/AI_experiments/Systems/Goose
 
+new_tab Jan
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/AI_experiments/Systems/Jan
+launch zsh
+cd ~/Projects/AI_experiments/Systems/Jan
+
 new_tab Studio
 layout fat:bias=65;full_size=1
 cd ~/Projects/AI_experiments/Systems/LM_Studio
