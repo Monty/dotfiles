@@ -8,7 +8,7 @@ Usage:
     python3 extract_messages.py --id 42
     python3 extract_messages.py --id 42 --out thread.md
     python3 extract_messages.py --id 42 --tail 50
-    python3 extract_messages.py --name "monroe@mac.com"
+    python3 extract_messages.py --name "marion@mac.com"
     python3 extract_messages.py --name "+1503"
     python3 extract_messages.py --search "LLM"
 
@@ -72,8 +72,27 @@ TAPBACK = {
     2004: "😂",
     2005: "‼️",
     2006: "❓",
-    # 2000-range are "added"; 3000-range are "removed" — we skip removals
 }
+
+# Whole band of tapback-related associated_message_type values.
+# 2001-2006 are classic adds; 3001-3006 are removes; other values in the
+# band appear in iOS 16+ "compatibility" text messages (e.g. 'Loved "..."')
+# that duplicate the tapback for cross-platform recipients.
+# Matches the exclusion range used in search_messages.py.
+TAPBACK_BAND = range(2000, 4000)
+
+# Verb prefix → emoji for new-style compatibility messages.
+_TAPBACK_VERB = {
+    "Loved": "❤️",
+    "Liked": "👍",
+    "Disliked": "👎",
+    "Laughed at": "😂",
+    "Emphasized": "‼️",
+    "Questioned": "❓",
+}
+_TAPBACK_VERB_RE = re.compile(
+    r"^(" + "|".join(re.escape(v) for v in _TAPBACK_VERB) + r')\s+["\u201c]'
+)
 
 
 # ── attributedBody decoder ───────────────────────────────────────────────────
@@ -290,7 +309,7 @@ def list_threads(con, n=None):
 
 
 def find_threads_by_name(con, query):
-    """Return threads whose handle IDs, chat_identifier, or display_name match query."""
+    """Return threads whose handle IDs, chat_identifier, display_name, or resolved contact names match query."""
     threads = load_threads(con)
     q = query.lower()
     return [
@@ -299,6 +318,7 @@ def find_threads_by_name(con, query):
         if q in (t.get("handles") or "").lower()
         or q in (t.get("chat_identifier") or "").lower()
         or q in (t.get("display_name") or "").lower()
+        or q in thread_label(t).lower()
     ]
 
 
@@ -488,21 +508,35 @@ def render_text(text):
 def collect_tapbacks(messages):
     """
     Build dict: message_guid → list of (emoji, sender_label) tuples.
-    Tapback messages (associated_message_type 2001–2006) are collected here
-    so they can be rendered as annotations on the target message instead of
-    appearing as standalone entries.
+    Covers both classic tapbacks (associated_message_type 2001–2006) and
+    the iOS 16+ compatibility text messages ('Loved "..."' etc.) that use
+    other values in the 2000–3999 band.  All are collected here so they
+    can be rendered as annotations on the target message.
     """
     tapbacks = {}
     for msg in messages:
         amt = msg.get("associated_message_type") or 0
-        if amt in TAPBACK:
-            target_guid = msg.get("associated_message_guid") or ""
-            # guids sometimes have a "/p:N/" prefix — strip to bare guid
-            if "/" in target_guid:
-                target_guid = target_guid.split("/")[-1]
-            emoji = TAPBACK[amt]
-            sender = "Me" if msg["is_from_me"] else resolve(msg.get("sender_id") or "?")
-            tapbacks.setdefault(target_guid, []).append((emoji, sender))
+        if amt not in TAPBACK_BAND:
+            continue
+        # Resolve emoji: use the TAPBACK dict for classic values; for new-style
+        # compatibility messages parse the verb prefix from the text. The text
+        # may live in the text column or only in attributedBody (same fallback
+        # as the body renderer).
+        emoji = TAPBACK.get(amt)
+        if emoji is None:
+            text = (msg.get("text") or "").strip()
+            if not text:
+                text = decode_attributed_body(msg.get("attributedBody")) or ""
+            m = _TAPBACK_VERB_RE.match(text)
+            emoji = _TAPBACK_VERB.get(m.group(1), "👆") if m else "👆"
+        target_guid = msg.get("associated_message_guid") or ""
+        # guids sometimes have a "/p:N/" prefix — strip to bare guid
+        if "/" in target_guid:
+            target_guid = target_guid.split("/")[-1]
+        if not target_guid:
+            continue  # no target to annotate; message will be suppressed silently
+        sender = "Me" if msg["is_from_me"] else resolve(msg.get("sender_id") or "?")
+        tapbacks.setdefault(target_guid, []).append((emoji, sender))
     return tapbacks
 
 
@@ -524,13 +558,14 @@ def render_thread(chat_id, chat_info, messages, attachments, tail=None, total=No
 
     tapbacks = collect_tapbacks(messages)
 
-    # Skip messages that are pure tapbacks — they appear as annotations instead
-    tapback_types = set(TAPBACK.keys())
+    # Skip tapback messages — they appear as annotations on the target instead.
+    # Use the full TAPBACK_BAND (2000-3999) to catch both classic tapbacks and
+    # the iOS 16+ compatibility text messages ('Loved "..."' etc.).
 
     prev_date = None
     for msg in messages:
         amt = msg.get("associated_message_type") or 0
-        if amt in tapback_types:
+        if amt in TAPBACK_BAND:
             continue  # rendered as annotation on target, not standalone
 
         # Date separator
@@ -617,6 +652,69 @@ def render_thread(chat_id, chat_info, messages, attachments, tail=None, total=No
     return "\n".join(lines)
 
 
+# ── Attachment listing ───────────────────────────────────────────────────────────────
+
+
+def list_attachments(con, n=20, chat_id=None):
+    """Print the N largest attachments, optionally filtered to one thread."""
+    cur = con.cursor()
+
+    if chat_id:
+        cur.execute(
+            """
+            SELECT a.ROWID, a.transfer_name, a.mime_type, a.total_bytes,
+                   a.created_date, a.filename,
+                   cmj.chat_id
+            FROM attachment a
+            JOIN message_attachment_join maj ON a.ROWID = maj.attachment_id
+            JOIN chat_message_join cmj ON maj.message_id = cmj.message_id
+            WHERE a.total_bytes > 0 AND cmj.chat_id = ?
+            ORDER BY a.total_bytes DESC
+            LIMIT ?
+        """,
+            (chat_id, n),
+        )
+    else:
+        cur.execute(
+            """
+            SELECT a.ROWID, a.transfer_name, a.mime_type, a.total_bytes,
+                   a.created_date, a.filename,
+                   cmj.chat_id
+            FROM attachment a
+            JOIN message_attachment_join maj ON a.ROWID = maj.attachment_id
+            JOIN chat_message_join cmj ON maj.message_id = cmj.message_id
+            WHERE a.total_bytes > 0
+            ORDER BY a.total_bytes DESC
+            LIMIT ?
+        """,
+            (n,),
+        )
+
+    rows = cur.fetchall()
+    if not rows:
+        print("No attachments found.")
+        return
+
+    threads = load_threads(con)
+    thread_label_map = {t["chat_id"]: thread_label(t) for t in threads}
+
+    scope = f"thread {chat_id}" if chat_id else "all threads"
+    print(f"Top {len(rows)} largest attachments ({scope}):\n")
+    print(f"  {'Size':>8}  {'Date':<12}  {'Thread':<25}  {'Type':<20}  File")
+    print("  " + "-" * 95)
+
+    for row in rows:
+        size_mb = row["total_bytes"] / 1_048_576
+        date = fmt_date_only(row["created_date"]) if row["created_date"] else "?"
+        label = thread_label_map.get(row["chat_id"], f"chat {row['chat_id']}")[:25]
+        mime = (row["mime_type"] or "?")[:20]
+        name = row["transfer_name"] or Path(row["filename"] or "").name or "?"
+        fpath = (row["filename"] or "").replace("/var/mobile", str(Path.home()))
+        print(f"  {size_mb:>7.1f}M  {date:<12}  {label:<25}  {mime:<20}  {name}")
+        if fpath:
+            print(f"  {'':>8}  {fpath}")
+
+
 # ── Extraction entry point ────────────────────────────────────────────────────
 
 
@@ -676,7 +774,21 @@ if __name__ == "__main__":
         metavar="TEXT",
         help="Search message text across all threads",
     )
+    mode.add_argument(
+        "--attachments",
+        nargs="?",
+        const=20,
+        metavar="N",
+        type=int,
+        help="List N largest attachments across all threads, or for --chat (default 20)",
+    )
 
+    ap.add_argument(
+        "--chat",
+        type=int,
+        metavar="CHAT_ID",
+        help="Filter --attachments to a specific thread",
+    )
     ap.add_argument(
         "--contacts",
         metavar="FILE",
@@ -725,6 +837,9 @@ if __name__ == "__main__":
 
         elif args.search:
             search_messages(con, args.search, n=args.results)
+
+        elif args.attachments is not None:
+            list_attachments(con, n=args.attachments, chat_id=args.chat)
 
     finally:
         con.close()
