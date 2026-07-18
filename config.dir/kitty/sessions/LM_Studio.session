@@ -62,6 +62,13 @@ cd ~/dotfiles
 launch zsh
 cd ~/.config
 
+new_tab IMDb
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/IMDb/IMDb_gz
+launch zsh
+cd ~/Projects/IMDb/IMDb_playwright
+
 new_tab Kitty
 layout tall:bias=68;full_size=2
 launch zsh
