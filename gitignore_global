@@ -12,7 +12,9 @@ nohup.out
 *.bak
 
 # Python
-__pycache__
+.venv/
+__pycache__/
+*.pyc
 
 # node
 node_modules/
