@@ -67,7 +67,7 @@ layout tall:bias=68;full_size=2
 launch zsh
 cd ~/Projects/IMDb/IMDb_gz
 launch zsh
-cd ~/Projects/IMDb/IMDb_playwright
+cd ~/Projects/IMDb/IMDb_xref
 
 new_tab Kitty
 layout tall:bias=68;full_size=2
