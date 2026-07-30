@@ -76,14 +76,14 @@ fi
 
 cargo install lsd
 
-# # Lychee
-# # Get the latest release download URL
-# download_url=$(curl -s "https://api.github.com/repos/lycheeverse/lychee/releases/latest" |
-#     jq -r '.assets[] | select(.name == "lychee-arm64-macos.tar.gz") | .browser_download_url')
-# curl -sL "$download_url" -o lychee-arm64-macos.tar.gz
-# tar -xzf lychee-arm64-macos.tar.gz lychee
-# mv lychee ~/.cargo/bin
-# rm -f lychee-arm64-macos.tar.gz
+# Lychee
+# Get the latest release download URL
+download_url=$(curl -s "https://api.github.com/repos/lycheeverse/lychee/releases/latest" |
+    jq -r '.assets[] | select(.name | endswith("aarch64-apple-darwin.tar.gz")) | .browser_download_url')
+curl -sL "$download_url" -o lychee-aarch64-apple-darwin.tar.gz
+tar -xzf lychee-aarch64-apple-darwin.tar.gz --strip-components=1 lychee-aarch64-apple-darwin/lychee
+mv lychee ~/.cargo/bin
+rm -f lychee-aarch64-apple-darwin.tar.gz
 
 cargo install prettydiff --version 0.6.4
 qsv -U

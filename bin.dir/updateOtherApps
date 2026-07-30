@@ -169,6 +169,7 @@ EOF
                 asset="dart-sass-${latest_version}-macos-arm64.tar.gz"
                 download_url="https://github.com/sass/dart-sass/releases/download/${latest_version}/${asset}"
                 curl -sL "$download_url" -o "$asset"
+                mkdir -p ~/Projects/dart-sass
                 tar -xzf "$asset" --strip-components=1 \
                     -C ~/Projects/dart-sass
                 rm -f "$asset"
