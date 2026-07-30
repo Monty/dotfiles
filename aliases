@@ -24,7 +24,7 @@ hgrz() {
     fc -lLn 1 -1 | rg "$@" | sort -u
 }
 alias ht='fc -l' # Tail history
-alias lychee='DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks" lychee'
+# alias lychee='DYLD_LIBRARY_PATH="/Applications/kitty.app/Contents/Frameworks" lychee'
 alias more='less'
 alias psx='ps -ef | rg -v ":\d{2}\.\d{2} rg " | rg'
 alias showpath='printf "%s\n" $path'

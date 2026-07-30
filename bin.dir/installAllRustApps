@@ -76,14 +76,14 @@ fi
 
 cargo install lsd
 
-# Lychee
-# Get the latest release download URL
-download_url=$(curl -s "https://api.github.com/repos/lycheeverse/lychee/releases/latest" |
-    jq -r '.assets[] | select(.name == "lychee-arm64-macos.tar.gz") | .browser_download_url')
-curl -sL "$download_url" -o lychee-arm64-macos.tar.gz
-tar -xzf lychee-arm64-macos.tar.gz lychee
-mv lychee ~/.cargo/bin
-rm -f lychee-arm64-macos.tar.gz
+# # Lychee
+# # Get the latest release download URL
+# download_url=$(curl -s "https://api.github.com/repos/lycheeverse/lychee/releases/latest" |
+#     jq -r '.assets[] | select(.name == "lychee-arm64-macos.tar.gz") | .browser_download_url')
+# curl -sL "$download_url" -o lychee-arm64-macos.tar.gz
+# tar -xzf lychee-arm64-macos.tar.gz lychee
+# mv lychee ~/.cargo/bin
+# rm -f lychee-arm64-macos.tar.gz
 
 cargo install prettydiff --version 0.6.4
 qsv -U
@@ -95,6 +95,7 @@ cargo install tealdeer
 tldr --update
 
 cargo install rust_tree
+cargo install --locked uv
 cargo install xls2txt
 cargo install xsv
 cargo install zeitfetch
@@ -103,13 +104,34 @@ cargo install zet
 [[ "$(hostname)" == "Monarch.local" ]] && exit
 [[ "$(hostname)" == "Marleau.local" ]] && exit
 # Only on Irene and Holmes
+cargo install ast-grep
 cargo install broot
+cargo install choose
 cargo install diffr
 cargo install difftastic
+cargo install fastmod
+# fresh can take ~10 minutes to build; be patient
+cargo install fresh-editor
 cargo install git-delta
 cargo install hyperfine
 cargo install mdbook
 cargo install --locked miniserve
 cargo install --locked nu
+cargo install pastel
+cargo install riffdiff
+cargo install shellharden
 cargo install stylua
 cargo install tokei
+
+# vivid: build locally if source is present, else install from crates.io
+if [[ -d ~/Projects/vivid ]]; then
+    cd ~/Projects/vivid || exit 1
+    git pull
+    cargo build --release
+    cp -p target/release/vivid ~/.cargo/bin/vivid
+    cd - >/dev/null
+else
+    cargo install vivid
+fi
+
+cargo install websocat
