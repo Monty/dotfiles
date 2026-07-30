@@ -381,6 +381,11 @@ EOF
                     cargo install -q --force vivid
                 fi
                 ;;
+            websocat)
+                # Command-line client for web sockets, like curl for ws://
+                printf "Installing %s...\n" "$app"
+                cargo install -q --force websocat
+                ;;
             xls2txt)
                 # Convert .ods or .xls files to .tsv or .csv filesd
                 printf "Installing %s...\n" "$app"
