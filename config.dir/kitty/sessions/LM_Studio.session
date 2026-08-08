@@ -65,7 +65,7 @@ cd ~/.config
 new_tab IMDb
 layout tall:bias=68;full_size=2
 launch zsh
-cd ~/Projects/IMDb/IMDb_gz
+cd ~/Projects/IMDb/big_IMDb_xref
 launch zsh
 cd ~/Projects/IMDb/IMDb_xref
 
