@@ -1,0 +1,60 @@
+new_tab AI
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/AI_experiments/Systems
+launch zsh
+cd ~/Projects/AI_experiments/Scaffolding
+
+new_tab Claude
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/AI_experiments/Systems/Claude
+launch zsh
+cd ~/Projects/AI_experiments/Systems/Claude
+
+new_tab cl-code
+layout fat:bias=75;full_size=1
+cd ~/Projects/AI_experiments/Systems/claude_code
+launch zsh
+cd ~/Projects/AI_experiments/Systems/claude_code
+launch zsh
+cd ~/Projects/AI_experiments/Logs
+launch zsh
+cd ~/Projects/AI_experiments/Systems/Claude/x3-convert_json
+launch zsh
+
+new_tab Chats
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/WhatsStreamingToday/sitemaps/Squishers/Chats
+launch zsh
+cd ~/Downloads
+
+new_tab Dotfiles
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/dotfiles
+launch zsh
+cd ~/.config
+
+new_tab IMDb
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/IMDb/IMDB_working
+launch zsh
+cd ~/Projects/IMDb/IMDb_live
+
+new_tab Kitty
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/dotfiles/config.dir/kitty/sessions
+launch zsh
+cd ~/dotfiles/config.dir/kitty
+
+new_tab TV
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/WhatsStreamingToday
+launch zsh
+cd ~/Projects/CountEpisodes
+
