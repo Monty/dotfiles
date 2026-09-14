@@ -32,6 +32,7 @@ Fix filenames of chat sessions exported by ChatGPT Exporter.
 
 Normal mode:
   - Replace spaces with underscores
+  - Strip ChatGPT Exporter's own timestamp (-YYYYMMDD-HHMM)
   - Append file modification date (YYMMDD format) before extension
   - If file already has a date that differs from the current date,
     append a new date
@@ -52,6 +53,7 @@ OPTIONS:
 EXAMPLES:
     Normal mode:
       Claude Refactoring code.md -> Claude_Refactoring_code-251219.md
+      Claude-Some chat-20251219-1824.md -> Claude-Some_chat-251219.md
       file-251213.md -> file-251213-251219.md (if dates differ)
 
     Undo mode:
@@ -129,6 +131,12 @@ else
         noSpaceName="${name// /_}"
         fileDate=$(stat -f "%Sm" -t "%y%m%d" "$name")
         base="${noSpaceName%.*}"
+
+        # Strip ChatGPT Exporter's own stamp (-YYYYMMDD-HHMM)
+        if [[ $base =~ ^(.*)-[0-9]{8}-[0-9]{4}$ ]]; then
+            base="${BASH_REMATCH[1]}"
+            noSpaceName="${base}.${ext}"
+        fi
 
         # Check if date already in filename
         if [[ $base =~ -[0-9]{6}$ ]]; then
