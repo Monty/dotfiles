@@ -140,9 +140,14 @@ extract_local_version() {
     local output="$1"
     # Special handling for Swift
     if [[ $output == *"Apple Swift version"* ]]; then
-        echo "$output" |
-            grep -oE 'Apple Swift version [0-9]+\.[0-9]+\.[0-9]+' |
-            grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true
+        version=$(
+            echo "$output" |
+                sed -nE 's/^Apple Swift version ([0-9]+\.[0-9]+(\.[0-9]+)?).*/\1/p' |
+                head -1
+        )
+        # Normalize 6.4 -> 6.4.0
+        [[ $version =~ ^[0-9]+\.[0-9]+$ ]] && version="${version}.0"
+        echo "$version"
         return
     fi
     # Strip optional 'v' prefix and extract first semantic version
