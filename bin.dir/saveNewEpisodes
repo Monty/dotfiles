@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Clean up and de-dupe the output of newEpisodes
+# Optionally aggregate several weekly files into a range report
 
 # shellcheck disable=SC2154     # References to $NE and $WS
 
@@ -26,29 +27,32 @@ DATE_ID="-$(date +%y%m%d)"
 OUTFILE="newEpisodes$DATE_ID.txt"
 MD_FILE="newEpisodes$DATE_ID.md"
 EXCLUDE_FILE="rg_newEpisodes.rgx"
-# The "SINCE" date is derived from OFFSET after arg parsing
-# This default OFFSET may be overridden by --date
-OFFSET="-1w"
+# Number of weekly files to aggregate; 1 means weekly report only
+WEEKS=1
 
 help() {
-    cat <<EOF
+    cat <<EOF2
 saveNewEpisodes
 
 Clean up and de-dupe the output of \$WS/newEpisodes.sh
 Generate $OUTFILE and $MD_FILE
 Save them in \$NE, and condensed versions in ~/Desktop
 
+With --back N (N > 1), also merge the last N weekly files into a range
+report, newEpisodes_<since>-<today>.txt/.md, saved the same way.
+If today's weekly file already exists it is reused, not regenerated.
+
 USAGE:
     saveNewEpisodes [OPTIONS]
 
 OPTIONS:
-    -h | --help     Print this message.
-    -d | --date     Date offset in date -v format (default: -1w)
+    -h | --help         Print this message.
+    -b | --back N       Aggregate the last N weekly files (default: 1)
 
 EXAMPLES:
     saveNewEpisodes
-    saveNewEpisodes --date -4d
-EOF
+    saveNewEpisodes --back 4
+EOF2
 }
 
 # Check for options
@@ -58,24 +62,22 @@ while [[ $# -gt 0 ]]; do
         help
         exit
         ;;
-    -d | --date)
+    -b | --back)
         shift
-        if [[ $# -eq 0 ]]; then
-            # shellcheck disable=SC2059
-            printf "${ERROR} --date requires an argument (e.g. -2w, -3d)\n" >&2
+        if [[ $# -eq 0 || ! $1 =~ ^[1-9][0-9]*$ ]]; then
+            printf "%b --back requires a positive integer (e.g. 4)\n" "$ERROR" >&2
             exit 1
         fi
-        OFFSET="$1"
+        WEEKS="$1"
         shift
         ;;
     *)
-        # shellcheck disable=SC2059
         if [[ $1 == -* ]]; then
-            printf "${ERROR} Unknown option: %s\n" "$1"
-            printf "${INFO}  Run with --help to see available options\n"
+            printf "%b Unknown option: %s\n" "$ERROR" "$1" >&2
+            printf "%b  Run with --help to see available options\n" "$INFO" >&2
         else
-            printf "${ERROR} Invalid argument: %s\n" "$1"
-            printf "${INFO}  This script does not accept positional arguments\n"
+            printf "%b Invalid argument: %s\n" "$ERROR" "$1" >&2
+            printf "%b  This script does not accept positional arguments\n" "$INFO" >&2
         fi
         exit 1
         ;;
@@ -84,23 +86,48 @@ done
 
 cd "$NE" || exit
 
-# Derive date string from final OFFSET value
-SINCE="$(date -v "$OFFSET" +%d-%b-%y)"
+# "Since" label for markdown, taken from the first header in the file,
+# e.g. "==> Show new episodes since MHz_TV_ShowsEpisodes-260929.csv? [Y/n]"
+since_label() {
+    local d
+    d=$(grep -m1 -oE '[0-9]{6}\.csv' "$1" | cut -c1-6 || true)
+    if [[ -n $d ]]; then
+        date -j -f %y%m%d "$d" +%d-%b-%y
+    else
+        date -v -1w +%d-%b-%y
+    fi
+}
 
-printf "==> File written to %s\n\n" "$OUTFILE"
+# Write the compressed Desktop copy and both markdown versions
+publish() {
+    local txt="$1" md="$2" since
+    since="$(since_label "$txt")"
+    "$WS"/compress_newEpisodes.py "$txt" >~/Desktop/"$txt"
+    awk -f convertEpisodesToMarkdown.awk -v SINCE="$since" \
+        "$txt" >"$md"
+    awk -f convertEpisodesToMarkdown.awk -v SINCE="$since" \
+        "$HOME/Desktop/$txt" >~/Desktop/"$md"
+}
 
-# Make sure the permanent EXCLUDE_FILE is the most current file
-touch "$EXCLUDE_FILE"
-printf "==> Applying exclusions from %s\n\n" "$EXCLUDE_FILE"
-"$WS"/newEpisodes.sh | rg -v -f "$EXCLUDE_FILE" >"$OUTFILE"
+if [[ $WEEKS -gt 1 && -s $OUTFILE ]]; then
+    printf "%b Reusing existing %s\n\n" "$INFO" "$OUTFILE"
+else
+    printf "==> File written to %s\n\n" "$OUTFILE"
 
-# Deduplicate and update metadata (no prompts!)
-python3 tv_dedup.py "$OUTFILE"
+    # Make sure the permanent EXCLUDE_FILE is the most current file
+    touch "$EXCLUDE_FILE"
+    printf "==> Applying exclusions from %s\n\n" "$EXCLUDE_FILE"
+    "$WS"/newEpisodes.sh | rg -v -f "$EXCLUDE_FILE" >"$OUTFILE"
 
-# Compress the cleaned version
-"$WS"/compress_newEpisodes.py "$OUTFILE" >~/Desktop/"$OUTFILE"
+    # Deduplicate and update metadata (no prompts!)
+    python3 tv_dedup.py "$OUTFILE"
 
-awk -f convertEpisodesToMarkdown.awk -v SINCE="$SINCE" \
-    "$OUTFILE" >"$MD_FILE"
-awk -f convertEpisodesToMarkdown.awk -v SINCE="$SINCE" \
-    "$HOME/Desktop/$OUTFILE" >~/Desktop/"$MD_FILE"
+    publish "$OUTFILE" "$MD_FILE"
+fi
+
+if [[ $WEEKS -gt 1 ]]; then
+    RANGE_FILE="$(python3 aggregate_episodes.py "$WEEKS")"
+    RANGE_MD="${RANGE_FILE%.txt}.md"
+    publish "$RANGE_FILE" "$RANGE_MD"
+    printf "\n==> Range report written to %s and %s\n" "$RANGE_FILE" "$RANGE_MD"
+fi
