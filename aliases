@@ -78,7 +78,7 @@ alias rgn='rg -N --pre odsRows.py --pre-glob "*.ods"'
 alias rgp='rg --sort path --pre odsRows.py --pre-glob "*.ods"'
 alias rgpn='rg -N --sort path --pre odsRows.py --pre-glob "*.ods"'
 alias rgpm='rg -N --sortr modified --pre odsRows.py --pre-glob "*.ods"'
-alias rgpo='rg -N --sort path --pre odsLinks.py --pre-glob "*.ods"'
+alias rgpl='rg -N --sort path --pre odsLinks.py --pre-glob "*.ods"'
 alias rga="rg -N --sort path '^\/'"
 alias rgaf="rg -N --sort path '^\/|^function |\(\)'"
 
