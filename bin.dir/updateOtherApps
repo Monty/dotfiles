@@ -212,11 +212,11 @@ EOF
                 printf "Installing %s...\n" "$app"
                 latest_version=$(echo "$line" |
                     grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | tail -1)
-                asset="fastfetch-macos-aarch64.tar.gz"
+                asset="fastfetch-macos-universal.tar.gz"
                 download_url="https://github.com/fastfetch-cli/fastfetch/releases/download/${latest_version}/${asset}"
                 curl -sL "$download_url" -o "$asset"
                 tar -xzf "$asset" --strip-components=3 \
-                    "fastfetch-macos-aarch64/usr/bin/fastfetch"
+                    "fastfetch-macos-universal/usr/bin/fastfetch"
                 mv fastfetch "$(dirname "$(which fastfetch)")"
                 rm -f "$asset"
                 ;;
