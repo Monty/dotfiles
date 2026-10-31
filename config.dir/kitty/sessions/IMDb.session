@@ -1,3 +1,10 @@
+new_tab TV
+layout tall:bias=68;full_size=2
+launch zsh
+cd ~/Projects/WhatsStreamingToday
+launch zsh
+cd ~/Projects/CountEpisodes
+
 new_tab AI
 layout tall:bias=68;full_size=2
 launch zsh
@@ -50,11 +57,3 @@ launch zsh
 cd ~/dotfiles/config.dir/kitty/sessions
 launch zsh
 cd ~/dotfiles/config.dir/kitty
-
-new_tab TV
-layout tall:bias=68;full_size=2
-launch zsh
-cd ~/Projects/WhatsStreamingToday
-launch zsh
-cd ~/Projects/CountEpisodes
-
